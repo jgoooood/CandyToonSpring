@@ -19,7 +19,7 @@
 		SELECT * FROM ASK_TBL ORDER BY ASK_NO DESC
 	</select>
 	
-	<select id="getTotalCount" resultType="int">
+	<select id="selectListCount" resultType="int">
 		SELECT COUNT(*) FROM ASK_TBL
 	</select>
 	

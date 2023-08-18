@@ -13,7 +13,7 @@
 		
         <!-- 메인 -->
         <main>
-            <form action="/ask/modify.do" method="post">
+            <form action="/ask/modify.kr" method="post">
 		        <c:if test="${sessionScope.memberId ne null }">
 		            <h1>문의내역 수정</h1>
 		            <div id="userAsk">

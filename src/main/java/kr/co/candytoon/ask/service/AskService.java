@@ -1,17 +1,25 @@
 package kr.co.candytoon.ask.service;
 
+import java.util.List;
+
 import kr.co.candytoon.ask.domain.Ask;
-import kr.co.candytoon.ask.domain.PageData;
+import kr.co.candytoon.ask.domain.PageInfo;
 
 public interface AskService {
 
 	/**
-	 * 문의사항 리스트 출력
-	 * @param currentPage
-	 * @return PageDate aList, pageNavi
+	 * 문의사항 리스트
+	 * @param pInfo
+	 * @return
 	 */
-	PageData selectAskList(int currentPage);
+	List<Ask> selectAskList(PageInfo pInfo);
 
+	/**
+	 * 공지사항 전체 개수 조회 Service
+	 * @return
+	 */
+	int getListCount();
+	
 	/**
 	 * 문의사항 등록
 	 * @param ask
@@ -39,5 +47,7 @@ public interface AskService {
 	 * @return int result
 	 */
 	int deleteAsk(Ask askNo);
+
+
 
 }

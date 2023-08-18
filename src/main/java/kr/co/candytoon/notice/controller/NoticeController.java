@@ -13,7 +13,7 @@ public class NoticeController {
 	@Autowired
 	private NoticeService service;
 	
-	@RequestMapping(value="/notice/list.do", method=RequestMethod.GET)
+	@RequestMapping(value="/notice/list.kr", method=RequestMethod.GET)
 	public String showNoticeList() {
 		return "notice/noticeList";
 	}

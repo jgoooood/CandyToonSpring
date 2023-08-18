@@ -34,7 +34,7 @@
             <div id="changePw">
                 <h1>비밀번호 재설정</h1>
             </div>
-            <form action="/member/changePw.do" method="post">
+            <form action="/member/changePw.kr" method="post">
             	 <input type="hidden" name="memberId" value="${memberId }">
                 <div id="inputPw">
                     <div id="newPw">

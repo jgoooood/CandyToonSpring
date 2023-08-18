@@ -33,9 +33,9 @@
 	                </table>
 	            </div>
 	            <div>
-	                <button id="askBtn"><a href="/ask/modify.do?askNo=${ask.askNo}">수정하기</a></button>
-	                <button id="askBtn"><a href="/ask/delete.do?askNo=${ask.askNo}">삭제하기</a></button>
-	                <button id="askBtn"><a href="/ask/list.do">목록이동</a></button>
+	                <button id="askBtn"><a href="/ask/modify.kr?askNo=${ask.askNo}">수정하기</a></button>
+	                <button id="askBtn"><a href="/ask/delete.kr?askNo=${ask.askNo}">삭제하기</a></button>
+	                <button id="askBtn"><a href="/ask/list.kr">목록이동</a></button>
 	            </div>
 	        </c:if>
         </main>

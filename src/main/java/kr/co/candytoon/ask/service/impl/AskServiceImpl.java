@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.candytoon.ask.domain.Ask;
-import kr.co.candytoon.ask.domain.PageData;
+import kr.co.candytoon.ask.domain.PageInfo;
 import kr.co.candytoon.ask.service.AskService;
 import kr.co.candytoon.ask.store.AskStore;
 
@@ -19,12 +19,17 @@ public class AskServiceImpl implements AskService{
 	@Autowired
 	private AskStore aStore;
 	
+
 	@Override
-	public PageData selectAskList(int currentPage) {
-		List<Ask> aList = aStore.selectAskList(session, currentPage);
-		String pageNavi = aStore.generateNavi(session, currentPage);
-		PageData pData = new PageData(aList, pageNavi);
-		return pData;
+	public List<Ask> selectAskList(PageInfo pInfo) {
+		List<Ask> aList = aStore.selectAskList(session, pInfo);
+		return aList;
+	}
+	
+	@Override
+	public int getListCount() {
+		int result = aStore.selectListCount(session);
+		return result;
 	}
 
 	@Override
@@ -50,5 +55,9 @@ public class AskServiceImpl implements AskService{
 		int result = aStore.deleteAsk(session, askNo);
 		return result;
 	}
+
+
+
+
 
 }

@@ -56,7 +56,7 @@
                 <p>CANDY TOON</p>
                 <h1>회원가입</h1>
             </div>
-            <form action="/member/register.do" method="post">
+            <form action="/member/register.kr" method="post">
                 <div id="userInput">
                     <ul>
                         <li>필수입력사항</li>

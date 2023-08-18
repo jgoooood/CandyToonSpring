@@ -37,7 +37,7 @@
             <div ID="loginLogo">
                 <a href="/index.jsp"><p>CANDY TOON</p></a>
             </div>
-            <form action="/member/login.do" method="post">
+            <form action="/member/login.kr" method="post">
 	            <div id="loginInput">
                     <div id="loginId">
                         <input type="text" id="memberId" name="memberId" placeholder="아이디" autofocus>
@@ -53,9 +53,9 @@
                 </div>
                 <div id="find">
                     <ul>
-                        <li><a href="/member/findId.do">아이디찾기</a></li>
-                        <li><a href="/member/confirmPw.do">비밀번호변경</a></li>
-                        <li><a href="/member/register.do">회원가입</a></li>
+                        <li><a href="/member/findId.kr">아이디찾기</a></li>
+                        <li><a href="/member/confirmPw.kr">비밀번호변경</a></li>
+                        <li><a href="/member/register.kr">회원가입</a></li>
                     </ul>
                 </div>
            	</form>

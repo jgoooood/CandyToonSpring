@@ -27,18 +27,18 @@
         <c:if test="${memberId ne null }">
          <div  id="customerCenter">
              <ul>
-                 <li><a href="/member/logout.do">로그아웃</a></li>
-                 <li><a href="/member/myPage.do?memberId=${memberId }">마이페이지</a></li>
-                 <li><a href="/notice/list.do">고객센터</a></li>
+                 <li><a href="/member/logout.kr">로그아웃</a></li>
+                 <li><a href="/member/myPage.kr?memberId=${memberId }">마이페이지</a></li>
+                 <li><a href="/notice/list.kr">고객센터</a></li>
              </ul>
          </div>
         </c:if>
         <c:if test="${memberId eq null }">
          <div  id="customerCenter">
              <ul>
-                 <li><a href="/member/login.do">로그인</a></li>
-                 <li><a href="/member/register.do">회원가입</a></li>
-                 <li><a href="/notice/list.do">고객센터</a></li>
+                 <li><a href="/member/login.kr">로그인</a></li>
+                 <li><a href="/member/register.kr">회원가입</a></li>
+                 <li><a href="/notice/list.kr">고객센터</a></li>
              </ul>
          </div>
         </c:if>

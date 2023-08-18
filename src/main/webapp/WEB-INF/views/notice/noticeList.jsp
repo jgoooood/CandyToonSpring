@@ -17,9 +17,9 @@
 	            <div id="center">
 	                <div id = "centerMenu">
 	                    <ul>
-	                        <li><a href="/notice/list.do">공지사항</a></li>
-	                        <li><a href="/fnq/list.do">FAQ</a></li>
-	                        <li><a href="/ask/list.do">1:1문의</a></li>
+	                        <li><a href="/notice/list.kr">공지사항</a></li>
+	                        <li><a href="/fnq/list.kr">FAQ</a></li>
+	                        <li><a href="/ask/list.kr">1:1문의</a></li>
 	                    </ul>
 	                </div>
 	                <div id="centerSearch">
@@ -32,8 +32,8 @@
             	<div id="center">
 	                <div id = "centerMenu">
 	                    <ul>
-	                        <li><a href="/notice/list.do">공지사항</a></li>
-	                        <li><a href="/fnq/list.do">FAQ</a></li>
+	                        <li><a href="/notice/list.kr">공지사항</a></li>
+	                        <li><a href="/fnq/list.kr">FAQ</a></li>
 	                    </ul>
 	                </div>
 	                <div id="centerSearch">

@@ -16,9 +16,9 @@
             <div id="center">
 	                <div id = "centerMenu">
 	                    <ul>
-	                        <li><a href="/notice/list.do">공지사항</a></li>
-	                        <li><a href="/fnq/list.do">FAQ</a></li>
-	                        <li><a href="/ask/list.do">1:1문의</a></li>
+	                        <li><a href="/notice/list.kr">공지사항</a></li>
+	                        <li><a href="/fnq/list.kr">FAQ</a></li>
+	                        <li><a href="/ask/list.kr">1:1문의</a></li>
 	                    </ul>
 	                </div>
                 <div id="centerSearch">
@@ -47,7 +47,7 @@
 		                    <tr>
 		                        <td>${ask.askNo }</td>
 		                        <td>${ask.askCategory }</td>
-		                        <td><a href="/ask/detail.do?askNo=${ask.askNo }">${ask.askSubject }</a></td>
+		                        <td><a href="/ask/detail.kr?askNo=${ask.askNo }">${ask.askSubject }</a></td>
 		                        <td>${ask.askDate }</td>
 		                    </tr>
 	                	</c:forEach>
@@ -55,11 +55,30 @@
                 </table>
             </div>
             <div>    
-                <button id="askBtn"><a href="/ask/insert.do">문의등록</a></button>
+                <button id="askBtn"><a href="/ask/insert.kr">문의등록</a></button>
             </div>
             <div id="pages">
                 <ul>
-                    <li>${pageNavi }</li>
+                    <li>
+                    	<c:if test="${pInfo.startNavi != 1}">
+                    		<c:url var="pageUrl" value="/ask/list.kr">
+                    			<c:param name="page" value="${pInfo.startNavi -1}"></c:param>
+                    		</c:url>
+                    		<a href="${pageUrl}">이전</a>
+                    	</c:if>
+                    	<c:forEach begin="${pInfo.startNavi }" end="${pInfo.endNavi }" var="p">
+                    		<c:url var="pageUrl" value="/ask/list.kr">
+                    			<c:param name="page" value="${p}"></c:param>
+                    		</c:url>
+                    		<a href="${pageUrl}">${p}</a>
+                    	</c:forEach>
+                    	<c:if test="${pInfo.endNavi != pInfo.naviTotalCount}">
+                    		<c:url var="pageUrl" value="/ask/list.kr">
+                    			<c:param name="page" value="${pInfo.endNavi +1}"></c:param>
+                    		</c:url>
+                    		<a href="${pageUrl}">다음</a>
+                    	</c:if>
+                   </li>
                 </ul>
             </div>
         </main>

@@ -31,7 +31,7 @@
             })
         </script>
         <div id="find">
-            <form action="/member/findId.do" method="post">
+            <form action="/member/findId.kr" method="post">
                 <div id="findId">
                     <h1>아이디 찾기</h1>
                 </div>

@@ -5,25 +5,23 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import kr.co.candytoon.ask.domain.Ask;
+import kr.co.candytoon.ask.domain.PageInfo;
 
 public interface AskStore {
 
-	/**
-	 * 문의사항 리스트 출력
-	 * @param session
-	 * @param currentPage
-	 * @return List<Ask>
-	 */
-	List<Ask> selectAskList(SqlSession session, int currentPage);
-	
-	/**
-	 * 네비게이터 생성
-	 * @param session
-	 * @param currentPage
-	 * @return String pageNavi
-	 */
-	public String generateNavi(SqlSession session, int currentPage);
 
+	/**
+	 * 문의사항 리스트
+	 */
+	List<Ask> selectAskList(SqlSession session, PageInfo pInfo);
+
+	/**
+	 * 문의사항 게시물 수 조회
+	 * @param session
+	 * @return
+	 */
+	int selectListCount(SqlSession session);
+	
 	/**
 	 * 문의사항 등록
 	 * @param session
@@ -55,5 +53,7 @@ public interface AskStore {
 	 * @return int result
 	 */
 	int deleteAsk(SqlSession session, Ask askNo);
+
+
 
 }

@@ -34,9 +34,9 @@
                 </div>
                 <div  id="customerCenter">
                     <ul>
-                        <li><a href="/member/logout.do">로그아웃</a></li>
-                        <li><a href="/member/myPage.do">마이페이지</a></li>
-                        <li><a href="/customerCenter/notice.do">고객센터</a></li>
+                        <li><a href="/member/logout.kr">로그아웃</a></li>
+                        <li><a href="/member/myPage.kr">마이페이지</a></li>
+                        <li><a href="/notice/list.kr">고객센터</a></li>
                     </ul>
                 </div>
             </nav>

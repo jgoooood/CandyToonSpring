@@ -1,5 +1,7 @@
 package kr.co.candytoon.ask.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.candytoon.ask.domain.Ask;
-import kr.co.candytoon.ask.domain.PageData;
+import kr.co.candytoon.ask.domain.PageInfo;
 import kr.co.candytoon.ask.service.AskService;
 
 @Controller
@@ -17,23 +19,23 @@ public class AskController {
 	private AskService service;
 	
 	// 문의사항 등록페이지 이동
-	@RequestMapping(value="/ask/insert.do", method=RequestMethod.GET)
+	@RequestMapping(value="/ask/insert.kr", method=RequestMethod.GET)
 	public String showAskForm() {
 		return "ask/askInsert";
 	}
 	
 	// 문의사항 insert
-	@RequestMapping(value="/ask/insert.do", method=RequestMethod.POST)
+	@RequestMapping(value="/ask/insert.kr", method=RequestMethod.POST)
 	public String insertAsk(Ask ask, Model model) {
 		try {
 			int result = service.insertAsk(ask);
 			if(result > 0) {
 				model.addAttribute("msg", "1:1문의가 등록되었습니다.");
-				model.addAttribute("url", "/ask/askDetail.do?askNo="+ask.getAskNo());
+				model.addAttribute("url", "/ask/list.kr");
 				return "common/serviceSuccess";
 			} else {
 				model.addAttribute("alertMsg", "1:1문의가 등록되지 않았습니다.");
-				model.addAttribute("url", "/ask/insert.do");
+				model.addAttribute("url", "/ask/insert.kr");
 				return "common/serviceFailed";
 			}	
 		} catch (Exception e) {
@@ -44,19 +46,27 @@ public class AskController {
 	}
 	
 	// 문의사항 리스트출력
-	@RequestMapping(value="/ask/list.do", method=RequestMethod.GET)
+	@RequestMapping(value="/ask/list.kr", method=RequestMethod.GET)
 	public String showAskList(
-			@RequestParam(value = "currentPage", required = false) String page
+			/*
+			 * @RequestParam(value="page", required=false, defaultValue="1") Integer currentpage
+			 * 넘어오는 page값이 0이 아니면 page에 넣고, 아니면 1을 넣음
+			 * int currentPage = page != 0 ? page : 1; 대신 사용함
+			 * page값이 없으면 defaultValue값이 1로 세팅되고 Integer는 null체크를 위해서 사용
+			 */
+			@RequestParam(value = "page", required = false, defaultValue="1") Integer currentPage
 			, Model model) {
 		try {
-			int currentPage = 1;
-			if(page != null) {
-				currentPage = Integer.parseInt(page);				
-			} 
-			PageData pData = service.selectAskList(currentPage);	
-			if(pData != null) {
-				model.addAttribute("aList", pData.getaList());
-				model.addAttribute("pageNavi", pData.getPageNavi());
+			//전체 행 구하는 메소드 실행 getListCount();
+			int totalCount = service.getListCount();
+			//getPageInfo 메소드 실행 : currentPage, totalCount 값 전달 후 페이징객체로 리턴받음
+			PageInfo pInfo = getPageInfo(currentPage, totalCount);
+			//service에 리턴받은 페이징객체를 전달->리스트 불러오기
+			List<Ask> aList = service.selectAskList(pInfo);
+			if(aList.size() > 0) {
+				// 객체를 JSP에 심어서 출력하도록 함
+				model.addAttribute("pInfo", pInfo);
+				model.addAttribute("aList", aList);
 				return "ask/askList";
 			} else {
 				model.addAttribute("alertMsg", "문의사항 리스트를 불러올 수 없습니다.");
@@ -70,8 +80,32 @@ public class AskController {
 		} 
 	}
 	
+	//페이지 네비게이터 생성메소드 : 기존 DAO에서 컨트롤러로 이동함
+	public PageInfo getPageInfo(int currentPage, int totalCount) {
+		//네비게이터 정보를 담을 PageInfo 객체 생성(기존 PageData Vo클래스)
+		PageInfo pInfo = null;
+		//네비게이터 생성에 필요한 변수 선언
+		//고정값 설정
+		int recordCountPerPage = 5; //페이지당 보여줄 게시물 수
+		int naviCountPerPage = 5; //페이지당 보여줄 네비게이터 수
+		//계산식
+		int naviTotalCount;
+		int startNavi;
+		int endNavi;
+		naviTotalCount = (int)((double)totalCount / recordCountPerPage + 0.9);
+		startNavi = (((int)((double)currentPage / naviCountPerPage + 0.9))-1) * naviCountPerPage + 1;
+		endNavi = startNavi + naviCountPerPage - 1;
+		if(endNavi > naviTotalCount) {
+			endNavi = naviTotalCount;
+		}
+		//PageInfo에 변수값 전달 후 리턴
+		pInfo = new PageInfo(currentPage, totalCount, recordCountPerPage, naviCountPerPage, naviTotalCount, startNavi, endNavi);
+		return pInfo;
+	}
+	
+	
 	// 문의사항 세부내역
-	@RequestMapping(value="/ask/detail.do", method=RequestMethod.GET)
+	@RequestMapping(value="/ask/detail.kr", method=RequestMethod.GET)
 	public String showAskDetail(Ask askNo, Model model) {
 		try {
 			Ask askOne = service.selecAskByNo(askNo);
@@ -80,7 +114,7 @@ public class AskController {
 				return "ask/askDetail";
 			} else {
 				model.addAttribute("alertMsg", "문의내역을 불러올 수 없습니다.");
-				model.addAttribute("url", "/ask/list.do");
+				model.addAttribute("url", "/ask/list.kr");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {
@@ -91,7 +125,7 @@ public class AskController {
 	}
 	
 	// 문의사항 수정페이지 이동
-	@RequestMapping(value="/ask/modify.do", method=RequestMethod.GET)
+	@RequestMapping(value="/ask/modify.kr", method=RequestMethod.GET)
 	public String showModifyForm(Ask askNo, Model model) {
 		try {
 			Ask askOne = service.selecAskByNo(askNo);
@@ -100,7 +134,7 @@ public class AskController {
 				return "ask/askModify";
 			} else {
 				model.addAttribute("alertMsg", "문의내역을 불러올 수 없습니다.");
-				model.addAttribute("url", "/ask/list.do");
+				model.addAttribute("url", "/ask/list.kr");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {
@@ -111,17 +145,17 @@ public class AskController {
 	}
 	
 	// 문의사항 수정
-	@RequestMapping(value="/ask/modify.do", method=RequestMethod.POST)
+	@RequestMapping(value="/ask/modify.kr", method=RequestMethod.POST)
 	public String updateAsk(Ask ask, Model model) {
 		try {
 			int result = service.updateAsk(ask);
 			if(result > 0) {
 				model.addAttribute("msg", "1:1문의가 수정되었습니다.");
-				model.addAttribute("url", "/ask/detail.do?askNo="+ask.getAskNo());
+				model.addAttribute("url", "/ask/detail.kr?askNo="+ask.getAskNo());
 				return "common/serviceSuccess";
 			} else {
 				model.addAttribute("alertMsg", "문의내역을 불러올 수 없습니다.");
-				model.addAttribute("url", "/ask/modify.do");
+				model.addAttribute("url", "/ask/modify.kr");
 				return "common/serviceFailed";
 			}	
 		} catch (Exception e) {
@@ -132,17 +166,17 @@ public class AskController {
 	}
 	
 	// 문의사항 삭제
-	@RequestMapping(value="/ask/delete.do", method=RequestMethod.GET)
+	@RequestMapping(value="/ask/delete.kr", method=RequestMethod.GET)
 	public String deleteAsk(Ask askNo, Model model) {
 		try {
 			int result = service.deleteAsk(askNo);
 			if(result > 0) {
 				model.addAttribute("msg", "1:1문의가 삭제되었습니다.");
-				model.addAttribute("url", "/ask/list.do");
+				model.addAttribute("url", "/ask/list.kr");
 				return "common/serviceSuccess";
 			} else {
 				model.addAttribute("alertMsg", "문의내역을 삭제하지 못했습니다.");
-				model.addAttribute("url", "/ask/modify.do?askNo="+askNo);
+				model.addAttribute("url", "/ask/modify.kr?askNo="+askNo);
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {

@@ -65,7 +65,7 @@
             <div id="confirmPw">
                 <h1>비밀번호 재설정</h1>
             </div>
-            <form action="/member/confirmPw.do" method="post">
+            <form action="/member/confirmPw.kr" method="post">
                 <div id="inputInfo">
                     <div id="userId">
                         <input type="text" id="user-id" name="memberId" placeholder="아이디"><img src="../resources/images/icons/login.png" alt="로그인">

@@ -27,7 +27,7 @@
 		
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.kr</url-pattern>
 	</servlet-mapping>
 
 	<!-- 정수기 만드는 코드 -->

@@ -22,8 +22,8 @@
                 <input type="text"  value="${memberId}">
             </div>
             <div id="findBtn">
-                <button><a href="/member/login.do">로그인</a></button>
-                <button><a href="/member/confirmPw.do">비밀번호 변경</a></button>
+                <button><a href="/member/login.kr">로그인</a></button>
+                <button><a href="/member/confirmPw.kr">비밀번호 변경</a></button>
             </div>
         </div>
     </body>
