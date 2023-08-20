@@ -15,7 +15,7 @@
         <main>
 	        <c:if test="${sessionScope.memberId ne null }">
 	            <h1>${memberId }님의 문의내역</h1>
-	            <div id="userAsk">
+	            <div id="askForm">
 	            	<input type="hidden" name="askWriter" value="${sessionScope.memberId}">
 	                <table>
 	                    <tr>

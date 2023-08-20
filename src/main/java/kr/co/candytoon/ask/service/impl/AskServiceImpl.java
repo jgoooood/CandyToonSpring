@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.candytoon.ask.domain.Ask;
-import kr.co.candytoon.ask.domain.PageInfo;
+import kr.co.candytoon.ask.domain.AskPageInfo;
 import kr.co.candytoon.ask.service.AskService;
 import kr.co.candytoon.ask.store.AskStore;
 
@@ -21,7 +21,7 @@ public class AskServiceImpl implements AskService{
 	
 
 	@Override
-	public List<Ask> selectAskList(PageInfo pInfo) {
+	public List<Ask> selectAskList(AskPageInfo pInfo) {
 		List<Ask> aList = aStore.selectAskList(session, pInfo);
 		return aList;
 	}

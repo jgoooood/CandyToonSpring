@@ -1,6 +1,6 @@
 package kr.co.candytoon.ask.domain;
 
-public class PageInfo {
+public class AskPageInfo {
 	//페이징처리에 필요한 변수 7개 선언
 	private int currentPage;
 	private int totalCount;
@@ -10,11 +10,11 @@ public class PageInfo {
 	private int startNavi;
 	private int endNavi;
 	
-	public PageInfo() {
+	public AskPageInfo() {
 		super();
 	}
 
-	public PageInfo(int currentPage, int totalCount, int recordCountPerPage, int naviCountPerPage, int naviTotalCount,
+	public AskPageInfo(int currentPage, int totalCount, int recordCountPerPage, int naviCountPerPage, int naviTotalCount,
 			int startNavi, int endNavi) {
 		super();
 		this.currentPage = currentPage;

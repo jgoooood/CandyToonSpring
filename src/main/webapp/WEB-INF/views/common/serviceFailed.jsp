@@ -12,7 +12,9 @@
 			const alertMsg = '${alertMsg}';
 			const url = '${url}';
 			alert(alertMsg);
-			location.href = url;
+			if (url != null) {
+				location.href = url;				
+			}
 		</script>
 	</body>
 </html>

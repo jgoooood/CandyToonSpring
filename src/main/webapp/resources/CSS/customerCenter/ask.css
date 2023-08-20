@@ -5,20 +5,20 @@ a:link, a:visited {
 }
 
  /* 고객센터 */
- #customerCenter {
-     width: 500px;
-     height: 50px;
-     float: right;
- }
- #customerCenter ul li {
-     float: right;
-     margin-right: 0;
- }
- #customerCenter ul li a {
-     text-align: right;
-     float: right;
-     margin-left: 20px;
- }
+/*  #customerCenter { */
+/*      width: 500px; */
+/*      height: 50px; */
+/*      float: right; */
+/*  } */
+/*  #customerCenter ul li { */
+/*      float: right; */
+/*      margin-right: 0; */
+/*  } */
+/*  #customerCenter ul li a { */
+/*      text-align: right; */
+/*      float: right; */
+/*      margin-left: 20px; */
+/*  } */
 
 main {
     width: 900px;
@@ -114,10 +114,10 @@ main {
     font-size: medium;
 }
 
-.askBtn:hover {
-        background-color: rgb(252, 117, 7);
-        color: white;
-    }
+#askBtn:hover {
+	background-color: rgb(252, 117, 7);
+	color: white;
+}
 
 #pages {
     width: 900px;

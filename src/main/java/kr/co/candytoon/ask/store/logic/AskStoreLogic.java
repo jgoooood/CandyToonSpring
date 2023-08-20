@@ -7,7 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import kr.co.candytoon.ask.domain.Ask;
-import kr.co.candytoon.ask.domain.PageInfo;
+import kr.co.candytoon.ask.domain.AskPageInfo;
 import kr.co.candytoon.ask.store.AskStore;
 
 @Repository
@@ -20,7 +20,7 @@ public class AskStoreLogic implements AskStore {
 	}
 	
 	@Override
-	public List<Ask> selectAskList(SqlSession session, PageInfo pInfo) {
+	public List<Ask> selectAskList(SqlSession session, AskPageInfo pInfo) {
 		// pInfo에 저장된 페이징에 관련된 정보를 꺼내서 넣어줌
 		int limit = pInfo.getRecordCountPerPage(); //페이지당 보여줄 게시물 개수 : 끝값
 		int offset = (pInfo.getCurrentPage() - 1) * limit; //시작값

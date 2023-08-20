@@ -16,7 +16,7 @@
             <form action="/ask/modify.kr" method="post">
 		        <c:if test="${sessionScope.memberId ne null }">
 		            <h1>문의내역 수정</h1>
-		            <div id="userAsk">
+		            <div id="askForm">
 		            	<input type="hidden" name="askWriter" value="${sessionScope.memberId}">
 		            	<input type="hidden" name="askNo" value="${ask.askNo}">
 		                <table>

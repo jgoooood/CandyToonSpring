@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.candytoon.ask.domain.Ask;
-import kr.co.candytoon.ask.domain.PageInfo;
+import kr.co.candytoon.ask.domain.AskPageInfo;
 import kr.co.candytoon.ask.service.AskService;
 
 @Controller
@@ -60,7 +60,7 @@ public class AskController {
 			//전체 행 구하는 메소드 실행 getListCount();
 			int totalCount = service.getListCount();
 			//getPageInfo 메소드 실행 : currentPage, totalCount 값 전달 후 페이징객체로 리턴받음
-			PageInfo pInfo = getPageInfo(currentPage, totalCount);
+			AskPageInfo pInfo = getPageInfo(currentPage, totalCount);
 			//service에 리턴받은 페이징객체를 전달->리스트 불러오기
 			List<Ask> aList = service.selectAskList(pInfo);
 			if(aList.size() > 0) {
@@ -81,9 +81,9 @@ public class AskController {
 	}
 	
 	//페이지 네비게이터 생성메소드 : 기존 DAO에서 컨트롤러로 이동함
-	public PageInfo getPageInfo(int currentPage, int totalCount) {
+	public AskPageInfo getPageInfo(int currentPage, int totalCount) {
 		//네비게이터 정보를 담을 PageInfo 객체 생성(기존 PageData Vo클래스)
-		PageInfo pInfo = null;
+		AskPageInfo pInfo = null;
 		//네비게이터 생성에 필요한 변수 선언
 		//고정값 설정
 		int recordCountPerPage = 5; //페이지당 보여줄 게시물 수
@@ -99,7 +99,7 @@ public class AskController {
 			endNavi = naviTotalCount;
 		}
 		//PageInfo에 변수값 전달 후 리턴
-		pInfo = new PageInfo(currentPage, totalCount, recordCountPerPage, naviCountPerPage, naviTotalCount, startNavi, endNavi);
+		pInfo = new AskPageInfo(currentPage, totalCount, recordCountPerPage, naviCountPerPage, naviTotalCount, startNavi, endNavi);
 		return pInfo;
 	}
 	
