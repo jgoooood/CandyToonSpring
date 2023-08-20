@@ -10,6 +10,7 @@ main {
     margin: 0 auto;
     margin-top: 50px;
 }
+
 #center {
     width: 900px;
     height: 100px;
@@ -59,25 +60,47 @@ main {
             top: 25px;
             right : 225px;
         }
+        
 #notice {
     width: 900px;
-    height: 350px;
+    height: 300px;
 }
     table {
         width: 900px;
-        height: 250px;
+        height: 200px;
         border-collapse: collapse;
         text-align: center;
     }
 
-    tr th, td {
+    th, td {
         border-top: 1px solid gray;
         border-bottom: 1px solid gray;
     }
+    
+    #tableHead {
+		width: 100%;
+		height: 35px;
+	}
+	
     th {
         font-size: 1.2em;
     }
+    
+#noticeBtn {
+    float: right;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ccc;
+    font-weight: 600;
+    font-size: medium;
+}
 
+#noticeBtn:hover  {
+	background-color: rgb(252, 117, 7);
+	color: white;
+}
+    
 #pages {
     width: 900px;
     height: 100px;
@@ -94,19 +117,42 @@ main {
         align-items: center;
         height: 50px;
         }
-
-    #pages li {
+        
+   	#pages ul li {
+       display: flex;
+       flex-direction: row;
+	}
+	
+    #pages li a{
         margin: 10px;
         padding: 5px 10px 5px 10px;
-        display: flex;
         color: gray;
-        font-size: 1.3em;
         font-weight: 500;
         background-color: #ecebeb;
         border-radius: 5px;
     }
 
-    #pages li:first-child {
+     #pages li a:focus {
         background-color: rgb(252, 117, 7);
         color: white;
     }
+    #pages li a:hover {
+        background-color: rgb(252, 117, 7);
+        color: white;
+    }
+
+/*     #pages li { */
+/*         margin: 10px; */
+/*         padding: 5px 10px 5px 10px; */
+/*         display: flex; */
+/*         color: gray; */
+/*         font-size: 1.3em; */
+/*         font-weight: 500; */
+/*         background-color: #ecebeb; */
+/*         border-radius: 5px; */
+/*     } */
+
+/*     #pages li:first-child { */
+/*         background-color: rgb(252, 117, 7); */
+/*         color: white; */
+/*     } */

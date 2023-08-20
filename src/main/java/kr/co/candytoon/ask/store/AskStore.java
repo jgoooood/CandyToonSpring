@@ -11,19 +11,19 @@ public interface AskStore {
 
 
 	/**
-	 * 문의사항 리스트 Store
+	 * 문의사항 리스트
 	 */
 	List<Ask> selectAskList(SqlSession session, AskPageInfo pInfo);
 
 	/**
-	 * 문의사항 게시물 수 조회 Store
+	 * 문의사항 게시물 수 조회
 	 * @param session
 	 * @return
 	 */
 	int selectListCount(SqlSession session);
 	
 	/**
-	 * 문의사항 등록 Store
+	 * 문의사항 등록
 	 * @param session
 	 * @param ask
 	 * @return int result
@@ -31,7 +31,7 @@ public interface AskStore {
 	int insertAsk(SqlSession session, Ask ask);
 
 	/**
-	 * 문의사항 조회 Store
+	 * 문의사항 상세
 	 * @param session
 	 * @param askNo
 	 * @return Ask askOne
@@ -39,7 +39,7 @@ public interface AskStore {
 	Ask selecAskByNo(SqlSession session, Ask askNo);
 
 	/**
-	 * 문의사항 수정 Store
+	 * 문의사항 수정
 	 * @param session
 	 * @param ask
 	 * @return int result
@@ -47,7 +47,7 @@ public interface AskStore {
 	int updateAsk(SqlSession session, Ask ask);
 
 	/**
-	 * 문의사항 삭제 Store
+	 * 
 	 * @param session
 	 * @param askNo
 	 * @return int result

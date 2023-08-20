@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
     <!-- head -->
@@ -44,39 +45,54 @@
             </c:if>
             <div id = "notice">
                 <table>
-                    <tr>
-                        <th>분류</th>
-                        <th>제목</th>
-                        <th>등록일</th>
-                    </tr>
-                    <tr>
-                        <td>안내</td>
-                        <td><a href="#">캔디 충전 오류 해결 안내</a></td>
-                        <td>2023.05.01</td>
-                    </tr>
-                    <tr>
-                        <td>업데이트</td>
-                        <td><a href="#">서비스 점검 안내(02/18)</a></td>
-                        <td>2023.02.05</td>
-                    </tr>
-                    <tr>
-                        <td>공지</td>
-                        <td><a href="#">건전한 댓글 문화를 위한 안내 사항</a></td>
-                        <td>2023.01.01</td>
-                    </tr>
-                    <tr>
-                        <td>공지</td>
-                        <td><a href="#">개인정보 처리방침' 변경에 대한 안내</a></td>
-                        <td>2022.12.01</td>
-                    </tr>
+                	<colgroup>
+                		<col width="20%">
+                		<col width="55%">
+                		<col width="25%">
+                	</colgroup>
+                	<thead id=tableHead>
+	                    <tr>
+	                        <th>번호</th>
+	                        <th>제목</th>
+	                        <th>등록일</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                	<c:forEach items="${nList}" var="notice">
+		                    <tr>
+		                        <td>${notice.noticeNo }</td>
+		                        <td><a href="/notice/detail.kr?noticeNo=${notice.noticeNo }">${notice.noticeSubject }</a></td>
+		                        <td><fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noticeDate }"/></td>
+		                    </tr>	                	
+	                	</c:forEach>
+	                </tbody>
                 </table>
+            </div>
+            <div>    
+                <a id="noticeBtn" href="/notice/insert.kr">공지등록</a>
             </div>
             <div id="pages">
                 <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
+                	<li>
+                		<c:if test="${pInfo.startNavi != 1 }">
+                			<c:url var="pageUrl" value="/notice/list.kr" >
+                				<c:param name="page" value="${pInfo.startNavi -1 }"></c:param>
+                			</c:url>
+                			<a href="${pageUrl }">이전</a>
+                    	</c:if>
+                    	<c:forEach begin="${pInfo.startNavi}" end="${pInfo.endNavi }" var="p">
+                    		<c:url var="pageUrl" value="/notice/list.kr">
+                    			<c:param name="page" value="${p }"></c:param>
+                    		</c:url>
+                    		<a href="${pageUrl}">${p }</a>
+                    	</c:forEach>
+                    	<c:if test="${pInfo.endNavi != pInfo.naviTotalCount }">
+                			<c:url var="pageUrl" value="/notice/list.kr" >
+                				<c:param name="page" value="${pInfo.endNavi +1 }"></c:param>
+                			</c:url>
+                			<a href="${pageUrl }">다음</a>
+                    	</c:if>
+                    </li>
                 </ul>
             </div>
             
