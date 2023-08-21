@@ -5,7 +5,7 @@
 <html lang="ko">
      <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/FAQ.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/fnq.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -44,44 +44,57 @@
             </c:if>
 	            <div id = "FAQ">
 	                <table>
-	                    <tr>
-	                        <th>분류</th>
-	                        <th>제목</th>
-	                        <th>등록일</th>
-	                    </tr>
-	                    <tr>
-	                        <td>회원계정</td>
-	                        <td><a href="#">아이디, 비밀번호 ID/PW 찾기</a></td>
-	                        <td>2023.05.01</td>
-	                    </tr>
-	                    <tr>
-	                        <td>컨텐츠이용</td>
-	                        <td><a href="#">작품 영구삭제 방법</a></td>
-	                        <td>2023.02.05</td>
-	                    </tr>
-	                    <tr>
-	                        <td>이벤트</td>
-	                        <td><a href="#">출석체크 이벤트 유의사항</a></td>
-	                        <td>2023.01.01</td>
-	                    </tr>
-	                    <tr>
-	                        <td>환불</td>
-	                        <td><a href="#">캔디(캐시) 충전 환불</a></td>
-	                        <td>2022.12.01</td>
-	                    </tr>
-	                    <tr>
-	                        <td>회원계정</td>
-	                        <td><a href="#">회원탈퇴 방법</a></td>
-	                        <td>2021.01.01</td>
-	                    </tr>
+	                	<colgroup>
+	                		<col width="15%">
+	                		<col width="15%">
+	                		<col width="45%">
+	                		<col width="25%">
+	                	</colgroup>
+	                	<thead id="tableHead"> 
+		                    <tr>
+		                        <th>번호</th>
+		                        <th>유형</th>
+		                        <th>제목</th>
+		                        <th>등록일</th>
+		                    </tr>
+	                	</thead>
+	                	<tbody>
+	                		<c:forEach var="fnq" items="${fList }">
+			                    <tr>
+			                        <td>${fnq.fnqNo }</td>
+			                        <td>${fnq.fnqCategory }</td>
+			                        <td><a href="/fnq/detail.kr?fnqNo=${fnq.fnqNo }">${fnq.fnqSubject }</a></td>
+			                        <td>${fnq.fnqDate }</td>
+			                    </tr>
+	                		</c:forEach>
+	                	</tbody>
 	                </table>
+	            </div>
+	            <div>    
+	                <a id ="fnqBtn" href="/fnq/insert.kr">FnQ등록</a>
 	            </div>
 	            <div id ="pages">
 	                <ul>
-	                    <li>1</li>
-	                    <li>2</li>
-	                    <li>3</li>
-	                    <li>4</li>
+	                    <li>
+	                    <c:if test="${pInfo.startNavi ne 1}">
+	                    	<c:url value="/fnq/list.kr" var="pageUrl">
+	                    		<c:param name="page" value="${pInfo.startNavi -1}"></c:param>
+	                    	</c:url>
+	                    	<a href="pageUrl">이전</a>
+	                    </c:if>
+	                    <c:forEach begin="${pInfo.startNavi }" end="${pInfo.endNavi }" var="p">
+	                    	<c:url value="/fnq/list.kr" var="pageUrl">
+	                    		<c:param name="page" value="${p }"></c:param>
+	                    	</c:url>
+	                    	<a href="${pageUrl }">${p } </a>
+	                    </c:forEach>
+	                    <c:if test="${pInfo.endNavi ne pInfo.naviTotalCount }">
+	                    	<c:url value="/fnq/list.kr" var="pageUrl">
+	                    		<c:param name="page" value="${pInfo.endNavi +1 }"></c:param>
+	                    	</c:url>
+	                    	<a href="${pageUrl }">다음</a>
+	                    </c:if>
+	                    </li>
 	                </ul>
 	            </div>
         </main>
