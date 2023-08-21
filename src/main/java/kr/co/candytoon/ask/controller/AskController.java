@@ -45,6 +45,48 @@ public class AskController {
 		}
 	}
 	
+	// 문의사항 수정
+	@RequestMapping(value="/ask/modify.kr", method=RequestMethod.POST)
+	public String updateAsk(Ask ask, Model model) {
+		try {
+			int result = service.updateAsk(ask);
+			if(result > 0) {
+				model.addAttribute("msg", "1:1문의가 수정되었습니다.");
+				model.addAttribute("url", "/ask/detail.kr?askNo="+ask.getAskNo());
+				return "common/serviceSuccess";
+			} else {
+				model.addAttribute("alertMsg", "문의내역을 불러올 수 없습니다.");
+				model.addAttribute("url", "/ask/modify.kr");
+				return "common/serviceFailed";
+			}	
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스 실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
+	// 문의사항 삭제
+	@RequestMapping(value="/ask/delete.kr", method=RequestMethod.GET)
+	public String deleteAsk(Ask askNo, Model model) {
+		try {
+			int result = service.deleteAsk(askNo);
+			if(result > 0) {
+				model.addAttribute("msg", "1:1문의가 삭제되었습니다.");
+				model.addAttribute("url", "/ask/list.kr");
+				return "common/serviceSuccess";
+			} else {
+				model.addAttribute("alertMsg", "문의내역을 삭제하지 못했습니다.");
+				model.addAttribute("url", "/ask/modify.kr?askNo="+askNo);
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스 실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
 	// 문의사항 리스트출력
 	@RequestMapping(value="/ask/list.kr", method=RequestMethod.GET)
 	public String showAskList(
@@ -142,47 +184,5 @@ public class AskController {
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		} 
-	}
-	
-	// 문의사항 수정
-	@RequestMapping(value="/ask/modify.kr", method=RequestMethod.POST)
-	public String updateAsk(Ask ask, Model model) {
-		try {
-			int result = service.updateAsk(ask);
-			if(result > 0) {
-				model.addAttribute("msg", "1:1문의가 수정되었습니다.");
-				model.addAttribute("url", "/ask/detail.kr?askNo="+ask.getAskNo());
-				return "common/serviceSuccess";
-			} else {
-				model.addAttribute("alertMsg", "문의내역을 불러올 수 없습니다.");
-				model.addAttribute("url", "/ask/modify.kr");
-				return "common/serviceFailed";
-			}	
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스 실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-	
-	// 문의사항 삭제
-	@RequestMapping(value="/ask/delete.kr", method=RequestMethod.GET)
-	public String deleteAsk(Ask askNo, Model model) {
-		try {
-			int result = service.deleteAsk(askNo);
-			if(result > 0) {
-				model.addAttribute("msg", "1:1문의가 삭제되었습니다.");
-				model.addAttribute("url", "/ask/list.kr");
-				return "common/serviceSuccess";
-			} else {
-				model.addAttribute("alertMsg", "문의내역을 삭제하지 못했습니다.");
-				model.addAttribute("url", "/ask/modify.kr?askNo="+askNo);
-				return "common/serviceFailed";
-			}
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스 실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
 	}
 }

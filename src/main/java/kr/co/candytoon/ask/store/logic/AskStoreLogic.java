@@ -20,6 +20,18 @@ public class AskStoreLogic implements AskStore {
 	}
 	
 	@Override
+	public int updateAsk(SqlSession session, Ask ask) {
+		int result = session.update("AskMapper.updateAsk", ask);
+		return result;
+	}
+
+	@Override
+	public int deleteAsk(SqlSession session, Ask askNo) {
+		int result = session.delete("AskMapper.deleteAsk", askNo);
+		return result;
+	}
+
+	@Override
 	public List<Ask> selectAskList(SqlSession session, AskPageInfo pInfo) {
 		// pInfo에 저장된 페이징에 관련된 정보를 꺼내서 넣어줌
 		int limit = pInfo.getRecordCountPerPage(); //페이지당 보여줄 게시물 개수 : 끝값
@@ -44,18 +56,6 @@ public class AskStoreLogic implements AskStore {
 	public Ask selecAskByNo(SqlSession session, Ask askNo) {
 		Ask askOne = session.selectOne("AskMapper.selecAskByNo", askNo);
 		return askOne;
-	}
-
-	@Override
-	public int updateAsk(SqlSession session, Ask ask) {
-		int result = session.update("AskMapper.updateAsk", ask);
-		return result;
-	}
-
-	@Override
-	public int deleteAsk(SqlSession session, Ask askNo) {
-		int result = session.delete("AskMapper.deleteAsk", askNo);
-		return result;
 	}
 
 	

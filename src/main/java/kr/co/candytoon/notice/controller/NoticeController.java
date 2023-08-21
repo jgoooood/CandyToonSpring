@@ -19,6 +19,68 @@ public class NoticeController {
 	@Autowired
 	private NoticeService service;
 	
+	@RequestMapping(value="/notice/insert.kr", method=RequestMethod.POST)
+	public String insertNotice(Notice notice, Model model) {
+		int result = service.insertNotice(notice);
+		try {
+			if(result > 0) {
+				model.addAttribute("msg", "공지사항 등록이 완료되었습니다.");
+				model.addAttribute("url", "/notice/list.kr");
+				return "common/serviceSuccess";
+			} else {
+				model.addAttribute("alertMsg", "공지사항 등록이 완료되지 않았습니다.");
+				return "common/serviceFailed";
+			}	
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
+
+	@RequestMapping(value="/notice/modify.kr", method = RequestMethod.POST)
+	public String modifyNotice(Notice notice, Model model) {
+		try {
+			int result = service.modifyNotice(notice);
+			if(result > 0) {
+				model.addAttribute("notice", notice);
+				model.addAttribute("msg", "수정이 완료되었습니다.");
+				model.addAttribute("url", "/notice/detail.kr?noticeNo="+notice.getNoticeNo());
+				return "common/serviceSuccess";
+			} else {
+				model.addAttribute("alertMsg", "수정이 완료되지 않았습니다.");
+				return "common/serviceFailed";
+			}
+			
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
+
+	@RequestMapping(value="/notice/delete.kr", method=RequestMethod.GET)
+	public String deleteNotice(Notice noticeNo, Model model) {
+		try {
+			int result = service.deleteNotice(noticeNo);
+			if(result > 0) {
+				model.addAttribute("msg", "삭제가 완료되었습니다.");
+				model.addAttribute("url", "/notice/list.kr");
+				return "common/serviceSuccess";
+			} else {
+				model.addAttribute("alertMsg", "삭제가 완료되지 않았습니다.");
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+
+
 	/*페이징처리
 	* 1. page값 jsp에서 넘겨받기->값이 있으면 currentPage에 저장, 없을 경우 디폴트 1세팅 후 저장  
 	* 2. 전체 행 구하는 메소드 추가 : getListCount();
@@ -75,25 +137,6 @@ public class NoticeController {
 		return "notice/noticeInsert";
 	}
 	
-	@RequestMapping(value="/notice/insert.kr", method=RequestMethod.POST)
-	public String insertNotice(Notice notice, Model model) {
-		int result = service.insertNotice(notice);
-		try {
-			if(result > 0) {
-				model.addAttribute("msg", "공지사항 등록이 완료되었습니다.");
-				model.addAttribute("url", "/notice/list.kr");
-				return "common/serviceSuccess";
-			} else {
-				model.addAttribute("alertMsg", "공지사항 등록이 완료되지 않았습니다.");
-				return "common/serviceFailed";
-			}	
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-	
 	@RequestMapping(value="/notice/detail.kr", method = RequestMethod.GET)
 	public String showNoticeDetail(@RequestParam("noticeNo") int noticeNo, Model model) {
 		try {
@@ -121,46 +164,6 @@ public class NoticeController {
 				return "notice/noticeModify";
 			} else {
 				model.addAttribute("alertMsg", "공지사항을 불러올 수 없습니다.");
-				return "common/serviceFailed";
-			}
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-	
-	@RequestMapping(value="/notice/modify.kr", method = RequestMethod.POST)
-	public String modifyNotice(Notice notice, Model model) {
-		try {
-			int result = service.modifyNotice(notice);
-			if(result > 0) {
-				model.addAttribute("notice", notice);
-				model.addAttribute("msg", "수정이 완료되었습니다.");
-				model.addAttribute("url", "/notice/detail.kr?noticeNo="+notice.getNoticeNo());
-				return "common/serviceSuccess";
-			} else {
-				model.addAttribute("alertMsg", "수정이 완료되지 않았습니다.");
-				return "common/serviceFailed";
-			}
-			
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-	
-	@RequestMapping(value="/notice/delete.kr", method=RequestMethod.GET)
-	public String deleteNotice(Notice noticeNo, Model model) {
-		try {
-			int result = service.deleteNotice(noticeNo);
-			if(result > 0) {
-				model.addAttribute("msg", "삭제가 완료되었습니다.");
-				model.addAttribute("url", "/notice/list.kr");
-				return "common/serviceSuccess";
-			} else {
-				model.addAttribute("alertMsg", "삭제가 완료되지 않았습니다.");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {

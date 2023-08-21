@@ -10,35 +10,12 @@ import kr.co.candytoon.notice.domain.NoticePageInfo;
 public interface NoticeStore {
 
 	/**
-	 * 공지사항 리스트 출력 Store
-	 * @param session
-	 * @param pInfo 
-	 * @return
-	 */
-	List<Notice> selectNoticeList(SqlSession session, NoticePageInfo pInfo);
-
-	/**
-	 * 공지사항 전체 행 구하는 Store
-	 * @param session
-	 * @return
-	 */
-	int selectListCount(SqlSession session);
-
-	/**
 	 * 공지사항 등록 Store
 	 * @param session
 	 * @param notice
 	 * @return
 	 */
 	int insertNotice(SqlSession session, Notice notice);
-
-	/**
-	 * 공지사항 조회 Store
-	 * @param session
-	 * @param noticeNo
-	 * @return
-	 */
-	Notice selectNoticeByNo(SqlSession session, int noticeNo);
 
 	/**
 	 * 공지사항 수정 Store
@@ -55,5 +32,28 @@ public interface NoticeStore {
 	 * @return
 	 */
 	int deleteNotice(SqlSession session, Notice noticeNo);
+
+	/**
+	 * 공지사항 리스트 출력 Store
+	 * @param session
+	 * @param pInfo 
+	 * @return
+	 */
+	List<Notice> selectNoticeList(SqlSession session, NoticePageInfo pInfo);
+
+	/**
+	 * 공지사항 전체 행 구하는 Store
+	 * @param session
+	 * @return
+	 */
+	int selectListCount(SqlSession session);
+
+	/**
+	 * 공지사항 조회 Store
+	 * @param session
+	 * @param noticeNo
+	 * @return
+	 */
+	Notice selectNoticeByNo(SqlSession session, int noticeNo);
 
 }

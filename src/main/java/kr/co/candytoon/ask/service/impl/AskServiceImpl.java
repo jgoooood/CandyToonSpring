@@ -21,27 +21,9 @@ public class AskServiceImpl implements AskService{
 	
 
 	@Override
-	public List<Ask> selectAskList(AskPageInfo pInfo) {
-		List<Ask> aList = aStore.selectAskList(session, pInfo);
-		return aList;
-	}
-	
-	@Override
-	public int getListCount() {
-		int result = aStore.selectListCount(session);
-		return result;
-	}
-
-	@Override
 	public int insertAsk(Ask ask) {
 		int result = aStore.insertAsk(session, ask);
 		return result;
-	}
-
-	@Override
-	public Ask selecAskByNo(Ask askNo) {
-		Ask askOne = aStore.selecAskByNo(session, askNo);
-		return askOne;
 	}
 
 	@Override
@@ -54,6 +36,24 @@ public class AskServiceImpl implements AskService{
 	public int deleteAsk(Ask askNo) {
 		int result = aStore.deleteAsk(session, askNo);
 		return result;
+	}
+
+	@Override
+	public List<Ask> selectAskList(AskPageInfo pInfo) {
+		List<Ask> aList = aStore.selectAskList(session, pInfo);
+		return aList;
+	}
+	
+	@Override
+	public int getListCount() {
+		int result = aStore.selectListCount(session);
+		return result;
+	}
+
+	@Override
+	public Ask selecAskByNo(Ask askNo) {
+		Ask askOne = aStore.selecAskByNo(session, askNo);
+		return askOne;
 	}
 
 
