@@ -4,23 +4,30 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="FnqMapper">
 	<resultMap type="Fnq" id="fnqResultMap">
-		<id 	column="FNQ_NO" 	  property="fnqNo"/>
-		<result column="FNQ_CATEGORY" property="fnqCategory"/>
-		<result column="FNQ_SUBJECT"  property="fnqSubject"/>
-		<result column="FNQ_CONTENT"  property="fnqContent"/>
-		<result column="FNQ_WRITER"   property="fnqWriter"/>
-		<result column="FNQ_DATE" 	  property="fnqDate"/>
+		<id 	column="FNQ_NO" 	  	property="fnqNo"/>
+		<result column="FNQ_CATEGORY" 	property="fnqCategory"/>
+		<result column="FNQ_SUBJECT"  	property="fnqSubject"/>
+		<result column="FNQ_CONTENT"  	property="fnqContent"/>
+		<result column="FNQ_WRITER"   	property="fnqWriter"/>
+		<result column="FNQ_DATE" 	  	property="fnqDate"/>
+		<result column="FNQ_FILENAME"   property="fnqFileName"/>
+		<result column="FNQ_FILEPATH"   property="fnqFilePath"/>
+		<result column="FNQ_FILELENGTH" property="fnqFileLength"/>
 	</resultMap>
 	
 	<insert id="insertFnq">
-		INSERT INTO FNQ_TBL VALUES(SEQ_FNQNO.NEXTVAL, #{fnqCategory}, #{fnqSubject}, #{fnqContent}, 'admin', DEFAULT)
+		INSERT INTO FNQ_TBL VALUES(SEQ_FNQNO.NEXTVAL, #{fnqCategory}, #{fnqSubject}, #{fnqContent}, 'admin', DEFAULT, #{fnqFileName}, #{fnqFilePath}, #{fnqFileLength})
 	</insert>
 	
 	<update id="updateFnq">
-		UPDATE FNQ_TBL SET FNQ_CATEGORY = #{fnqCategory }, FNQ_SUBJECT = #{fnqSubject }, FNQ_CONTENT = #{fnqContent } WHERE FNQ_NO = #{fnqNo} 
-	</update><delete id="deleteFnq">
+		UPDATE FNQ_TBL SET FNQ_CATEGORY = #{fnqCategory }, FNQ_SUBJECT = #{fnqSubject }, FNQ_CONTENT = #{fnqContent }, FNQ_FILENAME = #{fnqFileName}, FNQ_FILEPATH = #{fnqFilePath}, FNQ_FILELENGTH = #{fnqFileLength} WHERE FNQ_NO = #{fnqNo} 
+	</update>
+	
+	<delete id="deleteFnq">
 		DELETE FROM FNQ_TBL WHERE FNQ_NO = #{fnqNo}
-	</delete><select id="selectFnqList" resultMap="fnqResultMap">
+	</delete>
+	
+	<select id="selectFnqList" resultMap="fnqResultMap">
 		SELECT * FROM FNQ_TBL ORDER BY FNQ_NO DESC
 	</select>
 	

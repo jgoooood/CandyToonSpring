@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
      <!-- head -->
@@ -45,16 +46,18 @@
 	            <div id = "FAQ">
 	                <table>
 	                	<colgroup>
+	                		<col width="10%">
 	                		<col width="15%">
+	                		<col width="40%">
 	                		<col width="15%">
-	                		<col width="45%">
-	                		<col width="25%">
+	                		<col width="20%">
 	                	</colgroup>
 	                	<thead id="tableHead"> 
 		                    <tr>
 		                        <th>번호</th>
 		                        <th>유형</th>
 		                        <th>제목</th>
+		                        <th>첨부</th>
 		                        <th>등록일</th>
 		                    </tr>
 	                	</thead>
@@ -64,7 +67,13 @@
 			                        <td>${fnq.fnqNo }</td>
 			                        <td>${fnq.fnqCategory }</td>
 			                        <td><a href="/fnq/detail.kr?fnqNo=${fnq.fnqNo }">${fnq.fnqSubject }</a></td>
-			                        <td>${fnq.fnqDate }</td>
+			                        <td>
+			                        	<c:if test="${fnq.fnqFileName ne null}">
+			                        		<img src="../resources/images/icons/file.png" id="file">
+			                        	</c:if>
+			                        </td>
+			                        <td><fmt:formatDate value="${fnq.fnqDate }" pattern="yyyy-MM-dd"/>
+			                        </td>
 			                    </tr>
 	                		</c:forEach>
 	                	</tbody>
@@ -80,7 +89,7 @@
 	                    	<c:url value="/fnq/list.kr" var="pageUrl">
 	                    		<c:param name="page" value="${pInfo.startNavi -1}"></c:param>
 	                    	</c:url>
-	                    	<a href="pageUrl">이전</a>
+	                    	<a href="${pageUrl}">이전</a>
 	                    </c:if>
 	                    <c:forEach begin="${pInfo.startNavi }" end="${pInfo.endNavi }" var="p">
 	                    	<c:url value="/fnq/list.kr" var="pageUrl">

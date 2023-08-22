@@ -24,8 +24,10 @@
 	                    </ul>
 	                </div>
 	                <div id="centerSearch">
-	                    <input type="search" placeholder="궁금한 점을 검색해 보세요.">
-	                    <img src="../resources/images/icons/centerSearch.png" alt="검색">
+	                	<form action="/notice/search.kh" method="get">
+		                    <input type="search" placeholder="궁금한 점을 검색해 보세요.">
+		                    <img src="../resources/images/icons/centerSearch.png" alt="검색">
+	                	</form>
 	                </div>
 	            </div>
 	        </c:if>
@@ -38,22 +40,32 @@
 	                    </ul>
 	                </div>
 	                <div id="centerSearch">
-	                    <input type="search" placeholder="궁금한 점을 검색해 보세요.">
-	                    <img src="../resources/images/icons/centerSearch.png" alt="검색">
+	                	<form action="/notice/search.kh" method="get">
+	                		<select name="searchCondition">
+	                			<option value="all">전체</option>
+								<option value="writer">작성자</option>
+								<option value="title">제목</option>
+								<option value="content">내용</option>
+	                		</select>
+		                    <input type="search" name="searchKeyword" placeholder="궁금한 점을 검색해 보세요.">
+		                    <img src="../resources/images/icons/centerSearch.png" alt="검색">
+	                    </form>
 	                </div>
 	            </div>
             </c:if>
             <div id = "notice">
                 <table>
                 	<colgroup>
+                		<col width="15%">
+                		<col width="50%">
+                		<col width="15%">
                 		<col width="20%">
-                		<col width="55%">
-                		<col width="25%">
                 	</colgroup>
                 	<thead id=tableHead>
 	                    <tr>
 	                        <th>번호</th>
 	                        <th>제목</th>
+	                        <th>첨부</th>
 	                        <th>등록일</th>
 	                    </tr>
 	                </thead>
@@ -62,6 +74,14 @@
 		                    <tr>
 		                        <td>${notice.noticeNo }</td>
 		                        <td><a href="/notice/detail.kr?noticeNo=${notice.noticeNo }">${notice.noticeSubject }</a></td>
+		                        <td>
+		                        	<c:if test="${notice.noticeFileName ne null}">
+		                        		<img src="../resources/images/icons/file.png" id="file">
+		                        	</c:if>
+		                        	<c:if test="${notice.noticeFileName eq null}">
+		                        		-
+		                        	</c:if>
+		                        </td>
 		                        <td><fmt:formatDate pattern="yyyy-MM-dd" value="${notice.noticeDate }"/></td>
 		                    </tr>	                	
 	                	</c:forEach>

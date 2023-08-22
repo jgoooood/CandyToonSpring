@@ -9,6 +9,9 @@ public class Fnq {
 	private String fnqContent; 
 	private String fnqWriter; 
 	private Timestamp fnqDate;
+	private String fnqFileName;
+	private String fnqFilePath;
+	private long fnqFileLength;
 	
 	public int getFnqNo() {
 		return fnqNo;
@@ -47,10 +50,30 @@ public class Fnq {
 		this.fnqDate = fnqDate;
 	}
 	
+	public String getFnqFileName() {
+		return fnqFileName;
+	}
+	public void setFnqFileName(String fnqFileName) {
+		this.fnqFileName = fnqFileName;
+	}
+	public String getFnqFilePath() {
+		return fnqFilePath;
+	}
+	public void setFnqFilePath(String fnqFilePath) {
+		this.fnqFilePath = fnqFilePath;
+	}
+	public long getFnqFileLength() {
+		return fnqFileLength;
+	}
+	public void setFnqFileLength(long fnqFileLength) {
+		this.fnqFileLength = fnqFileLength;
+	}
+	
 	@Override
 	public String toString() {
-		return "Fnq [fnqNo=" + fnqNo + ", fnqCategory=" + fnqCategory + ", fnqSubject=" + fnqSubject + ", fnqContent="
-				+ fnqContent + ", fnqWriter=" + fnqWriter + ", fnqDate=" + fnqDate + "]";
+		return "FnQ [FnQ번호=" + fnqNo + ", 카테고리=" + fnqCategory + ", 제목=" + fnqSubject + ", 내용="
+				+ fnqContent + ", 작성자=" + fnqWriter + ", 등록일=" + fnqDate + ", 파일명=" + fnqFileName
+				+ ", 파일경로=" + fnqFilePath + ", 파일크기=" + fnqFileLength + "]";
 	}
 	
 	

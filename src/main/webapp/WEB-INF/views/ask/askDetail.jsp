@@ -30,6 +30,17 @@
 	                        <th>내용</th>
 	                        <td><textarea name="askContent" required readonly>${ask.askContent }</textarea></td>
 	                    </tr>
+	                    <tr id="uploadFile">
+	                        <th>첨부파일</th>
+	                        <td>
+	                        	<c:if test="${ask.askFileName ne null}">
+			                    	<input type="text" name="uploadFile" value="${ask.askFileName}" readonly>
+			                    </c:if>
+			                    <c:if test="${ask.askFileName eq null}">
+			                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>
+			                    </c:if>
+	                        </td>
+		                </tr>
 	                </table>
 	            </div>
 	            <div>

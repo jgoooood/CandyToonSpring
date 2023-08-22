@@ -24,6 +24,17 @@
                         <th>내용</th>
                         <td><textarea name="noticeContent" required readonly>${notice.noticeContent }</textarea></td>
                     </tr>
+                    <tr id="uploadFile">
+                        <th>첨부파일</th>
+                        <td>
+                        	<c:if test="${notice.noticeFileName ne null}">
+		                    	<input type="text" name="uploadFile" value="${notice.noticeFileName}" readonly>
+		                    </c:if>
+		                    <c:if test="${notice.noticeFileName eq null}">
+		                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>
+		                    </c:if>
+                        </td>
+	                </tr>
                 </table>
             </div>
             <div>

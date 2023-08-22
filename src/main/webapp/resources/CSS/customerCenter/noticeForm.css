@@ -7,7 +7,7 @@ a:link, a:visited {
 /* 메인 */
 main {
     width: 900px;
-    height: 600px;
+    height: 700px;
     margin: 0 auto;
     text-align: center;
     margin-top: 50px;
@@ -20,7 +20,7 @@ h1{
 #noticeForm {
     padding-top: 50px;
     width: 900px;
-    height: 400px;
+    height: 500px;
 }
     table {
         width: 900px;
@@ -42,7 +42,7 @@ h1{
         #noticeType {
             height: 50px;
         }
-            #selectType, #noticeCategory, #noticeType input, #noticeSubject input, #noticeContent textarea {
+            #selectType, #noticeCategory, #noticeType input, #noticeSubject input, #noticeContent textarea, #uploadFile input {
                 width: 100%;
                 height: 100%;
                 outline: none;
@@ -60,6 +60,15 @@ h1{
         #noticeContent {
             height: 200px;
         }
+        
+        #uploadFile {
+			height: 50px;
+		}
+		
+		#uploadFile input {
+			float: left;
+			padding-left: 10px;
+		}
 
 
     #noticeBtn {

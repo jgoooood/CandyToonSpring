@@ -9,6 +9,11 @@ public class Ask {
 	private String askContent; 
 	private String askWriter; 
 	private Date askDate;
+	private String askFileName;
+	private String askFilePath;
+	private long askFileLength;
+	
+	
 	public int getAskNo() {
 		return askNo;
 	}
@@ -46,10 +51,31 @@ public class Ask {
 		this.askDate = askDate;
 	}
 	
+	public String getAskFileName() {
+		return askFileName;
+	}
+	public void setAskFileName(String askFileName) {
+		this.askFileName = askFileName;
+	}
+	public String getAskFilePath() {
+		return askFilePath;
+	}
+	public void setAskFilePath(String askFilePath) {
+		this.askFilePath = askFilePath;
+	}
+	public long getAskFileLength() {
+		return askFileLength;
+	}
+	public void setAskFileLength(long askFileLength) {
+		this.askFileLength = askFileLength;
+	}
+
+	
 	@Override
 	public String toString() {
-		return "1:1문의 [번호=" + askNo + ", 카테고리=" + askCategory + ", 제목=" + askSubject + ", 내용="
-				+ askContent + ", 작성자=" + askWriter + ", 작성일=" + askDate + "]";
+		return "1:1문의 [문의번호=" + askNo + ", 카테고리=" + askCategory + ", 제목=" + askSubject + ", 내용="
+				+ askContent + ", 작성자=" + askWriter + ", 작성일=" + askDate + ", 파일이름=" + askFileName
+				+ ", 파일경로=" + askFilePath + ", 파일크기=" + askFileLength + "]";
 	}
 	
 	

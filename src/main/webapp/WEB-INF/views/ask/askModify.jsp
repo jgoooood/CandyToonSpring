@@ -13,7 +13,7 @@
 		
         <!-- 메인 -->
         <main>
-            <form action="/ask/modify.kr" method="post">
+            <form action="/ask/modify.kr" method="post" enctype="multipart/form-data">
 		        <c:if test="${sessionScope.memberId ne null }">
 		            <h1>문의내역 수정</h1>
 		            <div id="askForm">
@@ -38,6 +38,18 @@
 		                    <tr id="askContent">
 		                        <th>내용</th>
 		                        <td><textarea name="askContent" placeholder="문의하실 내용을 입력해주세요." required>${ask.askContent }</textarea></td>
+		                    </tr>
+		                    <tr id="uploadFile">
+		                        <th>첨부파일</th>
+		                        <td>
+		                        	<c:if test="${empty ask.askFileName}">
+		                        		<input type="file" name="uploadFile">
+		                        	</c:if>
+		                        	<c:if test="${!empty ask.askFileName}">
+		                        		<input type="text" value="등록파일 : ${ask.askFileName}">
+		                        		<input type="file" name="uploadFile">
+		                        	</c:if>
+		                        </td>
 		                    </tr>
 		                </table>
 		            </div>

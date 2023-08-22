@@ -1,6 +1,9 @@
 package kr.co.candytoon.fnq.controller;
 
+import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.candytoon.fnq.domain.Fnq;
 import kr.co.candytoon.fnq.domain.FnqPageInfo;
@@ -20,12 +24,33 @@ public class FnqController {
 	private FnqService service;
 	
 	@RequestMapping(value="/fnq/insert.kr", method=RequestMethod.POST)
-	public String insertFnq(Fnq fnq, Model model) {
-		int result = service.insertFnq(fnq);
+	public String insertFnq(
+			Fnq fnq
+			, @RequestParam(value="uploadFile", required = false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, Model model) {
 		try {
+			if(!uploadFile.getOriginalFilename().equals("")) {
+				String fileName = uploadFile.getOriginalFilename();
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String saveFolder = root + "\\uploadFiles";
+				File folder = new File(saveFolder);
+				if(!folder.exists()) {
+					folder.mkdir();
+				}
+				String savePath = saveFolder + "\\" + fileName;
+				File file = new File(savePath);
+				uploadFile.transferTo(file);
+				long fileLength = uploadFile.getSize();
+				
+				fnq.setFnqFileName(fileName);
+				fnq.setFnqFilePath(savePath);
+				fnq.setFnqFileLength(fileLength);
+			}
+			int result = service.insertFnq(fnq);
 			if(result > 0) {
 				model.addAttribute("msg", "FnQ등록이 완료되었습니다.");
-				model.addAttribute("url", "fnq/fnqList.kr");
+				model.addAttribute("url", "fnq/list.kr");
 				return "common/serviceSuccess";
 			} else {
 				model.addAttribute("alertMsg", "FnQ등록이 완료되지 않았습니다.");
@@ -40,8 +65,43 @@ public class FnqController {
 	}
 
 	@RequestMapping(value="/fnq/modify.kr", method=RequestMethod.POST)
-	public String modifyFnq(Fnq fnq, Model model) {
+	public String modifyFnq(
+			Fnq fnq
+			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, Model model) {
 		try {
+			//기존 등록정보 가져오기
+			Fnq existedFnq = service.selectFnqByNo(fnq);
+			//수정된 업로드 파일 있을 경우 삭제 후 새로 등록
+			if(!uploadFile.getOriginalFilename().equals("")) {
+				String fileName = uploadFile.getOriginalFilename();
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String saveFolder = root + "\\uploadFiles";
+				File folder = new File(saveFolder);
+				if(!folder.exists()) {
+					folder.mkdir();
+				}
+				String savePath = saveFolder + "\\" + fileName;
+				File file = new File(savePath);
+				uploadFile.transferTo(file);
+				long fileLength = uploadFile.getSize();
+				fnq.setFnqFileName(fileName);
+				fnq.setFnqFilePath(savePath);
+				fnq.setFnqFileLength(fileLength);
+				//기존 등록정보 삭제
+				if(existedFnq.getFnqFileName() != null) {
+					File existedFnqFilePath = new File(existedFnq.getFnqFilePath());
+					if(existedFnqFilePath.exists()) {
+						existedFnqFilePath.delete();
+					}
+				}
+			} else {
+				//수정업로드파일 없으면 기존 파일 재등록
+				fnq.setFnqFileName(existedFnq.getFnqFileName());
+				fnq.setFnqFilePath(existedFnq.getFnqFilePath());
+				fnq.setFnqFileLength(existedFnq.getFnqFileLength());
+			}
 			int result = service.modifyFnq(fnq);
 			if(result > 0) {
 				model.addAttribute("fnq", fnq);

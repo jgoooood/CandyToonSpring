@@ -1,6 +1,9 @@
 package kr.co.candytoon.notice.controller;
 
+import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.candytoon.notice.domain.Notice;
 import kr.co.candytoon.notice.domain.NoticePageInfo;
@@ -19,10 +23,31 @@ public class NoticeController {
 	@Autowired
 	private NoticeService service;
 	
+	
 	@RequestMapping(value="/notice/insert.kr", method=RequestMethod.POST)
-	public String insertNotice(Notice notice, Model model) {
-		int result = service.insertNotice(notice);
+	public String insertNotice(
+			Notice notice
+			, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, Model model) {
 		try {
+			if(!uploadFile.getOriginalFilename().equals("")) {
+				String fileName = uploadFile.getOriginalFilename();
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String savefolder = root + "\\uploadFiles";
+				File folder = new File(savefolder);
+				if(!folder.exists()) {
+					folder.mkdir();
+				}
+				String savePath = folder + "\\" + fileName;
+				File file = new File(savePath);
+				uploadFile.transferTo(file);
+				long fileLength = uploadFile.getSize();
+				notice.setNoticeFileName(fileName);
+				notice.setNoticeFilePath(savePath);
+				notice.setNoticeFileLength(fileLength);
+			}
+			int result = service.insertNotice(notice);
 			if(result > 0) {
 				model.addAttribute("msg", "공지사항 등록이 완료되었습니다.");
 				model.addAttribute("url", "/notice/list.kr");
@@ -40,8 +65,39 @@ public class NoticeController {
 
 
 	@RequestMapping(value="/notice/modify.kr", method = RequestMethod.POST)
-	public String modifyNotice(Notice notice, Model model) {
+	public String modifyNotice(Notice notice
+			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, Model model) {
 		try {
+			Notice existedNotice = service.selectNoticeByNo(notice.getNoticeNo());
+			if(!uploadFile.getOriginalFilename().equals("")) {
+				String fileName = uploadFile.getOriginalFilename();
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String saveFolder = root + "\\uploadFiles";
+				File folder = new File(saveFolder);
+				if(!folder.exists()) {
+					folder.mkdir();
+				}
+				String savePath = folder + "\\" + fileName;
+				File file = new File(savePath);
+				uploadFile.transferTo(file);
+				long fileLength = uploadFile.getSize();
+				notice.setNoticeFileName(fileName);
+				notice.setNoticeFilePath(savePath);
+				notice.setNoticeFileLength(fileLength);
+				
+				if(existedNotice.getNoticeFileName() != null) {
+					File existedNoticeFilePath = new File(existedNotice.getNoticeFilePath());
+					if(existedNoticeFilePath.exists()) {
+						existedNoticeFilePath.delete();
+					}
+				}
+			} else {
+				notice.setNoticeFileName(existedNotice.getNoticeFileName());
+				notice.setNoticeFilePath(existedNotice.getNoticeFilePath());
+				notice.setNoticeFileLength(existedNotice.getNoticeFileLength());
+			}
 			int result = service.modifyNotice(notice);
 			if(result > 0) {
 				model.addAttribute("notice", notice);
@@ -172,5 +228,9 @@ public class NoticeController {
 			return "common/serviceFailed";
 		}
 	}
+	
+	@RequestMapping(value="/notice/search.kr", method=RequestMethod.GET)
+	public void searchNoticeList() {
 		
+	}
 }

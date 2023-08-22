@@ -1,13 +1,18 @@
 package kr.co.candytoon.ask.controller;
 
+import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.candytoon.ask.domain.Ask;
 import kr.co.candytoon.ask.domain.AskPageInfo;
@@ -25,9 +30,47 @@ public class AskController {
 	}
 	
 	// 문의사항 insert
+	// 파일등록 순서
+	// 1. pom.xml : 파일업로드 라이브러리 다운 
+	// 2. root-context.xml : 파일업로드 관련 빈등록 진행->uploadFile 객체받을 수 있음 MultipartResolver
+	// 3. JSP에서 넘어오는 파일정보 RequestParam으로 받기 (uploadFile)
+
 	@RequestMapping(value="/ask/insert.kr", method=RequestMethod.POST)
-	public String insertAsk(Ask ask, Model model) {
+	public String insertAsk(
+			@ModelAttribute Ask ask
+			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, Model model) {
 		try {
+			//파일정보가 있으면 각 변수에 저장
+			if(!uploadFile.getOriginalFilename().equals("")) {
+				// 1. 파일명 저장
+				String fileName = uploadFile.getOriginalFilename();
+				//resources폴더 경로 가져오기 : request.getSession()->getServletContext()->getRealPath
+				// getServletContext : 서블릿정보가 저장된 객체
+				// getRealPath("resources") : resources폴더 경로 
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				// 업로드파일 저장할 폴더경로 변수 저장
+				String saveFolder = root + "\\uploadFiles";
+				// 저장폴더 없을 경우 생성
+				File folder = new File(saveFolder);
+				if(!folder.exists()) {
+					folder.mkdir();
+				}
+				
+				// 2. 저장폴더에 파일 저장->업로드 파일 경로생성
+				String savePath = saveFolder + "\\" + fileName;
+				File file = new File(savePath); // 파일 생성
+				uploadFile.transferTo(file); // 파일저장
+				
+				// 3. 파일크기 저장
+				long fileLength = uploadFile.getSize();
+				
+				// 4. setter메소드로 파일 정보 저장
+				ask.setAskFileName(fileName);
+				ask.setAskFilePath(savePath);
+				ask.setAskFileLength(fileLength);
+			}
 			int result = service.insertAsk(ask);
 			if(result > 0) {
 				model.addAttribute("msg", "1:1문의가 등록되었습니다.");
@@ -47,8 +90,50 @@ public class AskController {
 	
 	// 문의사항 수정
 	@RequestMapping(value="/ask/modify.kr", method=RequestMethod.POST)
-	public String updateAsk(Ask ask, Model model) {
+	public String updateAsk(
+			Ask ask
+			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
+			, HttpServletRequest request
+			, Model model) {
 		try {
+			// 1. 기존 첨부 파일 정보 가져오기
+			Ask existedAsk = service.selecAskByNo(ask);
+			
+			// 2. JSP 수정 파일 가져오기
+			// 파일변경X -> 기존 파일 정보 다시 세팅
+			// 파일변경O -> 기존 파일 삭제 후 새로운 파일정보 새로 세팅
+			// IF : 업로드 파일 정보 있을 경우
+			if(!uploadFile.getOriginalFilename().equals("")) {
+				String fileName = uploadFile.getOriginalFilename();
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				String saveFolder = root + "\\uploadFiles";
+				File folder = new File(saveFolder);
+				if(!folder.exists()) {
+					folder.mkdir();
+				}
+				String savePath = saveFolder + "\\" + fileName;
+				File file = new File(savePath);
+				uploadFile.transferTo(file);
+				
+				long fileLength = uploadFile.getSize();
+				// 업로드 파일 새로 세팅
+				ask.setAskFileName(fileName);
+				ask.setAskFilePath(savePath);
+				ask.setAskFileLength(fileLength);
+				
+				// 기존 파일정보가 있을 경우 파일 삭제
+				if (existedAsk.getAskFileName() != null) {
+					File existedAskFilePath = new File(existedAsk.getAskFilePath());
+					if(existedAskFilePath.exists()) {
+						existedAskFilePath.delete();
+					}
+				}
+			// ELSE : 업로드 파일 정보 없을 경우 기존 등록 파일정보 재세팅
+			} else {
+				ask.setAskFileName(existedAsk.getAskFileName());
+				ask.setAskFilePath(existedAsk.getAskFilePath());
+				ask.setAskFileLength(existedAsk.getAskFileLength());
+			}
 			int result = service.updateAsk(ask);
 			if(result > 0) {
 				model.addAttribute("msg", "1:1문의가 수정되었습니다.");

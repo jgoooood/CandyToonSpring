@@ -13,7 +13,7 @@
 		
         <!-- 메인 -->
         <main>
-        	<form action="/notice/modify.kr" method="post">
+        	<form action="/notice/modify.kr" method="post" enctype="multipart/form-data">
 	            <h1>공지사항</h1>
 	            <div id="noticeForm">
                 	<input type="hidden" name="noticeNo" value="${notice.noticeNo}">
@@ -25,6 +25,18 @@
 	                    <tr id="noticeContent">
 	                        <th>내용</th>
 	                        <td><textarea name="noticeContent" required>${notice.noticeContent }</textarea></td>
+	                    </tr>
+	                    <tr id="uploadFile">
+	                        <th>첨부파일</th>
+	                        <td>
+	                        	<c:if test="${empty notice.noticeFileName}">
+	                        		<input type="file" name="uploadFile">
+	                        	</c:if>
+	                        	<c:if test="${!empty notice.noticeFileName}">
+	                        		<input type="text" value="등록파일 : ${notice.noticeFileName}">
+	                        		<input type="file" name="uploadFile">
+	                        	</c:if>
+	                        </td>
 	                    </tr>
 	                </table>
 	            </div>

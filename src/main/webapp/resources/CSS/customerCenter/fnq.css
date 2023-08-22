@@ -87,6 +87,11 @@ main {
         font-size: 1.2em;
     }
 
+	#file {
+		width:20px;
+		height: 20px;
+	}
+	
 #fnqBtn {
     float: right;
     padding: 10px;

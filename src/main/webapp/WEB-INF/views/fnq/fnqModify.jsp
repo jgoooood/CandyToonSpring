@@ -14,7 +14,7 @@
         <!-- 메인 -->
         <main>
             <h1>자주 묻는 질문</h1>
-            <form action="/fnq/modify.kr" method="post">
+            <form action="/fnq/modify.kr" method="post" enctype="multipart/form-data">
 	            <div id="fnqForm">
 	            <input type="hidden" name="fnqNo" value="${fnq.fnqNo}">
 	                <table>
@@ -37,6 +37,18 @@
 	                    <tr id="fnqContent">
 	                        <th>내용</th>
 	                        <td><textarea name="fnqContent" required>${fnq.fnqContent }</textarea></td>
+	                    </tr>
+	                    <tr id="uploadFile">
+	                        <th>첨부파일</th>
+	                        <td>
+	                        	<c:if test="${empty fnq.fnqFileName}">
+	                        		<input type="file" name="uploadFile">
+	                        	</c:if>
+	                        	<c:if test="${!empty fnq.fnqFileName}">
+	                        		<input type="text" value="등록파일 : ${fnq.fnqFileName}">
+	                        		<input type="file" name="uploadFile">
+	                        	</c:if>
+	                        </td>
 	                    </tr>
 	                </table>
 	            </div>

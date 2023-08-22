@@ -103,7 +103,10 @@ main {
     th {
         font-size: 1.2em;
     }
-
+	#file {
+		width:20px;
+		height: 20px;
+	}
 #askBtn {
     float: right;
     padding: 10px;
