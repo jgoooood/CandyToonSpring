@@ -8,7 +8,9 @@ public class Notice {
 	private String noticeContent; 
 	private String noticeWriter; 
 	private Timestamp noticeDate;
+	private Timestamp noticeUpdate;
 	private String noticeFileName;
+	private String noticeFileRename;
 	private String noticeFilePath;
 	private long noticeFileLength;
 	
@@ -45,11 +47,25 @@ public class Notice {
 		this.noticeDate = noticeDate;
 	}
 	
+	public Timestamp getNoticeUpdate() {
+		return noticeUpdate;
+	}
+	public void setNoticeUpdate(Timestamp noticeUpdate) {
+		this.noticeUpdate = noticeUpdate;
+	}
 	public String getNoticeFileName() {
 		return noticeFileName;
 	}
 	public void setNoticeFileName(String noticeFileName) {
 		this.noticeFileName = noticeFileName;
+	}
+	
+	
+	public String getNoticeFileRename() {
+		return noticeFileRename;
+	}
+	public void setNoticeFileRename(String noticeFileRename) {
+		this.noticeFileRename = noticeFileRename;
 	}
 	public String getNoticeFilePath() {
 		return noticeFilePath;
@@ -68,8 +84,8 @@ public class Notice {
 	@Override
 	public String toString() {
 		return "공지 [번호=" + noticeNo + ", 제목=" + noticeSubject + ", 내용=" + noticeContent
-				+ ", 작성자=" + noticeWriter + ", 등록일=" + noticeDate + ", 파일명=" + noticeFileName
-				+ ", 파일경로=" + noticeFilePath + ", 파일크기=" + noticeFileLength + "]";
+				+ ", 작성자=" + noticeWriter + ", 등록일=" + noticeDate + ", 수정일=" + noticeUpdate+", 파일명=" + noticeFileName
+				+ ", 파일리네임=" + noticeFileRename + ", 파일경로=" + noticeFilePath + ", 파일크기=" + noticeFileLength + "]";
 	}
 	
 	

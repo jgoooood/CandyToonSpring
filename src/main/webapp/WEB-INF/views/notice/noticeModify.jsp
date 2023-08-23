@@ -14,9 +14,13 @@
         <!-- 메인 -->
         <main>
         	<form action="/notice/modify.kr" method="post" enctype="multipart/form-data">
-	            <h1>공지사항</h1>
+	            <h1>공지사항 수정</h1>
 	            <div id="noticeForm">
                 	<input type="hidden" name="noticeNo" value="${notice.noticeNo}">
+                	<input type="hidden" name="noticeFileName" value="${notice.noticeFileName}">
+                	<input type="hidden" name="noticeFileRename" value="${notice.noticeFileRename}">
+                	<input type="hidden" name="noticeFilePath" value="${notice.noticeFilePath}">
+                	<input type="hidden" name="noticeFileLength" value="${notice.noticeFileLength}">
 	                <table>
 	                    <tr id="noticeSubject">
 	                        <th>제목</th>
@@ -29,13 +33,18 @@
 	                    <tr id="uploadFile">
 	                        <th>첨부파일</th>
 	                        <td>
-	                        	<c:if test="${empty notice.noticeFileName}">
-	                        		<input type="file" name="uploadFile">
-	                        	</c:if>
-	                        	<c:if test="${!empty notice.noticeFileName}">
-	                        		<input type="text" value="등록파일 : ${notice.noticeFileName}">
-	                        		<input type="file" name="uploadFile">
-	                        	</c:if>
+		                        <c:if test="${notice.noticeFileRename ne null}">
+	                        		<div style="float: left; padding: 10px;">
+	                        			<img src="../resources/images/icons/file.png" id="file">
+				                    	<a href="../resources/uploadFiles/${notice.noticeFileRename }" download style="text-decoration: underline;">${notice.noticeFileName }</a>
+	                        		</div>
+									<input type="file" name="uploadFile">
+			                    </c:if>
+			                    <c:if test="${notice.noticeFileRename eq null}">
+			                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>
+									<input type="file" name="uploadFile">
+			                    </c:if>
+	                        	
 	                        </td>
 	                    </tr>
 	                </table>

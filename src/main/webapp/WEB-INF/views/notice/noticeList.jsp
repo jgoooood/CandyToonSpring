@@ -14,45 +14,39 @@
         
         <!-- 메인 -->
         <main>
-       		<c:if test="${sessionScope.memberId ne null }">
-	            <div id="center">
-	                <div id = "centerMenu">
+        	<div id ="center">
+				<div id = "centerMenu">
+			       	<c:if test="${sessionScope.memberId ne null }">
 	                    <ul>
 	                        <li><a href="/notice/list.kr">공지사항</a></li>
 	                        <li><a href="/fnq/list.kr">FAQ</a></li>
 	                        <li><a href="/ask/list.kr">1:1문의</a></li>
 	                    </ul>
-	                </div>
-	                <div id="centerSearch">
-	                	<form action="/notice/search.kh" method="get">
-		                    <input type="search" placeholder="궁금한 점을 검색해 보세요.">
-		                    <img src="../resources/images/icons/centerSearch.png" alt="검색">
-	                	</form>
-	                </div>
-	            </div>
-	        </c:if>
-            <c:if test="${sessionScope.memberId eq null }">
-            	<div id="center">
-	                <div id = "centerMenu">
+		        	</c:if>
+		            <c:if test="${sessionScope.memberId eq null }">
 	                    <ul>
 	                        <li><a href="/notice/list.kr">공지사항</a></li>
 	                        <li><a href="/fnq/list.kr">FAQ</a></li>
 	                    </ul>
-	                </div>
-	                <div id="centerSearch">
-	                	<form action="/notice/search.kh" method="get">
-	                		<select name="searchCondition">
-	                			<option value="all">전체</option>
+		            </c:if>
+	            </div>
+	            <div id="centerSearch">
+	            	<form action="/notice/search.kh" method="get">
+	        			<div id= "searchKeyword">
+	                		<input type="search" name="searchKeyword" placeholder="궁금한 점을 검색해 보세요.">
+	          				<img src="../resources/images/icons/centerSearch.png" alt="검색">
+	        			</div>
+	        			<div id = "searchCondition">
+		             		<select name="searchCondition" style="height:30px">
+		             			<option value="all">전체</option>
 								<option value="writer">작성자</option>
 								<option value="title">제목</option>
 								<option value="content">내용</option>
-	                		</select>
-		                    <input type="search" name="searchKeyword" placeholder="궁금한 점을 검색해 보세요.">
-		                    <img src="../resources/images/icons/centerSearch.png" alt="검색">
-	                    </form>
-	                </div>
+		             		</select>
+	        			</div>
+	                </form>
 	            </div>
-            </c:if>
+        	</div>
             <div id = "notice">
                 <table>
                 	<colgroup>

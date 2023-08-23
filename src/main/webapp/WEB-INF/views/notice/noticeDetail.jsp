@@ -15,6 +15,10 @@
         <main>
             <h1>공지사항</h1>
             <div id="noticeForm">
+            	<input type="hidden" name="noticeFileName" value="${notice.noticeFileName}">
+            	<input type="hidden" name="noticeFileRename" value="${notice.noticeFileRename}">
+             	<input type="hidden" name="noticeFilePath" value="${notice.noticeFilePath}">
+             	<input type="hidden" name="noticeFileLength" value="${notice.noticeFileLength}">
                 <table>
                     <tr id="noticeSubject">
                         <th>제목</th>
@@ -27,10 +31,14 @@
                     <tr id="uploadFile">
                         <th>첨부파일</th>
                         <td>
-                        	<c:if test="${notice.noticeFileName ne null}">
-		                    	<input type="text" name="uploadFile" value="${notice.noticeFileName}" readonly>
+                        	<c:if test="${notice.noticeFileRename ne null}">
+                        		<div style="float: left; padding-left: 10px;">
+                        			<img src="../resources/images/icons/file.png" id="file">
+                        			<!-- 다운로드는 실제 Rename값으로 지정해야 함 -->
+			                    	<a href="../resources/uploadFiles/${notice.noticeFileRename }" download style="text-decoration: underline;">${notice.noticeFileName }</a>
+                        		</div>
 		                    </c:if>
-		                    <c:if test="${notice.noticeFileName eq null}">
+		                    <c:if test="${notice.noticeFileRename eq null}">
 		                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>
 		                    </c:if>
                         </td>
