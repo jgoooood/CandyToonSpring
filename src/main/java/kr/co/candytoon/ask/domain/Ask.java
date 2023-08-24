@@ -1,6 +1,6 @@
 package kr.co.candytoon.ask.domain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Ask {
 	private int askNo;
@@ -8,8 +8,10 @@ public class Ask {
 	private String askSubject; 
 	private String askContent; 
 	private String askWriter; 
-	private Date askDate;
+	private Timestamp askDate;
+	private Timestamp askUpdate;
 	private String askFileName;
+	private String askFileRename;
 	private String askFilePath;
 	private long askFileLength;
 	
@@ -44,18 +46,31 @@ public class Ask {
 	public void setAskWriter(String askWriter) {
 		this.askWriter = askWriter;
 	}
-	public Date getAskDate() {
+	public Timestamp getAskDate() {
 		return askDate;
 	}
-	public void setAskDate(Date askDate) {
+	public void setAskDate(Timestamp askDate) {
 		this.askDate = askDate;
 	}
 	
+	public Timestamp getAskUpdate() {
+		return askUpdate;
+	}
+	public void setAskUpdate(Timestamp askUpdate) {
+		this.askUpdate = askUpdate;
+	}
 	public String getAskFileName() {
 		return askFileName;
 	}
 	public void setAskFileName(String askFileName) {
 		this.askFileName = askFileName;
+	}
+	
+	public String getAskFileRename() {
+		return askFileRename;
+	}
+	public void setAskFileRename(String askFileRename) {
+		this.askFileRename = askFileRename;
 	}
 	public String getAskFilePath() {
 		return askFilePath;
@@ -74,8 +89,8 @@ public class Ask {
 	@Override
 	public String toString() {
 		return "1:1문의 [문의번호=" + askNo + ", 카테고리=" + askCategory + ", 제목=" + askSubject + ", 내용="
-				+ askContent + ", 작성자=" + askWriter + ", 작성일=" + askDate + ", 파일이름=" + askFileName
-				+ ", 파일경로=" + askFilePath + ", 파일크기=" + askFileLength + "]";
+				+ askContent + ", 작성자=" + askWriter + ", 작성일=" + askDate + ", 수정일=" + askDate + ", 파일이름=" + askFileName
+				+ ", 파일리네임=" + askFileRename + ", 파일경로=" + askFilePath + ", 파일크기=" + askFileLength + "]";
 	}
 	
 	

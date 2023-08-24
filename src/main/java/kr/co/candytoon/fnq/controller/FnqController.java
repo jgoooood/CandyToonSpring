@@ -1,7 +1,11 @@
 package kr.co.candytoon.fnq.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,27 +34,17 @@ public class FnqController {
 			, HttpServletRequest request
 			, Model model) {
 		try {
-			if(!uploadFile.getOriginalFilename().equals("")) {
-				String fileName = uploadFile.getOriginalFilename();
-				String root = request.getSession().getServletContext().getRealPath("resources");
-				String saveFolder = root + "\\uploadFiles";
-				File folder = new File(saveFolder);
-				if(!folder.exists()) {
-					folder.mkdir();
-				}
-				String savePath = saveFolder + "\\" + fileName;
-				File file = new File(savePath);
-				uploadFile.transferTo(file);
-				long fileLength = uploadFile.getSize();
-				
-				fnq.setFnqFileName(fileName);
-				fnq.setFnqFilePath(savePath);
-				fnq.setFnqFileLength(fileLength);
-			}
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				Map<String, Object> fMap = saveFile(uploadFile, request);
+				fnq.setFnqFileName((String)fMap.get("fileName"));
+				fnq.setFnqFileRename((String)fMap.get("fileRename"));
+				fnq.setFnqFilePath((String)fMap.get("filePath"));
+				fnq.setFnqFileLength((long)fMap.get("fileLength"));
+			} 
 			int result = service.insertFnq(fnq);
 			if(result > 0) {
 				model.addAttribute("msg", "FnQ등록이 완료되었습니다.");
-				model.addAttribute("url", "fnq/list.kr");
+				model.addAttribute("url", "/fnq/list.kr");
 				return "common/serviceSuccess";
 			} else {
 				model.addAttribute("alertMsg", "FnQ등록이 완료되지 않았습니다.");
@@ -71,36 +65,19 @@ public class FnqController {
 			, HttpServletRequest request
 			, Model model) {
 		try {
-			//기존 등록정보 가져오기
-			Fnq existedFnq = service.selectFnqByNo(fnq);
-			//수정된 업로드 파일 있을 경우 삭제 후 새로 등록
-			if(!uploadFile.getOriginalFilename().equals("")) {
-				String fileName = uploadFile.getOriginalFilename();
-				String root = request.getSession().getServletContext().getRealPath("resources");
-				String saveFolder = root + "\\uploadFiles";
-				File folder = new File(saveFolder);
-				if(!folder.exists()) {
-					folder.mkdir();
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				//기존 업로드 파일 있을 경우 삭제 후 새로 등록
+				String existedfileName = fnq.getFnqFileRename();
+				if(existedfileName != null) {
+					this.deleteFile(request, existedfileName);
 				}
-				String savePath = saveFolder + "\\" + fileName;
-				File file = new File(savePath);
-				uploadFile.transferTo(file);
-				long fileLength = uploadFile.getSize();
-				fnq.setFnqFileName(fileName);
-				fnq.setFnqFilePath(savePath);
-				fnq.setFnqFileLength(fileLength);
-				//기존 등록정보 삭제
-				if(existedFnq.getFnqFileName() != null) {
-					File existedFnqFilePath = new File(existedFnq.getFnqFilePath());
-					if(existedFnqFilePath.exists()) {
-						existedFnqFilePath.delete();
-					}
-				}
-			} else {
-				//수정업로드파일 없으면 기존 파일 재등록
-				fnq.setFnqFileName(existedFnq.getFnqFileName());
-				fnq.setFnqFilePath(existedFnq.getFnqFilePath());
-				fnq.setFnqFileLength(existedFnq.getFnqFileLength());
+				//saveFile메소드->Map에 새로운 업로드 파일 정보가 저장됨
+				Map<String, Object> infoMap = saveFile(uploadFile, request);
+				//Map에 저장된 파일정보를 setter메소드로 세팅
+				fnq.setFnqFileName((String)infoMap.get("fileName"));
+				fnq.setFnqFileRename((String)infoMap.get("fileRename"));
+				fnq.setFnqFilePath((String)infoMap.get("filePath"));
+				fnq.setFnqFileLength((long)infoMap.get("fileLength"));
 			}
 			int result = service.modifyFnq(fnq);
 			if(result > 0) {
@@ -118,6 +95,45 @@ public class FnqController {
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
+	}
+
+	private void deleteFile(HttpServletRequest request, String existedfileName) {
+		// request : 경로가져오기
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String delFilepath = root+"\\uploadFiles\\"+existedfileName;
+		File file = new File(delFilepath);
+		if(file.exists()) {
+			file.delete();			
+		}
+	}
+
+	private Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
+		Map<String, Object> infoMap = new HashMap<String, Object>();
+		//업로드 파일 파일명, 저장할 폴더 지정
+		String fileName = uploadFile.getOriginalFilename();
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String saveFolder = root + "\\uploadFiles";
+		File folder = new File(saveFolder);
+		if(!folder.exists()) {
+			folder.mkdir();
+		}
+		//파일명 중복을 피하기 위한 리네임->업로드시각에 따른 SimpleDateFormat + Date 객체사용 + 업로드파일 확장자추출
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String strResult = sdf.format(new Date(System.currentTimeMillis()));
+		String ext = fileName.substring(fileName.lastIndexOf(".")+1); // +1 : . 포함x
+		String fileRename = "F"+strResult+"."+ext; //식별자+파일리네임(date)+"."+확장자
+		//경로생성->Rename값 , 생성된 경로로 uploadFile값을 대체, fileLength 크기 저장
+		String savePath = saveFolder + "\\" + fileRename;
+		File file = new File(savePath);
+		uploadFile.transferTo(file);
+		long fileLength = uploadFile.getSize();
+		//Map 저장
+		infoMap.put("fileName", fileName);
+		infoMap.put("fileRename", fileRename);
+		infoMap.put("filePath", savePath);
+		infoMap.put("fileLength", fileLength);
+		
+		return infoMap;
 	}
 
 	@RequestMapping(value="/fnq/delete.kr", method=RequestMethod.GET)

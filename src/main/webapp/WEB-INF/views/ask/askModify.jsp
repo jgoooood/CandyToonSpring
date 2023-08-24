@@ -19,6 +19,10 @@
 		            <div id="askForm">
 		            	<input type="hidden" name="askWriter" value="${sessionScope.memberId}">
 		            	<input type="hidden" name="askNo" value="${ask.askNo}">
+		            	<input type="hidden" name="askFileName"   value="${ask.askFileName}">
+			            <input type="hidden" name="askFileRename" value="${ask.askFileRename}">
+			            <input type="hidden" name="askFilePath"   value="${ask.askFilePath}">
+			            <input type="hidden" name="askFileLength" value="${ask.askFileLength}">
 		                <table>
 		                    <tr>
 		                        <th id="askType">문의유형</th>
@@ -42,11 +46,15 @@
 		                    <tr id="uploadFile">
 		                        <th>첨부파일</th>
 		                        <td>
-		                        	<c:if test="${empty ask.askFileName}">
+		                        	<c:if test="${!empty ask.askFileName}">
+		                        		<div style="float: left; padding: 10px;">
+		                        			<img src="../resources/images/icons/file.png" id="file">
+			                        		<a href="../resources/uploadFiles/${ask.askFileName}" download style="text-decoration: underline;">${ask.askFileName}</a>
+		                        		</div>
 		                        		<input type="file" name="uploadFile">
 		                        	</c:if>
-		                        	<c:if test="${!empty ask.askFileName}">
-		                        		<input type="text" value="등록파일 : ${ask.askFileName}">
+		                        	<c:if test="${empty ask.askFileName}">
+		                        		<input type="text" value="첨부파일없음" readonly>
 		                        		<input type="file" name="uploadFile">
 		                        	</c:if>
 		                        </td>

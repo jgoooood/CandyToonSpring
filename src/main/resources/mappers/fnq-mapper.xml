@@ -10,17 +10,19 @@
 		<result column="FNQ_CONTENT"  	property="fnqContent"/>
 		<result column="FNQ_WRITER"   	property="fnqWriter"/>
 		<result column="FNQ_DATE" 	  	property="fnqDate"/>
+		<result column="FNQ_UPDATE"		property="fnqUpdate" />
 		<result column="FNQ_FILENAME"   property="fnqFileName"/>
+		<result column="FNQ_FILERENAME" property="fnqFileRename"/>
 		<result column="FNQ_FILEPATH"   property="fnqFilePath"/>
 		<result column="FNQ_FILELENGTH" property="fnqFileLength"/>
 	</resultMap>
 	
 	<insert id="insertFnq">
-		INSERT INTO FNQ_TBL VALUES(SEQ_FNQNO.NEXTVAL, #{fnqCategory}, #{fnqSubject}, #{fnqContent}, 'admin', DEFAULT, #{fnqFileName}, #{fnqFilePath}, #{fnqFileLength})
+		INSERT INTO FNQ_TBL VALUES(SEQ_FNQNO.NEXTVAL, #{fnqCategory}, #{fnqSubject}, #{fnqContent}, 'admin', DEFAULT, DEFAULT, #{fnqFileName}, #{fnqFileRename}, #{fnqFilePath}, #{fnqFileLength})
 	</insert>
 	
 	<update id="updateFnq">
-		UPDATE FNQ_TBL SET FNQ_CATEGORY = #{fnqCategory }, FNQ_SUBJECT = #{fnqSubject }, FNQ_CONTENT = #{fnqContent }, FNQ_FILENAME = #{fnqFileName}, FNQ_FILEPATH = #{fnqFilePath}, FNQ_FILELENGTH = #{fnqFileLength} WHERE FNQ_NO = #{fnqNo} 
+		UPDATE FNQ_TBL SET FNQ_CATEGORY = #{fnqCategory }, FNQ_SUBJECT = #{fnqSubject }, FNQ_CONTENT = #{fnqContent }, FNQ_UPDATE = DEFAULT, FNQ_FILENAME = #{fnqFileName}, FNQ_FILERENAME = #{fnqFileRename}, FNQ_FILEPATH = #{fnqFilePath}, FNQ_FILELENGTH = #{fnqFileLength} WHERE FNQ_NO = #{fnqNo}
 	</update>
 	
 	<delete id="deleteFnq">

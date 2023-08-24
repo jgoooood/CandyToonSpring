@@ -9,68 +9,13 @@
     <link rel="stylesheet" href="../resources/CSS/member/myPage.css">
     
     <body>
-        <!-- 헤더 -->
-        <header>
-            <div id="logo">
-                <a href="/index.jsp"><p>CANDY TOON</p></a>
-            </div>
-            <div id="searchArea">
-                <div class="search">
-                    <input type="text" placeholder="제목/작가로 검색할 수 있습니다.">
-                    <!-- <button id="goSearch">검색</button> -->
-                    <a href="#"><img src="../resources/images/icons/serch.png" alt="검색"></a>
-                </div>
-            </div>
-            <!-- 네비게이터 -->
-            <nav>
-                <div id="mainMenu">
-                    <ul>
-                        <li><a href="../ranking/total.jsp">웹툰랭킹</a></li>
-                        <li><a href="../ranking/new.jsp">신작</a></li>
-                        <li><a href="../ranking/compleated.jsp">완결</a></li>
-                        <li><a href="#">요일</a></li>
-                        <li><a href="#">장르</a></li>
-                    </ul>
-                </div>
-                <div  id="customerCenter">
-                    <ul>
-                        <li><a href="/member/logout.kr">로그아웃</a></li>
-                        <li><a href="/member/myPage.kr">마이페이지</a></li>
-                        <li><a href="/notice/list.kr">고객센터</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+        <!-- 헤더, 네비 -->
+		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		
         <!-- 메인 -->
         <main>
-            <section id="leftSection">
-                <div id="userBox">
-                    <div><img src="../resources/images/icons/book.png" alt="서재"></div>
-                    <h1>보관함</h1>
-                    <ul>
-                        <li>소장작품</li>
-                        <li>최근 조회한 작품</li>
-                        <li>관심 작품</li>
-                    </ul>
-                </div>
-                <div id="userPay">
-                    <div><img src="../resources/images/icons/credit-card.png" alt="결제"></div>
-                    <h1>결제</h1>
-                    <ul>
-                        <li>결제내역</li><br>
-                        <li>캔디충전</li><br>
-                        <li>충전내역</li>
-                    </ul>
-                </div>
-                <div id="userInfo">
-                    <div><img src="../resources/images/icons/user.png" alt="개인"></div>
-                    <h1>개인</h1>
-                    <ul>
-                        <li>댓글관리</li><br>
-                        <li>회원정보</li>
-                    </ul>
-                </div>
-            </section>
+        	<!-- 마이페이지 메뉴 -->
+			<jsp:include page="/WEB-INF/views/include/myPageMenu.jsp"></jsp:include>
             <section id="rightSection">
                 <div id="topArea">
                     <div id="userAccount">

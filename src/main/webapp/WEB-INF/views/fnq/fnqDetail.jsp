@@ -31,8 +31,11 @@
                     <tr id="uploadFile">
                         <th>첨부파일</th>
                         <td>
-                        	<c:if test="${fnq.fnqFileName ne null}">
-		                    	<input type="text" name="uploadFile" value="${fnq.fnqFileName}" readonly>
+                        	<c:if test="${fnq.fnqFileRename ne null}">
+                        		<div style="float: left; padding-left: 10px;">
+                        			<img src="../resources/images/icons/file.png" id="file">
+		                    		<a href="../resources/uploadFiles/${fnq.fnqFileRename }" download style="text-decoration: underline;">${fnq.fnqFileName }</a>
+		                    	</div>
 		                    </c:if>
 		                    <c:if test="${fnq.fnqFileName eq null}">
 		                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>

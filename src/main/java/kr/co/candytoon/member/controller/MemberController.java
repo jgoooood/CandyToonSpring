@@ -1,6 +1,7 @@
 package kr.co.candytoon.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.candytoon.member.domain.Member;
 import kr.co.candytoon.member.service.MemberService;
@@ -88,19 +90,21 @@ public class MemberController {
 	public String showLoginForm() {
 		return "member/login";
 	}
-	// 로그인 진행
+	
+	// 로그인 진행 기존방식
 	@RequestMapping(value="/member/login.kr", method=RequestMethod.POST)
 	public String memberLogin(
 			HttpServletRequest request
 			, @RequestParam("memberId") String memberId
 			, @RequestParam("memberPw") String memberPw
+			, HttpSession session
 			, Model model
 			) {
 		try {
 			Member member = new Member(memberId, memberPw);
 			Member mOne = service.loginCheck(member);
 			if(mOne != null) {
-				model.addAttribute("memberId", mOne.getMemberId());
+				session.setAttribute("memberId", member.getMemberId());
 				return "redirect:/index.jsp";
 			} else {
 				model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
@@ -113,6 +117,7 @@ public class MemberController {
 			return "common/serviceFailed";
 		}
 	}
+	
 	// 로그아웃
 	@RequestMapping(value="/member/logout.kr", method=RequestMethod.GET)
 	public String memberLogout(
@@ -128,7 +133,8 @@ public class MemberController {
 		}
 	}
 	
-	// 마이페이지 이동
+	/*마이페이지 이동 : 기존 방식은 JSP에서 memberId를 가지고 옴
+	 ->쿼리스트링 조작으로 로그이없이도 페이지 조회 가능 -> 세션에서 가지고 오는 것으로 수정 
 	@RequestMapping(value="/member/myPage.kr", method=RequestMethod.GET)
 	public String showMyPage(
 			@RequestParam("memberId") String memberId
@@ -151,6 +157,65 @@ public class MemberController {
 			model.addAttribute("url", "/index.jsp");
 			return "common/serviceFailed";
 		}
+	} */
+	
+	//session에서 id가지고 오는 것으로 수정
+	@RequestMapping(value="/member/myPage.kr", method= {RequestMethod.GET, RequestMethod.POST})
+	public String showMyPage(
+			HttpSession session
+			, Model model
+			) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			Member member = null;
+			//memberId가 session에 남아있으면 service호출
+			if(memberId != "" && memberId != null) {
+				member = service.selectOneById(memberId);				
+			}
+			//가지고온 member정보가 null이 아니면 mypage이동
+			if(member != null) {
+				model.addAttribute("member", member);
+				return "member/myPage";
+			} else {
+				model.addAttribute("alertMsg", "회원정보를 불러올 수 없습니다.");
+				model.addAttribute("url", "/index.jsp");
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			model.addAttribute("alertMsg", "회원정보를 불러올 수 없습니다.");
+			model.addAttribute("msg", e.getMessage());
+			model.addAttribute("url", "/index.jsp");
+			return "common/serviceFailed";
+		}
+	}
+	
+	@RequestMapping(value="/member/myinfo.kr",method=RequestMethod.GET)
+	public ModelAndView showMyinfoForm(
+			ModelAndView mv
+			, HttpSession session) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			Member member = null;
+			if(memberId != "" && memberId != null) {
+				member = service.selectOneById(memberId);			
+			}
+			if(member != null) {
+				mv.addObject("member", member);
+				mv.setViewName("member/myInfo");
+			} else {
+				mv.addObject("alertMsg", "회원정보를 불러올 수 없습니다.");
+				mv.addObject("url", "/index.jsp");
+				mv.setViewName("common/serviceFailed");
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			mv.addObject("alertMsg", "회원정보를 불러올 수 없습니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.addObject("url", "/index.jsp");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
 	}
 	
 	//아이디찾기 페이지

@@ -10,14 +10,16 @@
 		<result column="ASK_CONTENT"  	property="askContent"/>
 		<result column="ASK_WRITER"   	property="askWriter"/>
 		<result column="ASK_DATE" 	  	property="askDate"/>
+		<result column="ASK_UPDATE" 	property="askUpdate"/>
 		<result column="ASK_FILENAME" 	property="askFileName"/>
+		<result column="ASK_FILERENAME" property="askFileRename"/>
 		<result column="ASK_FILEPATH" 	property="askFilePath"/>
 		<result column="ASK_FILELENGTH" property="askFileLength"/>
 		
 	</resultMap>
 	
 	<insert id="insertAsk">
-		INSERT INTO ASK_TBL VALUES (SEQ_ASKNO.NEXTVAL, #{askCategory}, #{askSubject}, #{askContent}, #{askWriter}, DEFAULT, #{askFileName}, #{askFilePath}, #{askFileLength})
+		INSERT INTO ASK_TBL VALUES (SEQ_ASKNO.NEXTVAL, #{askCategory}, #{askSubject}, #{askContent}, #{askWriter}, DEFAULT, DEFAULT, #{askFileName}, #{askFileRename}, #{askFilePath}, #{askFileLength})
 	</insert>
 	<select id="selectAskList" resultMap="askResultMap">
 		SELECT * FROM ASK_TBL ORDER BY ASK_NO DESC
@@ -32,7 +34,7 @@
 	</select>
 	
 	<update id="updateAsk">
-		UPDATE ASK_TBL SET ASK_CATEGORY = #{askCategory}, ASK_SUBJECT = #{askSubject}, ASK_CONTENT = #{askContent}, ASK_FILENAME = #{askFileName}, ASK_FILEPATH = #{askFilePath}, ASK_FILELENGTH = #{askFileLength} WHERE ASK_NO = #{askNo} 
+		UPDATE ASK_TBL SET ASK_CATEGORY = #{askCategory}, ASK_SUBJECT = #{askSubject}, ASK_CONTENT = #{askContent}, ASK_UPDATE = DEFAULT, ASK_FILENAME = #{askFileName}, ASK_FILERENAME = #{askFileRename}, ASK_FILEPATH = #{askFilePath}, ASK_FILELENGTH = #{askFileLength} WHERE ASK_NO = #{askNo} 
 	</update>
 	
 	<delete id="deleteAsk">

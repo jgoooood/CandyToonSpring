@@ -33,10 +33,13 @@
 	                    <tr id="uploadFile">
 	                        <th>첨부파일</th>
 	                        <td>
-	                        	<c:if test="${ask.askFileName ne null}">
-			                    	<input type="text" name="uploadFile" value="${ask.askFileName}" readonly>
+	                        	<c:if test="${ask.askFileRename ne null}">
+		                        	<div style="float: left; padding-left: 10px;">
+	                        			<img src="../resources/images/icons/file.png" id="file">
+			                    		<a href="../resources/uploadFiles/${ask.askFileRename }" download style="text-decoration: underline;">${ask.askFileName }</a>
+			                    	</div>
 			                    </c:if>
-			                    <c:if test="${ask.askFileName eq null}">
+			                    <c:if test="${ask.askFileRename eq null}">
 			                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>
 			                    </c:if>
 	                        </td>

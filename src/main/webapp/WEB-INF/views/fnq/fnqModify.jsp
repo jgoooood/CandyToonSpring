@@ -17,6 +17,10 @@
             <form action="/fnq/modify.kr" method="post" enctype="multipart/form-data">
 	            <div id="fnqForm">
 	            <input type="hidden" name="fnqNo" value="${fnq.fnqNo}">
+	            <input type="hidden" name="fnqFileName"   value="${fnq.fnqFileName}">
+	            <input type="hidden" name="fnqFileRename" value="${fnq.fnqFileRename}">
+	            <input type="hidden" name="fnqFilePath"   value="${fnq.fnqFilePath}">
+	            <input type="hidden" name="fnqFileLength" value="${fnq.fnqFileLength}">
 	                <table>
 	                    <tr>
 	                        <th id="fnqType">카테고리</th>
@@ -41,11 +45,15 @@
 	                    <tr id="uploadFile">
 	                        <th>첨부파일</th>
 	                        <td>
-	                        	<c:if test="${empty fnq.fnqFileName}">
-	                        		<input type="file" name="uploadFile">
+	                        	<c:if test="${!empty fnq.fnqFileRename}">
+	                        		<div style="float: left; padding: 10px;">
+	                        			<img src="../resources/images/icons/file.png" id="file">
+				                    	<a href="../resources/uploadFiles/${fnq.fnqFileRename }" download style="text-decoration: underline;">${fnq.fnqFileName }</a>
+	                        		</div>
+									<input type="file" name="uploadFile">
 	                        	</c:if>
-	                        	<c:if test="${!empty fnq.fnqFileName}">
-	                        		<input type="text" value="등록파일 : ${fnq.fnqFileName}">
+	                        	<c:if test="${empty fnq.fnqFileRename}">
+	                        		<input type="text" value="첨부파일없음" readonly>
 	                        		<input type="file" name="uploadFile">
 	                        	</c:if>
 	                        </td>

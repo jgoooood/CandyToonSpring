@@ -85,9 +85,9 @@ public class NoticeController {
 			//uploadFile null체크
 			if(uploadFile != null && !uploadFile.isEmpty()) {
 				// 기존 업로드된 파일 있는지 체크
-				String fileName = notice.getNoticeFileRename();
-				if(fileName != null) { //업로드된 파일이 있으면
-					this.deleteFile(request, fileName); //삭제메소드 호출(request, fileName 전달)
+				String existedfileName = notice.getNoticeFileRename();
+				if(existedfileName != null) { //업로드된 파일이 있으면
+					this.deleteFile(request, existedfileName); //삭제메소드 호출(request, fileName 전달)
 				}
 				//uploadFile은 메소드 + HashMap사용으로 저장 -> saveFile
 				Map<String, Object> infoMap = saveFile(uploadFile, request);
@@ -124,10 +124,6 @@ public class NoticeController {
 		try {
 			int result = service.deleteNotice(notice);
 			if(result > 0) {
-				String fileName = notice.getNoticeFileRename();
-				if(fileName != null) {
-					this.deleteFile(request, fileName);					
-				}
 				model.addAttribute("msg", "삭제가 완료되었습니다.");
 				model.addAttribute("url", "/notice/list.kr");
 				return "common/serviceSuccess";
@@ -257,12 +253,11 @@ public class NoticeController {
 	}
 
 	//파일삭제 메소드 
-	private void deleteFile(HttpServletRequest request, String fileName) {
+	private void deleteFile(HttpServletRequest request, String existedfileName) {
 		// request로 resources 경로 가져와서 저장
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		// 삭제할 파일경로 
-		String delFilepath = root+"\\uploadFiles\\"+fileName;
-		System.out.println("Deleting file: " + delFilepath);
+		String delFilepath = root+"\\uploadFiles\\"+existedfileName;
 		File file = new File(delFilepath);
 		if(file.exists()) {
 			file.delete();

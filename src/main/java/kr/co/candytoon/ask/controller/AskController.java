@@ -1,7 +1,12 @@
 package kr.co.candytoon.ask.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,33 +48,14 @@ public class AskController {
 			, Model model) {
 		try {
 			//파일정보가 있으면 각 변수에 저장
-			if(!uploadFile.getOriginalFilename().equals("")) {
-				// 1. 파일명 저장
-				String fileName = uploadFile.getOriginalFilename();
-				//resources폴더 경로 가져오기 : request.getSession()->getServletContext()->getRealPath
-				// getServletContext : 서블릿정보가 저장된 객체
-				// getRealPath("resources") : resources폴더 경로 
-				String root = request.getSession().getServletContext().getRealPath("resources");
-				// 업로드파일 저장할 폴더경로 변수 저장
-				String saveFolder = root + "\\uploadFiles";
-				// 저장폴더 없을 경우 생성
-				File folder = new File(saveFolder);
-				if(!folder.exists()) {
-					folder.mkdir();
-				}
-				
-				// 2. 저장폴더에 파일 저장->업로드 파일 경로생성
-				String savePath = saveFolder + "\\" + fileName;
-				File file = new File(savePath); // 파일 생성
-				uploadFile.transferTo(file); // 파일저장
-				
-				// 3. 파일크기 저장
-				long fileLength = uploadFile.getSize();
-				
-				// 4. setter메소드로 파일 정보 저장
-				ask.setAskFileName(fileName);
-				ask.setAskFilePath(savePath);
-				ask.setAskFileLength(fileLength);
+			if(uploadFile != null && !uploadFile.getOriginalFilename().equals("")) {
+				//saveFile메소드가 Map에 파일정보 저장함
+				Map<String, Object> aMap = this.saveFile(request, uploadFile);
+				// setter메소드로 파일 정보 저장
+				ask.setAskFileName((String)aMap.get("fileName"));
+				ask.setAskFileRename((String)aMap.get("fileRename"));
+				ask.setAskFilePath((String)aMap.get("filePath"));
+				ask.setAskFileLength((long)aMap.get("fileLength"));
 			}
 			int result = service.insertAsk(ask);
 			if(result > 0) {
@@ -88,6 +74,37 @@ public class AskController {
 		}
 	}
 	
+	private Map<String, Object> saveFile(HttpServletRequest request, MultipartFile uploadFile) throws Exception {
+		Map<String, Object> aMap = new HashMap<String, Object>();
+		// 1. 파일명 저장
+		String fileName = uploadFile.getOriginalFilename();
+		//resources폴더 경로 가져오기 : request.getSession()->getServletContext()->getRealPath
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		// 업로드파일 저장할 폴더경로 변수 저장
+		String saveFolder = root + "\\uploadFiles";
+		// 저장폴더 없을 경우 생성
+		File folder = new File(saveFolder);
+		if(!folder.exists()) {
+			folder.mkdir();
+		}
+		// 2. 파일리네임
+		String extension = fileName.substring(fileName.lastIndexOf(".")+1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String fileRename = "A" + sdf.format(new Date(System.currentTimeMillis())) + "."+extension;		
+		// 3. 저장폴더에 파일 저장->업로드 파일 경로생성
+		String savePath = saveFolder + "\\" + fileRename;
+		File file = new File(savePath); // 파일 생성
+		uploadFile.transferTo(file); // 파일저장
+		// 3. 파일크기 저장
+		long fileLength = uploadFile.getSize();
+		// 4. Map저장
+		aMap.put("fileName", fileName);
+		aMap.put("fileRename", fileRename);
+		aMap.put("filePath", savePath);
+		aMap.put("fileLength", fileLength);
+		return aMap;
+	}
+
 	// 문의사항 수정
 	@RequestMapping(value="/ask/modify.kr", method=RequestMethod.POST)
 	public String updateAsk(
@@ -96,44 +113,19 @@ public class AskController {
 			, HttpServletRequest request
 			, Model model) {
 		try {
-			// 1. 기존 첨부 파일 정보 가져오기
-			Ask existedAsk = service.selecAskByNo(ask);
-			
-			// 2. JSP 수정 파일 가져오기
-			// 파일변경X -> 기존 파일 정보 다시 세팅
-			// 파일변경O -> 기존 파일 삭제 후 새로운 파일정보 새로 세팅
-			// IF : 업로드 파일 정보 있을 경우
-			if(!uploadFile.getOriginalFilename().equals("")) {
-				String fileName = uploadFile.getOriginalFilename();
-				String root = request.getSession().getServletContext().getRealPath("resources");
-				String saveFolder = root + "\\uploadFiles";
-				File folder = new File(saveFolder);
-				if(!folder.exists()) {
-					folder.mkdir();
-				}
-				String savePath = saveFolder + "\\" + fileName;
-				File file = new File(savePath);
-				uploadFile.transferTo(file);
-				
-				long fileLength = uploadFile.getSize();
-				// 업로드 파일 새로 세팅
-				ask.setAskFileName(fileName);
-				ask.setAskFilePath(savePath);
-				ask.setAskFileLength(fileLength);
-				
-				// 기존 파일정보가 있을 경우 파일 삭제
-				if (existedAsk.getAskFileName() != null) {
-					File existedAskFilePath = new File(existedAsk.getAskFilePath());
-					if(existedAskFilePath.exists()) {
-						existedAskFilePath.delete();
-					}
-				}
-			// ELSE : 업로드 파일 정보 없을 경우 기존 등록 파일정보 재세팅
-			} else {
-				ask.setAskFileName(existedAsk.getAskFileName());
-				ask.setAskFilePath(existedAsk.getAskFilePath());
-				ask.setAskFileLength(existedAsk.getAskFileLength());
-			}
+			if(uploadFile != null && !uploadFile.getOriginalFilename().equals("")) {
+				// 기존 업로드 파일 여부 체크
+				String existedfileName = uploadFile.getOriginalFilename();
+				this.deleteFile(request, existedfileName);
+				// uploadFile객체를 저장할 수 있는 saveFile메소드 호출
+				Map<String, Object> aMap = this.saveFile(request, uploadFile);
+				// aMap에서 값을 가져와서 업로드 파일정보 새로 세팅
+				ask.setAskFileName((String)aMap.get("fileName"));
+				ask.setAskFileRename((String)aMap.get("fileRename"));
+				ask.setAskFilePath((String)aMap.get("filePath"));
+				ask.setAskFileLength((long)aMap.get("fileLength"));
+
+			} 
 			int result = service.updateAsk(ask);
 			if(result > 0) {
 				model.addAttribute("msg", "1:1문의가 수정되었습니다.");
@@ -149,6 +141,17 @@ public class AskController {
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
+	}
+
+	private void deleteFile(HttpServletRequest request, String existedfileName) {
+		//resources경로가져오기
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String delFilePath = root + "\\uploadFiles\\"+existedfileName;
+		File file = new File(delFilePath);
+		if(file.exists()) {
+			file.delete();
+		}
+		
 	}
 
 	// 문의사항 삭제
