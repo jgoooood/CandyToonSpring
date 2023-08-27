@@ -53,7 +53,7 @@
         </script>
         <div id="join">
             <div ID="joinLogo">
-                <p>CANDY TOON</p>
+                <p><a href="/index.jsp">CANDY TOON</a></p>
                 <h1>회원가입</h1>
             </div>
             <form action="/member/register.kr" method="post">

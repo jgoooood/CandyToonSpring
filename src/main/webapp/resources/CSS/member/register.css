@@ -1,3 +1,7 @@
+a:link, a:visited {
+    color: rgb(252, 117, 7);
+    text-decoration: none;
+}
 
 #join {
     width: 600px;
@@ -76,3 +80,6 @@
         text-decoration: none;
     }
 
+	#joinBtn button:hover {
+    	background-color: rgb(231, 51, 6);
+	}

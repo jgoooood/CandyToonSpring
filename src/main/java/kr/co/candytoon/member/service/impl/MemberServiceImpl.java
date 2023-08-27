@@ -29,6 +29,18 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public int changeEmail(Member member) {
+		int result = mStore.changeEmail(sqlSession, member);
+		return result;
+	}
+
+	@Override
+	public int deleteMember(String memberId) {
+		int result = mStore.deleteMember(sqlSession, memberId);
+		return result;
+	}
+
+	@Override
 	public Member loginCheck(Member member) {
 		Member mOne = mStore.loginCheck(sqlSession, member);
 		return mOne;

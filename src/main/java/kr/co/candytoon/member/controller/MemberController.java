@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.UsesSunHttpServer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,16 +58,25 @@ public class MemberController {
 		}
 	}
 	
+	//비밀번호 재설정
+	@RequestMapping(value="/member/changePw.kr", method=RequestMethod.GET)
+	public String showChangePwForm() {
+		return "member/changePw";
+	}
+	
+	//비밀번호재설정진행
 	@RequestMapping(value="/member/changePw.kr", method=RequestMethod.POST)
 	public String changePw(
 			@RequestParam("memberId") String memberId
 			, @RequestParam("newPW") String memberPw
+			, SessionStatus session
 			, Model model) {
 		try {
 			Member member = new Member(memberId, memberPw);
 			int result = service.changePw(member);
 			if(result > 0) {
 				model.addAttribute("msg", "비밀번호가 변경되었습니다. 로그인해주세요.");
+				this.memberLogout(session, model);
 				model.addAttribute("url", "/member/login.kr");
 				return "common/serviceSuccess";
 			} else {
@@ -80,11 +90,118 @@ public class MemberController {
 			return "common/serviceFailed";
 		}
 	}
-	//비밀번호 재설정
-	@RequestMapping(value="/member/changePw.kr", method=RequestMethod.GET)
-	public String showChangePwForm() {
-		return "member/changePw";
+	
+	//이메일주소 변경페이지 이동
+	@RequestMapping(value="/member/changeEmail.kr", method=RequestMethod.GET)
+	public ModelAndView showchangeEmailForm(
+			ModelAndView mv
+			, HttpSession session) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			if(memberId != "" && memberId != null) {
+				Member member = service.selectOneById(memberId);
+				if(member != null) {
+					mv.addObject("member", member);
+					mv.setViewName("member/changeEmail");
+				} else {
+					mv.addObject("alertMsg", "회원정보를 불러올 수 없습니다.");
+					mv.addObject("url", "/index.jsp");
+					mv.setViewName("common/serviceFailed");
+				}
+			} else {
+				mv.addObject("alertMsg", "로그인 후 이용해 주시기 바랍니다.");
+				mv.addObject("url", "/member/login.kr");
+				mv.setViewName("common/serviceFailed");
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			mv.addObject("alertMsg", "[서비스실패] 관리자에게 문의바랍니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.addObject("url", "/index.jsp");
+			mv.setViewName("common/serviceFailed");
+		}
+			
+		return mv;
 	}
+	
+	//이메일주소 변경진행
+	@RequestMapping(value="/member/changeEmail.kr", method=RequestMethod.POST)
+	public ModelAndView changeEmail(
+			ModelAndView mv
+			, @RequestParam(value="memberEmail") String memberEmail
+			, HttpSession session) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			if(memberId != "" && memberId != null) {
+				Member member = new Member();
+				member.setMemberId(memberId);
+				member.setMemberEmail(memberEmail);
+				int result = service.changeEmail(member);
+				if(result > 0) {
+					mv.addObject("msg", "이메일주소가 변경되었습니다.");
+					mv.addObject("url", "/member/myinfo.kr");
+					mv.setViewName("common/serviceSuccess");
+				} else {
+					mv.addObject("alertMsg", "이메일주소가 변경되지 않았습니다.");
+					mv.addObject("url", "/member/changeEmail.kr");
+					mv.setViewName("common/serviceFailed");
+				}
+			} else {
+				mv.addObject("alertMsg", "로그인 후 이용해 주시기 바랍니다.");
+				mv.addObject("url", "member/login.kr");
+				mv.setViewName("common/serviceFailed");
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			mv.addObject("alertMsg", "[서비스실패] 관리자에게 문의바랍니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.addObject("url", "/index.jsp");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	//회원탈퇴
+	@RequestMapping(value="/member/delete.kr", method=RequestMethod.GET) 
+	public ModelAndView deleteMember(
+			ModelAndView mv
+			, HttpSession session
+			, SessionStatus sessionStatus) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			if(memberId != "" & memberId != null) {
+				int result = service.deleteMember(memberId);
+				if(result > 0) {
+					sessionStatus.setComplete();
+					mv.addObject("msg", "회원탈퇴가 완료되었습니다.");
+					mv.addObject("url", "/member/deleteResult.kr");
+					mv.setViewName("common/serviceSuccess");
+				} else {
+					mv.addObject("alertMsg", "회원탈퇴가 완료되지 않았습니다.");
+					mv.addObject("url", "member/myinfo.kr");
+					mv.setViewName("common/serviceFailed");
+				}
+			} else {
+				mv.addObject("alertMsg", "로그인 후 이용해 주시기 바랍니다.");
+				mv.addObject("url", "/member/login.kr");
+				mv.setViewName("common/serviceFailed");
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			mv.addObject("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.addObject("url", "/index.jsp");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	//회원탈퇴 완료 페이지 이동
+	@RequestMapping(value="/member/deleteResult.kr", method=RequestMethod.GET)
+	public String showDeleteResult() {
+		return "member/deleteResult";
+	}
+	
 	// 로그인 창 이동
 	@RequestMapping(value = "/member/login.kr", method = RequestMethod.GET)
 	public String showLoginForm() {
@@ -108,11 +225,12 @@ public class MemberController {
 				return "redirect:/index.jsp";
 			} else {
 				model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
+				model.addAttribute("url", "/member/login.kr");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
@@ -163,33 +281,37 @@ public class MemberController {
 	@RequestMapping(value="/member/myPage.kr", method= {RequestMethod.GET, RequestMethod.POST})
 	public String showMyPage(
 			HttpSession session
-			, Model model
-			) {
+			, Model model) {
 		try {
 			String memberId = (String)session.getAttribute("memberId");
 			Member member = null;
 			//memberId가 session에 남아있으면 service호출
 			if(memberId != "" && memberId != null) {
 				member = service.selectOneById(memberId);				
-			}
-			//가지고온 member정보가 null이 아니면 mypage이동
-			if(member != null) {
-				model.addAttribute("member", member);
-				return "member/myPage";
+				//가지고온 member정보가 null이 아니면 mypage이동
+				if(member != null) {
+					model.addAttribute("member", member);
+					return "member/myPage";
+				} else {
+					model.addAttribute("alertMsg", "회원정보를 불러올 수 없습니다.");
+					model.addAttribute("url", "/index.jsp");
+					return "common/serviceFailed";
+				}
 			} else {
-				model.addAttribute("alertMsg", "회원정보를 불러올 수 없습니다.");
-				model.addAttribute("url", "/index.jsp");
+				model.addAttribute("alertMsg", "로그인 후 이용해 주시기 바랍니다.");
+				model.addAttribute("url", "/member/login.kr");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
-			model.addAttribute("alertMsg", "회원정보를 불러올 수 없습니다.");
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
 			model.addAttribute("msg", e.getMessage());
 			model.addAttribute("url", "/index.jsp");
 			return "common/serviceFailed";
 		}
 	}
 	
+	//마이인포 페이지 : 회원정보조회, 정보수정페이지
 	@RequestMapping(value="/member/myinfo.kr",method=RequestMethod.GET)
 	public ModelAndView showMyinfoForm(
 			ModelAndView mv
@@ -199,18 +321,22 @@ public class MemberController {
 			Member member = null;
 			if(memberId != "" && memberId != null) {
 				member = service.selectOneById(memberId);			
-			}
-			if(member != null) {
-				mv.addObject("member", member);
-				mv.setViewName("member/myInfo");
+				if(member != null) {
+					mv.addObject("member", member);
+					mv.setViewName("member/myInfo");
+				} else {
+					mv.addObject("alertMsg", "회원정보를 불러올 수 없습니다.");
+					mv.addObject("url", "/index.jsp");
+					mv.setViewName("common/serviceFailed");
+				}
 			} else {
-				mv.addObject("alertMsg", "회원정보를 불러올 수 없습니다.");
-				mv.addObject("url", "/index.jsp");
+				mv.addObject("alertMsg", "로그인 후 이용해 주시기 바랍니다.");
+				mv.addObject("url", "/member/login.kr");
 				mv.setViewName("common/serviceFailed");
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
-			mv.addObject("alertMsg", "회원정보를 불러올 수 없습니다.");
+			mv.addObject("alertMsg", "[서비스실패] 관리자에게 문의바랍니다.");
 			mv.addObject("msg", e.getMessage());
 			mv.addObject("url", "/index.jsp");
 			mv.setViewName("common/serviceFailed");
@@ -223,6 +349,7 @@ public class MemberController {
 	public String showFindIdForm() {
 		return "member/findId";
 	}
+	
 	//아이디찾기 결과
 	@RequestMapping(value="/member/findId.kr", method=RequestMethod.POST)
 	public String findId(
@@ -239,11 +366,12 @@ public class MemberController {
 				return "member/findIdResult";
 			} else {
 				model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
+				model.addAttribute("url", "/member/findId.kr");
 				return "common/serviceFailed";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
@@ -271,11 +399,12 @@ public class MemberController {
 				return "member/changePw";
 			} else {
 				model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
+				model.addAttribute("url", "/member/confirmPw.kr");
 				return "common/serviceFailed";
 			}	
 		} catch (Exception e) {
 			e.printStackTrace();
-			model.addAttribute("alertMsg", "일치하는 정보가 없습니다.");
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
 			model.addAttribute("msg", e.getMessage());
 			return "common/serviceFailed";
 		}
