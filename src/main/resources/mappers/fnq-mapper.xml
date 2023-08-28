@@ -29,6 +29,10 @@
 		DELETE FROM FNQ_TBL WHERE FNQ_NO = #{fnqNo}
 	</delete>
 	
+	<select id="selectFnqByNo" resultMap="fnqResultMap">
+		SELECT * FROM FNQ_TBL WHERE FNQ_NO = #{fnqNo}
+	</select>
+	
 	<select id="selectFnqList" resultMap="fnqResultMap">
 		SELECT * FROM FNQ_TBL ORDER BY FNQ_NO DESC
 	</select>
@@ -37,11 +41,37 @@
 		SELECT COUNT(*) FROM FNQ_TBL
 	</select>
 	
-	<select id="selectFnqByNo" resultMap="fnqResultMap">
-		SELECT * FROM FNQ_TBL WHERE FNQ_NO = #{fnqNo}
+	<select id="selectSearchListCount" resultType="_int">
+		SELECT COUNT(*) FROM FNQ_TBL
+		<if test="searchCondition == 'all'">
+			WHERE FNQ_CATEGORY LIKE '%'||#{searchKeyword}||'%' OR FNQ_SUBJECT LIKE '%'||#{searchKeyword}||'%' OR FNQ_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'category'">
+			WHERE FNQ_CATEGORY LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'title'">
+			WHERE FNQ_SUBJECT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'content'">
+			WHERE FNQ_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
 	</select>
 	
-	
+	<select id="selectFnqListByKeyword" resultMap="fnqResultMap">
+		SELECT * FROM FNQ_TBL
+		<if test="searchCondition == 'all'">
+			WHERE FNQ_CATEGORY LIKE '%'||#{searchKeyword}||'%' OR FNQ_SUBJECT LIKE '%'||#{searchKeyword}||'%' OR FNQ_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'category'">
+			WHERE FNQ_CATEGORY LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'title'">
+			WHERE FNQ_SUBJECT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'content'">
+			WHERE FNQ_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+	</select>
 	
 	
 </mapper>

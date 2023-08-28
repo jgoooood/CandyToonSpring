@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.candytoon.notice.domain.Notice;
 import kr.co.candytoon.notice.domain.NoticePageInfo;
@@ -27,7 +28,7 @@ public class NoticeController {
 	@Autowired
 	private NoticeService service;
 	
-	
+	//공지등록
 	@RequestMapping(value="/notice/insert.kr", method=RequestMethod.POST)
 	public String insertNotice(
 			Notice notice
@@ -65,7 +66,7 @@ public class NoticeController {
 		}
 	}
 
-
+	// 공지수정
 	@RequestMapping(value="/notice/modify.kr", method = RequestMethod.POST)
 	public String modifyNotice(
 			Notice notice
@@ -115,7 +116,7 @@ public class NoticeController {
 		}
 	}
 
-
+	//공지삭제
 	@RequestMapping(value="/notice/delete.kr", method=RequestMethod.GET)
 	public String deleteNotice(
 			Notice notice
@@ -171,12 +172,13 @@ public class NoticeController {
 		}
 	}
 
-
+	// 공지 등록 페이지 이동
 	@RequestMapping(value="/notice/insert.kr", method=RequestMethod.GET)
 	public String showNoticeInsertForm() {
 		return "notice/noticeInsert";
 	}
 	
+	//공지 세부내용 조회
 	@RequestMapping(value="/notice/detail.kr", method = RequestMethod.GET)
 	public String showNoticeDetail(@RequestParam("noticeNo") int noticeNo, Model model) {
 		try {
@@ -195,6 +197,7 @@ public class NoticeController {
 		}
 	}
 	
+	//공지 수정 페이지 이동
 	@RequestMapping(value="/notice/modify.kr", method = RequestMethod.GET)
 	public String showModifyForm(@RequestParam("noticeNo") int noticeNo, Model model) {
 		try {
@@ -213,12 +216,39 @@ public class NoticeController {
 		}
 	}
 	
+	//검색
 	@RequestMapping(value="/notice/search.kr", method=RequestMethod.GET)
-	public void searchNoticeList() {
-		
+	public ModelAndView searchNoticeList(
+			ModelAndView mv
+			, @RequestParam("searchKeyword") String searchKeyword
+			, @RequestParam("searchCondition") String searchCondition
+			, @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage) {
+		//Map을 이용해서 key-value값 지정
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("searchKeyword", searchKeyword);
+		paramMap.put("searchCondition", searchCondition);
+		//리스트 결과 페이징 : 검색키워드를 넘겨서 전체 행의 수 구하기
+		int totalCount = service.getSearchListCount(paramMap);
+		//getPageInfo메소드를 호출해서 네비게이터 정보 받기
+		NoticePageInfo pInfo = this.getPageInfo(currentPage, totalCount);
+		//검색결과 불러오기->map정보와 네비게이터 정보 넘기기
+		List<Notice> searchList = service.searchNoticesByKeyword(pInfo, paramMap);
+		if(!searchList.isEmpty()) {
+			//검색조건, 검색키워드, 페이징정보, 리스트 넘기기
+			mv.addObject("searchKeyword", searchKeyword);
+			mv.addObject("searchCondition", searchCondition);
+			mv.addObject("pInfo", pInfo);
+			mv.addObject("sList", searchList);
+			mv.setViewName("notice/noticeSearchList");
+		} else {
+			mv.addObject("alertMsg", "검색 정보를 불러올 수 없습니다.");
+			mv.addObject("url", "/notice/list.kr");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
 	}
 
-
+	//파일저장 메소드
 	private Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
 		Map<String, Object> infoMap = new HashMap<String, Object>();
 		// 파일경로와 이름 생성

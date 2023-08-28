@@ -1,6 +1,7 @@
 package kr.co.candytoon.ask.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,23 @@ public class AskServiceImpl implements AskService{
 	}
 
 	@Override
+	public Ask selecAskByNo(Ask askNo) {
+		Ask askOne = aStore.selecAskByNo(session, askNo);
+		return askOne;
+	}
+
+	@Override
 	public List<Ask> selectAskList(AskPageInfo pInfo) {
 		List<Ask> aList = aStore.selectAskList(session, pInfo);
 		return aList;
 	}
-	
+
+	@Override
+	public List<Ask> selectAskListByKeyword(AskPageInfo pInfo, Map<String, Object> paramMap) {
+		List<Ask> searchList = aStore.selectAskListByKeyword(session, pInfo, paramMap);
+		return searchList;
+	}
+
 	@Override
 	public int getListCount() {
 		int result = aStore.selectListCount(session);
@@ -51,9 +64,9 @@ public class AskServiceImpl implements AskService{
 	}
 
 	@Override
-	public Ask selecAskByNo(Ask askNo) {
-		Ask askOne = aStore.selecAskByNo(session, askNo);
-		return askOne;
+	public int getSearchListCount(Map<String, Object> paramMap) {
+		int totalCount = aStore.selectSearchListCount(session, paramMap);
+		return totalCount;
 	}
 
 

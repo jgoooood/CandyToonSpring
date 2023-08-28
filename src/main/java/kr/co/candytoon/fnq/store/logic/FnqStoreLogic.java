@@ -1,6 +1,7 @@
 package kr.co.candytoon.fnq.store.logic;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -32,6 +33,12 @@ public class FnqStoreLogic implements FnqStore {
 	}
 
 	@Override
+	public Fnq selectFnqByNo(SqlSession session, Fnq fnqNo) {
+		Fnq fnq = session.selectOne("FnqMapper.selectFnqByNo", fnqNo);
+		return fnq;
+	}
+
+	@Override
 	public List<Fnq> selectFnqList(SqlSession session, FnqPageInfo pInfo) {
 		int limit = pInfo.getRecordCountPerPage();
 		int offset = (pInfo.getCurrentPage() - 1) * limit;
@@ -41,15 +48,24 @@ public class FnqStoreLogic implements FnqStore {
 	}
 
 	@Override
+	public List<Fnq> selectFnqListByKeyword(SqlSession session, FnqPageInfo pInfo, Map<String, Object> paramMap) {
+		int limit = pInfo.getRecordCountPerPage();
+		int offset = (pInfo.getCurrentPage() - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		List<Fnq> searchList = session.selectList("FnqMapper.selectFnqListByKeyword", paramMap, rowBounds);
+		return searchList;
+	}
+
+	@Override
 	public int selectListCount(SqlSession session) {
 		int totalCount = session.selectOne("FnqMapper.selectListCount");
 		return totalCount;
 	}
 
 	@Override
-	public Fnq selectFnqByNo(SqlSession session, Fnq fnqNo) {
-		Fnq fnq = session.selectOne("FnqMapper.selectFnqByNo", fnqNo);
-		return fnq;
+	public int selectSearchListCount(SqlSession session, Map<String, Object> paramMap) {
+		int totalCount = session.selectOne("FnqMapper.selectSearchListCount", paramMap);
+		return totalCount;
 	}
 	
 	

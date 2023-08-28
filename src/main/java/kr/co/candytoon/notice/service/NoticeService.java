@@ -1,6 +1,7 @@
 package kr.co.candytoon.notice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.co.candytoon.notice.domain.Notice;
 import kr.co.candytoon.notice.domain.NoticePageInfo;
@@ -36,7 +37,7 @@ public interface NoticeService {
 	List<Notice> selectNoticeList(NoticePageInfo pInfo);
 
 	/**
-	 * 공지사항 전체 행 구하는 Service
+	 * 공지사항 전체 행 구하기 Service
 	 * @return
 	 */
 	int getListCount();
@@ -47,5 +48,20 @@ public interface NoticeService {
 	 * @return
 	 */
 	Notice selectNoticeByNo(int noticeNo);
+
+	/**
+	 * 검색결과에 따른 전체 행 구하기 Service
+	 * @param paramMap
+	 * @return
+	 */
+	int getSearchListCount(Map<String, Object> paramMap);
+
+	/**
+	 * 검색결과 리스트 출력 Service
+	 * @param pInfo
+	 * @param paramMap
+	 * @return
+	 */
+	List<Notice> searchNoticesByKeyword(NoticePageInfo pInfo, Map<String, Object> paramMap);
 
 }

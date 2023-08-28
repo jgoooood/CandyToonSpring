@@ -1,6 +1,7 @@
 package kr.co.candytoon.fnq.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,21 @@ public class FnqServiceImpl implements FnqService{
 	}
 
 	@Override
+	public Fnq selectFnqByNo(Fnq fnqNo) {
+		Fnq fnq = fStore.selectFnqByNo(session, fnqNo);
+		return fnq;
+	}
+
+	@Override
 	public List<Fnq> selectFnqList(FnqPageInfo pInfo) {
 		List<Fnq> fList = fStore.selectFnqList(session, pInfo);
 		return fList;
+	}
+
+	@Override
+	public List<Fnq> selectFnqListByKeyword(FnqPageInfo pInfo, Map<String, Object> paramMap) {
+		List<Fnq> searchList = fStore.selectFnqListByKeyword(session, pInfo, paramMap);
+		return searchList;
 	}
 
 	@Override
@@ -50,9 +63,9 @@ public class FnqServiceImpl implements FnqService{
 	}
 
 	@Override
-	public Fnq selectFnqByNo(Fnq fnqNo) {
-		Fnq fnq = fStore.selectFnqByNo(session, fnqNo);
-		return fnq;
+	public int getSearchListCount(Map<String, Object> paramMap) {
+		int totalCount = fStore.selectSearchListCount(session, paramMap);
+		return totalCount;
 	}
 
 }

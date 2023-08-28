@@ -33,15 +33,15 @@
 	            <div id="centerSearch">
 	            	<form action="/fnq/search.kr" method="get">
 	        			<div id= "searchKeyword">
-	                		<input type="search" name="searchKeyword" placeholder="궁금한 점을 검색해 보세요.">
+	                		<input type="search" name="searchKeyword" value="${searchKeyword }" placeholder="궁금한 점을 검색해 보세요.">
 	          				<img src="../resources/images/icons/centerSearch.png" alt="검색">
 	        			</div>
 	        			<div id = "searchCondition">
 		             		<select name="searchCondition" style="height:30px">
-		             			<option value="all">전체</option>
-								<option value="category">유형</option>
-								<option value="title">제목</option>
-								<option value="content">내용</option>
+		             			<option value="all" <c:if test="${searchCondition == 'all'}"> selected </c:if>>전체</option>
+								<option value="category" <c:if test="${searchCondition == 'category'}"> selected </c:if>>유형</option>
+								<option value="title" <c:if test="${searchCondition == 'title'}"> selected </c:if>>제목</option>
+								<option value="content" <c:if test="${searchCondition == 'content'}"> selected </c:if>>내용</option>
 		             		</select>
 	        			</div>
 	                </form>
@@ -66,9 +66,9 @@
 	                    </tr>
                 	</thead>
                 	<tbody>
-                		<c:forEach items="${fList }" var="fnq" >
+                		<c:forEach items="${sList }" var="fnq" varStatus="i">
 		                    <tr>
-		                        <td>${fnq.fnqNo }</td>
+		                        <td>${i.count }</td>
 		                        <td>${fnq.fnqCategory }</td>
 		                        <td><a href="/fnq/detail.kr?fnqNo=${fnq.fnqNo }">${fnq.fnqSubject }</a></td>
 		                        <td>
@@ -90,20 +90,26 @@
                 <ul>
                     <li>
                     <c:if test="${pInfo.startNavi ne 1}">
-                    	<c:url value="/fnq/list.kr" var="pageUrl">
+                    	<c:url value="/fnq/search.kr" var="pageUrl">
                     		<c:param name="page" value="${pInfo.startNavi -1}"></c:param>
+                    		<c:param name="searchKeyword" value="${searchKeyword}"></c:param>
+                   			<c:param name="searchCondition" value="${searchCondition}"></c:param>
                     	</c:url>
                     	<a href="${pageUrl}">이전</a>
                     </c:if>
                     <c:forEach begin="${pInfo.startNavi }" end="${pInfo.endNavi }" var="p">
-                    	<c:url value="/fnq/list.kr" var="pageUrl">
+                    	<c:url value="/fnq/search.kr" var="pageUrl">
                     		<c:param name="page" value="${p }"></c:param>
+					 		<c:param name="searchKeyword" value="${searchKeyword}"></c:param>
+                    		<c:param name="searchCondition" value="${searchCondition}"></c:param>
                     	</c:url>
                     	<a href="${pageUrl }">${p } </a>
                     </c:forEach>
                     <c:if test="${pInfo.endNavi ne pInfo.naviTotalCount }">
-                    	<c:url value="/fnq/list.kr" var="pageUrl">
+                    	<c:url value="/fnq/search.kr" var="pageUrl">
                     		<c:param name="page" value="${pInfo.endNavi +1 }"></c:param>
+                    		<c:param name="searchKeyword" value="${searchKeyword}"></c:param>
+                   			<c:param name="searchCondition" value="${searchCondition}"></c:param>
                     	</c:url>
                     	<a href="${pageUrl }">다음</a>
                     </c:if>

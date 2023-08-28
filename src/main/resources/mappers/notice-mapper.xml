@@ -17,21 +17,9 @@
 		
 	</resultMap>
 	
-	<select id="selectNoticeList" resultMap="noticeResultMap">
-		SELECT * FROM NOTICE_TBL ORDER BY NOTICE_NO DESC
-	</select>
-	
-	<select id="selectListCount" resultType="_int">
-		SELECT COUNT(*) FROM NOTICE_TBL
-	</select>
-	
 	<insert id="insertNotice">
 		INSERT INTO NOTICE_TBL VALUES(SEQ_NOTICENO.NEXTVAL, #{noticeSubject}, #{noticeContent}, 'admin', DEFAULT, DEFAULT, #{noticeFileName}, #{noticeFileRename}, #{noticeFilePath}, #{noticeFileLength})
 	</insert>
-	
-	<select id="selectNoticeByNo" resultMap="noticeResultMap">
-		SELECT * FROM NOTICE_TBL WHERE NOTICE_NO = #{noticeNo}
-	</select>
 	
 	<update id="updateNotice">
 		UPDATE NOTICE_TBL SET NOTICE_SUBJECT = #{noticeSubject}, NOTICE_CONTENT=#{noticeContent}, NOTICE_UPDATE = DEFAULT, NOTICE_FILENAME = #{noticeFileName}, NOTICE_FILERENAME = #{noticeFileRename}, NOTICE_FILEPATH = #{noticeFilePath}, NOTICE_FILELENGTH = #{noticeFileLength} WHERE NOTICE_NO = #{noticeNo}
@@ -40,4 +28,47 @@
 	<delete id="deleteNotice">
 		DELETE FROM NOTICE_TBL WHERE NOTICE_NO = #{noticeNo}
 	</delete>
+	
+	<select id="selectNoticeList" resultMap="noticeResultMap">
+		SELECT * FROM NOTICE_TBL ORDER BY NOTICE_NO DESC
+	</select>
+	
+	<select id="selectNoticeByNo" resultMap="noticeResultMap">
+		SELECT * FROM NOTICE_TBL WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE_TBL
+	</select>
+	
+	<!-- 검색mapper : 검색조건, 키워드에 따라 검색결과가 달라지고 행의 갯수도 달라지는 동적쿼리 적용 필요 -->
+	<!-- 검색조건(searchCondition)을 if문으로 적용->searchKeyword가 where조건절이 됨 -->
+	<select id="selectSearchListCount" resultType="_int">
+		SELECT COUNT(*) FROM NOTICE_TBL
+		<if test="searchCondition == 'all'">
+			WHERE NOTICE_SUBJECT LIKE '%'||#{searchKeyword}||'%' OR NOTICE_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'title'">
+			WHERE NOTICE_SUBJECT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'content'">
+			WHERE NOTICE_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if> 
+	</select>
+	
+	<select id="searchNoticesByKeyword" resultMap="noticeResultMap">
+		SELECT * FROM NOTICE_TBL
+		<if test="searchCondition == 'all'">
+			WHERE NOTICE_SUBJECT LIKE '%'||#{searchKeyword}||'%' OR NOTICE_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'title'">
+			WHERE NOTICE_SUBJECT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test="searchCondition == 'content'">
+			WHERE NOTICE_CONTENT LIKE '%'||#{searchKeyword}||'%'
+		</if>
+	</select>
+	
+	
+	
 </mapper>

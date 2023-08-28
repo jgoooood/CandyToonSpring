@@ -1,6 +1,7 @@
 package kr.co.candytoon.fnq.store;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -42,7 +43,16 @@ public interface FnqStore {
 	List<Fnq> selectFnqList(SqlSession session, FnqPageInfo pInfo);
 
 	/**
-	 * 전체 게시물 수 구하는 Store
+	 * 검색결과 출력 Store
+	 * @param session
+	 * @param pInfo
+	 * @param paramMap
+	 * @return
+	 */
+	List<Fnq> selectFnqListByKeyword(SqlSession session, FnqPageInfo pInfo, Map<String, Object> paramMap);
+
+	/**
+	 * 전체 게시물 수 구하기 Store
 	 * @return
 	 */
 	int selectListCount(SqlSession session);
@@ -54,5 +64,13 @@ public interface FnqStore {
 	 * @return
 	 */
 	Fnq selectFnqByNo(SqlSession session, Fnq fnqNo);
+
+	/**
+	 * 검색결과 전체 행 구하기 Store
+	 * @param session
+	 * @param paramMap
+	 * @return
+	 */
+	int selectSearchListCount(SqlSession session, Map<String, Object> paramMap);
 
 }

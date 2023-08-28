@@ -33,14 +33,14 @@
 	            <div id="centerSearch">
 	            	<form action="/notice/search.kr" method="get">
 	        			<div id= "searchKeyword">
-	                		<input type="search" name="searchKeyword" placeholder="궁금한 점을 검색해 보세요.">
+	                		<input type="search" name="searchKeyword" value="${searchKeyword}" placeholder="궁금한 점을 검색해 보세요.">
 	          				<img src="../resources/images/icons/centerSearch.png" alt="검색">
 	        			</div>
 	        			<div id = "searchCondition">
 		             		<select name="searchCondition" style="height:30px">
-		             			<option value="all">전체</option>
-								<option value="title">제목</option>
-								<option value="content">내용</option>
+		             			<option value="all" <c:if test="${searchCondition == 'all'}"> selected </c:if>>전체</option>
+								<option value="title" <c:if test="${searchCondition == 'title' }"> selected </c:if>>제목</option>
+								<option value="content" <c:if test="${searchCondition == 'content' }"> selected </c:if>>내용</option>
 		             		</select>
 	        			</div>
 	                </form>
@@ -63,9 +63,9 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                	<c:forEach items="${nList}" var="notice">
+	                	<c:forEach items="${sList}" var="notice" varStatus="i">
 		                    <tr>
-		                        <td>${notice.noticeNo }</td>
+		                        <td>${i.count }</td>
 		                        <td><a href="/notice/detail.kr?noticeNo=${notice.noticeNo }">${notice.noticeSubject }</a></td>
 		                        <td>
 		                        	<c:if test="${notice.noticeFileName ne null}">
@@ -87,21 +87,27 @@
             <div id="pages">
                 <ul>
                 	<li>
-                		<c:if test="${pInfo.startNavi != 1 }">
-                			<c:url var="pageUrl" value="/notice/list.kr" >
+                		<c:if test="${pInfo.startNavi ne 1 }">
+                			<c:url var="pageUrl" value="/notice/search.kr" >
                 				<c:param name="page" value="${pInfo.startNavi -1 }"></c:param>
+                				<c:param name="searchKeyword" value="${searchKeyword}"></c:param>
+                    			<c:param name="searchCondition" value="${searchCondition}"></c:param>
                 			</c:url>
                 			<a href="${pageUrl }">이전</a>
                     	</c:if>
                     	<c:forEach begin="${pInfo.startNavi}" end="${pInfo.endNavi }" var="p">
-                    		<c:url var="pageUrl" value="/notice/list.kr">
+                    		<c:url var="pageUrl" value="/notice/search.kr">
                     			<c:param name="page" value="${p }"></c:param>
+						 		<c:param name="searchKeyword" value="${searchKeyword}"></c:param>
+                    			<c:param name="searchCondition" value="${searchCondition}"></c:param>
                     		</c:url>
                     		<a href="${pageUrl}">${p }</a>
                     	</c:forEach>
-                    	<c:if test="${pInfo.endNavi != pInfo.naviTotalCount }">
-                			<c:url var="pageUrl" value="/notice/list.kr" >
+                    	<c:if test="${pInfo.endNavi ne pInfo.naviTotalCount }">
+                			<c:url var="pageUrl" value="/notice/search.kr" >
                 				<c:param name="page" value="${pInfo.endNavi +1 }"></c:param>
+                				<c:param name="searchKeyword" value="${searchKeyword}"></c:param>
+                    			<c:param name="searchCondition" value="${searchCondition}"></c:param>
                 			</c:url>
                 			<a href="${pageUrl }">다음</a>
                     	</c:if>

@@ -1,6 +1,7 @@
 package kr.co.candytoon.notice.store;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -42,7 +43,7 @@ public interface NoticeStore {
 	List<Notice> selectNoticeList(SqlSession session, NoticePageInfo pInfo);
 
 	/**
-	 * 공지사항 전체 행 구하는 Store
+	 * 공지사항 전체 행 구하기 Store
 	 * @param session
 	 * @return
 	 */
@@ -55,5 +56,22 @@ public interface NoticeStore {
 	 * @return
 	 */
 	Notice selectNoticeByNo(SqlSession session, int noticeNo);
+
+	/**
+	 * 검색결과에 따른 전체 행 구하기 Store
+	 * @param session
+	 * @param paramMap
+	 * @return
+	 */
+	int selectSearchListCount(SqlSession session, Map<String, Object> paramMap);
+
+	/**
+	 * 검색결과 리스트 출력 Store
+	 * @param session
+	 * @param pInfo
+	 * @param paramMap
+	 * @return
+	 */
+	List<Notice> searchNoticesByKeyword(SqlSession session, NoticePageInfo pInfo, Map<String, Object> paramMap);
 
 }

@@ -4,22 +4,6 @@ a:link, a:visited {
     text-decoration: none;
 }
 
- /* 고객센터 */
-/*  #customerCenter { */
-/*      width: 500px; */
-/*      height: 50px; */
-/*      float: right; */
-/*  } */
-/*  #customerCenter ul li { */
-/*      float: right; */
-/*      margin-right: 0; */
-/*  } */
-/*  #customerCenter ul li a { */
-/*      text-align: right; */
-/*      float: right; */
-/*      margin-left: 20px; */
-/*  } */
-
 main {
     width: 900px;
     height: 600px;
@@ -34,7 +18,7 @@ main {
 }
 
     #centerMenu  {
-        width: 500px;
+        width: 400px;
         height: 50px;
         float: left;
     }
@@ -57,12 +41,26 @@ main {
     }
 
     #centerSearch {
-        padding-top: 20px;
+        padding-top: 10px;
         width: 400px;
         height: 50px;
         float: right;
         position: relative;
     }
+    	#searchCondition {
+    		padding-top: 10px;
+    		width: 70px;
+    		height: 40px;
+    		float: right;
+    	}
+    	
+    	#searchKeyword {
+    		padding-top: 10px;
+    		width:250px;
+    		height: 40px;
+    		float: right;
+    	}
+    	
         #centerSearch input {
             float: right;
             padding: 5px 5px 5px 35px;

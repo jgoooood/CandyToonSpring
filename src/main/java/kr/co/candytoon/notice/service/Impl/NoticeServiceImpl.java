@@ -1,6 +1,7 @@
 package kr.co.candytoon.notice.service.Impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -53,5 +54,17 @@ public class NoticeServiceImpl implements NoticeService{
 	public Notice selectNoticeByNo(int noticeNo) {
 		Notice notice = nStore.selectNoticeByNo(session, noticeNo);
 		return notice;
+	}
+
+	@Override
+	public int getSearchListCount(Map<String, Object> paramMap) {
+		int totalCount = nStore.selectSearchListCount(session, paramMap);
+		return totalCount;
+	}
+
+	@Override
+	public List<Notice> searchNoticesByKeyword(NoticePageInfo pInfo, Map<String, Object> paramMap) {
+		List<Notice> searchList = nStore.searchNoticesByKeyword(session, pInfo, paramMap);
+		return searchList;
 	}
 }

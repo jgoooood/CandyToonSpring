@@ -1,6 +1,7 @@
 package kr.co.candytoon.ask.store.logic;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -56,6 +57,21 @@ public class AskStoreLogic implements AskStore {
 	public Ask selecAskByNo(SqlSession session, Ask askNo) {
 		Ask askOne = session.selectOne("AskMapper.selecAskByNo", askNo);
 		return askOne;
+	}
+
+	@Override
+	public int selectSearchListCount(SqlSession session, Map<String, Object> paramMap) {
+		int totalCount = session.selectOne("AskMapper.selectSearchListCount", paramMap);
+		return totalCount;
+	}
+
+	@Override
+	public List<Ask> selectAskListByKeyword(SqlSession session, AskPageInfo pInfo, Map<String, Object> paramMap) {
+		int limit = pInfo.getRecordCountPerPage();
+		int offset = (pInfo.getCurrentPage() -1)*limit; 
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		List<Ask> searchList = session.selectList("AskMapper.selectAskListByKeyword", paramMap, rowBounds);
+		return searchList;
 	}
 
 	

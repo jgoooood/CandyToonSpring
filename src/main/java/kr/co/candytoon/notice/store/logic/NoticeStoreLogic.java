@@ -1,6 +1,7 @@
 package kr.co.candytoon.notice.store.logic;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -51,6 +52,21 @@ public class NoticeStoreLogic implements NoticeStore {
 	public Notice selectNoticeByNo(SqlSession session, int noticeNo) {
 		Notice notice = session.selectOne("NoticeMapper.selectNoticeByNo", noticeNo);
 		return notice;
+	}
+
+	@Override
+	public int selectSearchListCount(SqlSession session, Map<String, Object> paramMap) {
+		int searchTotalCount = session.selectOne("NoticeMapper.selectSearchListCount", paramMap);
+		return searchTotalCount;
+	}
+
+	@Override
+	public List<Notice> searchNoticesByKeyword(SqlSession session, NoticePageInfo pInfo, Map<String, Object> paramMap) {
+		int limit = pInfo.getRecordCountPerPage();
+		int offset = (pInfo.getCurrentPage() - 1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		List<Notice> searchList = session.selectList("NoticeMapper.searchNoticesByKeyword", paramMap, rowBounds);
+		return searchList;
 	}
 
 }

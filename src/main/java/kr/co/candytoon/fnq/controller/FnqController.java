@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.candytoon.fnq.domain.Fnq;
 import kr.co.candytoon.fnq.domain.FnqPageInfo;
@@ -27,6 +28,13 @@ public class FnqController {
 	@Autowired
 	private FnqService service;
 	
+	//fnq등록페이지 이동
+	@RequestMapping(value="/fnq/insert.kr", method=RequestMethod.GET)
+	public String showFnqInsertForm() {
+		return "fnq/fnqInsert";
+	}
+
+	//fnq 등록
 	@RequestMapping(value="/fnq/insert.kr", method=RequestMethod.POST)
 	public String insertFnq(
 			Fnq fnq
@@ -57,7 +65,28 @@ public class FnqController {
 			return "common/serviceFailed";
 		}
 	}
+	
+	//수정페이지 이동
+	@RequestMapping(value="/fnq/modify.kr", method=RequestMethod.GET)
+	public String showModifyForm(Fnq fnqNo, Model model) {
+		try {
+			Fnq fnq = service.selectFnqByNo(fnqNo);
+			if(fnq != null) {
+				model.addAttribute("fnq", fnq);
+				return "fnq/fnqModify";
+			} else {
+				model.addAttribute("alertMsg", "상세 내용을 불러올 수 없습니다.");
+				model.addAttribute("url", "/index.jsp");
+				return "common/serviceFailed";
+			}		
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
 
+	//수정
 	@RequestMapping(value="/fnq/modify.kr", method=RequestMethod.POST)
 	public String modifyFnq(
 			Fnq fnq
@@ -97,16 +126,120 @@ public class FnqController {
 		}
 	}
 
-	private void deleteFile(HttpServletRequest request, String existedfileName) {
-		// request : 경로가져오기
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String delFilepath = root+"\\uploadFiles\\"+existedfileName;
-		File file = new File(delFilepath);
-		if(file.exists()) {
-			file.delete();			
+	//fnq 삭제
+	@RequestMapping(value="/fnq/delete.kr", method=RequestMethod.GET)
+	public String deleteFnq(Fnq fnqNo, Model model) {
+		try {
+			int result = service.deleteFnq(fnqNo);
+			if (result > 0) {
+				model.addAttribute("msg", "삭제가 완료되었습니다.");
+				model.addAttribute("url", "/fnq/list.kr");
+				return "common/serviceSuccess";
+			} else {
+				model.addAttribute("alertMsg", "삭제가 완료되지 않았습니다.");
+				model.addAttribute("url", "/fnq/list.kr");
+				model.addAttribute("msg", "삭제가 완료되지 않았습니다.");
+				return "common/serviceFailed";
+			}
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+		
+	}
+
+	//목록조회
+	@RequestMapping(value="/fnq/list.kr", method=RequestMethod.GET)
+	public String showFnqList(
+			@RequestParam(value = "page", required=false, defaultValue="1") int currentPage
+			, Model model) {
+		try {
+			int totalCount = service.getTotalCount();
+			FnqPageInfo pInfo = getPageInfo(currentPage, totalCount);
+			List<Fnq> fList = service.selectFnqList(pInfo);
+			if(fList.size() > 0) {
+				model.addAttribute("pInfo", pInfo);
+				model.addAttribute("fList", fList);
+				return "fnq/fnqList";
+			} else {
+				model.addAttribute("alertMsg", "FnQ 내역을 불러올 수 없습니다.");
+				model.addAttribute("url", "/index.jsp");
+				return "common/serviceFailed";
+			}	
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
+		}
+	}
+	
+	//fnq상세페이지 조회
+	@RequestMapping(value="/fnq/detail.kr", method=RequestMethod.GET)
+	public String showDetailForm(Fnq fnqNo, Model model) {
+		try {
+			Fnq fnq = service.selectFnqByNo(fnqNo);
+			if(fnq != null) {
+				model.addAttribute("fnq", fnq);
+				return "fnq/fnqDetail";
+			} else {
+				model.addAttribute("alertMsg", "상세 내용을 불러올 수 없습니다.");
+				model.addAttribute("url", "/fnq/list.kr");
+				return "common/serviceFailed";
+			}		
+		} catch (Exception e) {
+			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			model.addAttribute("msg", e.getMessage());
+			return "common/serviceFailed";
 		}
 	}
 
+	//검색
+	@RequestMapping(value="/fnq/search.kr", method=RequestMethod.GET)
+	public ModelAndView searchFnqList(
+			ModelAndView mv
+			, @RequestParam("searchKeyword") String searchKeyword
+			, @RequestParam("searchCondition") String searchCondition
+			, @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage) {
+		//검색조건, 검색키워드 MAP에 저장
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("searchKeyword", searchKeyword);
+		paramMap.put("searchCondition", searchCondition);
+		//페이징처리를 위한 검색결과 개수 구하기
+		int totalCount = service.getSearchListCount(paramMap);
+		FnqPageInfo pInfo = this.getPageInfo(currentPage, totalCount);
+		List<Fnq> searchList = service.selectFnqListByKeyword(pInfo, paramMap);
+		if(!searchList.isEmpty()) {
+			mv.addObject("searchKeyword", searchKeyword);
+			mv.addObject("searchCondition", searchCondition);
+			mv.addObject("sList", searchList);
+			mv.addObject("pInfo", pInfo);
+			mv.setViewName("fnq/fnqSearchList");
+		} else {
+			mv.addObject("alertMsg", "검색 결과를 불러올 수 없습니다.");
+			mv.addObject("url", "/fnq/list.kr");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	//페이징
+	private FnqPageInfo getPageInfo(int currentPage, int totalCount) {
+		//고정값
+		int recordCountPerPage = 5;
+		int naviCountPerPage = 5;
+		//계산식
+		int naviTotalCount = (int)((double)totalCount / recordCountPerPage + 0.9);
+		int startNavi = (((int)((double)currentPage / naviCountPerPage + 0.9))-1) * naviCountPerPage +1;
+		int endNavi = startNavi + naviCountPerPage -1;
+		if(endNavi > naviTotalCount) {
+			endNavi = naviTotalCount;
+		}
+		FnqPageInfo pInfo = new FnqPageInfo(currentPage, totalCount, recordCountPerPage, naviCountPerPage, naviTotalCount, startNavi, endNavi);
+		return pInfo;
+	}
+
+	//파일저장
 	private Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
 		Map<String, Object> infoMap = new HashMap<String, Object>();
 		//업로드 파일 파일명, 저장할 폴더 지정
@@ -136,107 +269,14 @@ public class FnqController {
 		return infoMap;
 	}
 
-	@RequestMapping(value="/fnq/delete.kr", method=RequestMethod.GET)
-	public String deleteFnq(Fnq fnqNo, Model model) {
-		try {
-			int result = service.deleteFnq(fnqNo);
-			if (result > 0) {
-				model.addAttribute("msg", "삭제가 완료되었습니다.");
-				model.addAttribute("url", "/fnq/list.kr");
-				return "common/serviceSuccess";
-			} else {
-				model.addAttribute("alertMsg", "삭제가 완료되지 않았습니다.");
-				model.addAttribute("url", "/fnq/list.kr");
-				model.addAttribute("msg", "삭제가 완료되지 않았습니다.");
-				return "common/serviceFailed";
-			}
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-		
-	}
-
-	@RequestMapping(value="/fnq/list.kr", method=RequestMethod.GET)
-	public String showFnqList(
-			@RequestParam(value = "page", required=false, defaultValue="1") int currentPage
-			, Model model) {
-		try {
-			int totalCount = service.getTotalCount();
-			FnqPageInfo pInfo = getPageInfo(currentPage, totalCount);
-			List<Fnq> fList = service.selectFnqList(pInfo);
-			if(fList.size() > 0) {
-				model.addAttribute("pInfo", pInfo);
-				model.addAttribute("fList", fList);
-				return "fnq/fnqList";
-			} else {
-				model.addAttribute("alertMsg", "FnQ 내역을 불러올 수 없습니다.");
-				model.addAttribute("url", "/index.jsp");
-				return "common/serviceFailed";
-			}	
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-	
-	private FnqPageInfo getPageInfo(int currentPage, int totalCount) {
-		//고정값
-		int recordCountPerPage = 5;
-		int naviCountPerPage = 5;
-		//계산식
-		int naviTotalCount = (int)((double)totalCount / recordCountPerPage + 0.9);
-		int startNavi = (((int)((double)currentPage / naviCountPerPage + 0.9))-1) * naviCountPerPage +1;
-		int endNavi = startNavi + naviCountPerPage -1;
-		if(endNavi > naviTotalCount) {
-			endNavi = naviTotalCount;
-		}
-		FnqPageInfo pInfo = new FnqPageInfo(currentPage, totalCount, recordCountPerPage, naviCountPerPage, naviTotalCount, startNavi, endNavi);
-		return pInfo;
-	}
-
-	@RequestMapping(value="/fnq/insert.kr", method=RequestMethod.GET)
-	public String showFnqInsertForm() {
-		return "fnq/fnqInsert";
-	}
-	
-	@RequestMapping(value="/fnq/detail.kr", method=RequestMethod.GET)
-	public String showDetailForm(Fnq fnqNo, Model model) {
-		try {
-			Fnq fnq = service.selectFnqByNo(fnqNo);
-			if(fnq != null) {
-				model.addAttribute("fnq", fnq);
-				return "fnq/fnqDetail";
-			} else {
-				model.addAttribute("alertMsg", "상세 내용을 불러올 수 없습니다.");
-				model.addAttribute("url", "/fnq/list.kh");
-				return "common/serviceFailed";
-			}		
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
-		}
-	}
-	
-	@RequestMapping(value="/fnq/modify.kr", method=RequestMethod.GET)
-	public String showModifyForm(Fnq fnqNo, Model model) {
-		try {
-			Fnq fnq = service.selectFnqByNo(fnqNo);
-			if(fnq != null) {
-				model.addAttribute("fnq", fnq);
-				return "fnq/fnqModify";
-			} else {
-				model.addAttribute("alertMsg", "상세 내용을 불러올 수 없습니다.");
-				model.addAttribute("url", "/index.jsp");
-				return "common/serviceFailed";
-			}		
-		} catch (Exception e) {
-			model.addAttribute("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
-			model.addAttribute("msg", e.getMessage());
-			return "common/serviceFailed";
+	//파일삭제
+	private void deleteFile(HttpServletRequest request, String existedfileName) {
+		// request : 경로가져오기
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String delFilepath = root+"\\uploadFiles\\"+existedfileName;
+		File file = new File(delFilepath);
+		if(file.exists()) {
+			file.delete();			
 		}
 	}
 }
