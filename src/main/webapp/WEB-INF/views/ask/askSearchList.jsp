@@ -6,8 +6,17 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/ask.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/list.css">
         <title>CANDYTOON</title>
+        <style>
+        	#centerMenu li:last-child {
+        		background-color: rgb(252, 117, 7);
+    		}
+
+    		#centerMenu li:last-child a {
+        		color: white;
+    		}
+        </style>
     <body>
          <!-- 헤더, 네비 -->
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -44,7 +53,7 @@
 	                </form>
 	            </div>
         	</div>
-            <div id = "ask">      
+            <div id = "board">      
                 <table>
                 	<colgroup>
                 		<col width="10%">
@@ -80,7 +89,7 @@
                 </table>
             </div>
             <div>    
-                <a id ="askBtn" href="/ask/insert.kr">문의등록</a>
+                <a id ="boardBtn" href="/ask/insert.kr">문의등록</a>
             </div>
             <div id="pages">
                 <ul>

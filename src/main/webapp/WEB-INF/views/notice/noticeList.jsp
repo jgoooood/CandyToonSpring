@@ -6,8 +6,17 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/notice.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/list.css">
         <title>CANDYTOON</title>
+        <style>
+        	#centerMenu li:first-child {
+        		background-color: rgb(252, 117, 7);
+    		}
+
+    		#centerMenu li:first-child a {
+        		color: white;
+    		}
+        </style>
     <body>
        <!-- 헤더, 네비 -->
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -46,7 +55,7 @@
 	                </form>
 	            </div>
         	</div>
-            <div id = "notice">
+            <div id = "board">
                 <table>
                 	<colgroup>
                 		<col width="15%">
@@ -82,7 +91,7 @@
                 </table>
             </div>
             <div>    
-                <a id="noticeBtn" href="/notice/insert.kr">공지등록</a>
+                <a id="boardBtn" href="/notice/insert.kr">공지등록</a>
             </div>
             <div id="pages">
                 <ul>

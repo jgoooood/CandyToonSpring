@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/askForm.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -16,7 +16,7 @@
             <form action="/ask/modify.kr" method="post" enctype="multipart/form-data">
 		        <c:if test="${sessionScope.memberId ne null }">
 		            <h1>문의내역 수정</h1>
-		            <div id="askForm">
+		            <div id="form">
 		            	<input type="hidden" name="askWriter" value="${sessionScope.memberId}">
 		            	<input type="hidden" name="askNo" value="${ask.askNo}">
 		            	<input type="hidden" name="askFileName"   value="${ask.askFileName}">
@@ -25,7 +25,7 @@
 			            <input type="hidden" name="askFileLength" value="${ask.askFileLength}">
 		                <table>
 		                    <tr>
-		                        <th id="askType">문의유형</th>
+		                        <th id="category">문의유형</th>
 		                        <td>
 		                            <select id="selectType" name="askCategory" required>
 		                                <option value="결제/환불">결제/환불</option>
@@ -35,11 +35,11 @@
 		                            </select>
 		                        </td>
 		                    </tr>
-		                    <tr id="askTitle">
+		                    <tr id="title">
 		                        <th>제목</th>
 		                        <td><input type="text" name="askSubject" required placeholder="제목을 입력해주세요." value="${ask.askSubject }"></td>
 		                    </tr>
-		                    <tr id="askContent">
+		                    <tr id="content">
 		                        <th>내용</th>
 		                        <td><textarea name="askContent" placeholder="문의하실 내용을 입력해주세요." required>${ask.askContent }</textarea></td>
 		                    </tr>
@@ -62,7 +62,7 @@
 		                </table>
 		            </div>
 		            <div>
-		                <button id="askBtn" type="submit">수정완료</button>
+		                <button id="formBtn" type="submit">수정완료</button>
 		            </div>
 		        </c:if>
 	        </form>

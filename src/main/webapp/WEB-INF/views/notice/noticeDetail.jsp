@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/noticeForm.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -14,17 +14,17 @@
         <!-- 메인 -->
         <main>
             <h1>공지사항</h1>
-            <div id="noticeForm">
+            <div id="form">
             	<input type="hidden" name="noticeFileName" value="${notice.noticeFileName}">
             	<input type="hidden" name="noticeFileRename" value="${notice.noticeFileRename}">
              	<input type="hidden" name="noticeFilePath" value="${notice.noticeFilePath}">
              	<input type="hidden" name="noticeFileLength" value="${notice.noticeFileLength}">
                 <table>
-                    <tr id="noticeSubject">
+                    <tr id="title">
                         <th>제목</th>
                         <td><input type="text" name="noticeSubject" required value="${notice.noticeSubject }" readonly></td>
                     </tr>
-                    <tr id="noticeContent">
+                    <tr id="content">
                         <th>내용</th>
                         <td><textarea name="noticeContent" required readonly>${notice.noticeContent }</textarea></td>
                     </tr>
@@ -46,9 +46,9 @@
                 </table>
             </div>
             <div>
-                <button id="noticeBtn"><a href="/notice/modify.kr?noticeNo=${notice.noticeNo}">수정하기</a></button>
-                <button id="noticeBtn"><a href="/notice/delete.kr?noticeNo=${notice.noticeNo}">삭제하기</a></button>
-                <button id="noticeBtn"><a href="/notice/list.kr">목록이동</a></button>
+                <button id="formBtn"><a href="/notice/modify.kr?noticeNo=${notice.noticeNo}">수정하기</a></button>
+                <button id="formBtn"><a href="/notice/delete.kr?noticeNo=${notice.noticeNo}">삭제하기</a></button>
+                <button id="formBtn"><a href="/notice/list.kr">목록이동</a></button>
             </div>
 
         </main>

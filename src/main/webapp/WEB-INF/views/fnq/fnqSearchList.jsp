@@ -6,8 +6,17 @@
 <html lang="ko">
      <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/fnq.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/list.css">
         <title>CANDYTOON</title>
+        <style>
+        	#centerMenu li:nth-child(2) {
+        		background-color: rgb(252, 117, 7);
+    		}
+
+    		#centerMenu li:nth-child(2) a {
+        		color: white;
+    		}
+        </style>
     <body>
         <!-- 헤더, 네비 -->
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -47,7 +56,7 @@
 	                </form>
 	            </div>
         	</div>
-            <div id = "FAQ">
+            <div id = "board">
                 <table>
                 	<colgroup>
                 		<col width="10%">
@@ -84,7 +93,7 @@
                 </table>
             </div>
             <div>    
-                <a id ="fnqBtn" href="/fnq/insert.kr">FnQ등록</a>
+                <a id ="boardBtn" href="/fnq/insert.kr">FnQ등록</a>
             </div>
             <div id ="pages">
                 <ul>

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -174,8 +175,16 @@ public class NoticeController {
 
 	// 공지 등록 페이지 이동
 	@RequestMapping(value="/notice/insert.kr", method=RequestMethod.GET)
-	public String showNoticeInsertForm() {
-		return "notice/noticeInsert";
+	public String showNoticeInsertForm(
+			Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("memberId");
+		if(memberId == null || memberId.equals("")) {
+			model.addAttribute("alertMsg", "관리자만 접근할 수 있습니다.");
+			model.addAttribute("url", "/notice/list.kr");
+			return "common/serviceFailed";
+		} else {
+			return "notice/noticeInsert";
+		}
 	}
 	
 	//공지 세부내용 조회

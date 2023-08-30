@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WebtoonMapper">
+	<resultMap type="Webtoon" id="webtoonResultMap">
+		<id 	property="webtoonNo" 	  column="WEBTOON_NO" />
+		<result property="webtoonTitle"   column="WEBTOON_TITLE"/>
+		<result property="webtoonWriter"  column="WEBTOON_WRITER"/>
+		<result property="webtoonPainter" column="WEBTOON_PAINTER"/>
+		<result property="webtoonCover"   column="WEBTOON_COVER"/>
+		<result property="webtoonGenre"   column="WEBTOON_GENRE"/>
+		<result property="wLentPrice" 	  column="W_LENT_PRICE"/>
+		<result property="wBuyPrice" 	  column="W_BUY_PRICE"/>
+		<result property="wOpenDate" 	  column="W_OPEN_DATE"/>
+		<result property="wUpdateDate"    column="W_UPDATE_DATE"/>
+		<result property="wEndYn" 		  column="W_END_YN"/>
+		<result property="wViewCount" 	  column="W_VIEW_COUNT"/>
+	</resultMap>
+
+	<select id="selectTopList" resultMap="webtoonResultMap">
+		SELECT * FROM WEBTOON_TBL
+	</select>
+</mapper>

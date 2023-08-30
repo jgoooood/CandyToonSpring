@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/askForm.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -15,18 +15,18 @@
         <main>
 	        <c:if test="${sessionScope.memberId ne null }">
 	            <h1>${memberId }님의 문의내역</h1>
-	            <div id="askForm">
+	            <div id="form">
 	            	<input type="hidden" name="askWriter" value="${sessionScope.memberId}">
 	                <table>
 	                    <tr>
-	                        <th id="askType">문의유형</th>
-	                        <td><input type="text" id="askCategory" name="askCategory" required value="${ask.askCategory }" readonly></td>
+	                        <th id="category">문의유형</th>
+	                        <td><input type="text" id="selectCategory" name="askCategory" required value="${ask.askCategory }" readonly></td>
 	                    </tr>
-	                    <tr id="askTitle">
+	                    <tr id="title">
 	                        <th>제목</th>
 	                        <td><input type="text" name="askSubject" required value="${ask.askSubject }" readonly></td>
 	                    </tr>
-	                    <tr id="askContent">
+	                    <tr id="content">
 	                        <th>내용</th>
 	                        <td><textarea name="askContent" required readonly>${ask.askContent }</textarea></td>
 	                    </tr>
@@ -47,9 +47,9 @@
 	                </table>
 	            </div>
 	            <div>
-	                <button id="askBtn"><a href="/ask/modify.kr?askNo=${ask.askNo}">수정하기</a></button>
-	                <button id="askBtn"><a href="/ask/delete.kr?askNo=${ask.askNo}">삭제하기</a></button>
-	                <button id="askBtn"><a href="/ask/list.kr">목록이동</a></button>
+	                <button id="formBtn"><a href="/ask/modify.kr?askNo=${ask.askNo}">수정하기</a></button>
+	                <button id="formBtn"><a href="/ask/delete.kr?askNo=${ask.askNo}">삭제하기</a></button>
+	                <button id="formBtn"><a href="/ask/list.kr">목록이동</a></button>
 	            </div>
 	        </c:if>
         </main>

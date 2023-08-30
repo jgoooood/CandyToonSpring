@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/noticeForm.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -15,18 +15,18 @@
         <main>
         	<form action="/notice/modify.kr" method="post" enctype="multipart/form-data">
 	            <h1>공지사항 수정</h1>
-	            <div id="noticeForm">
+	            <div id="form">
                 	<input type="hidden" name="noticeNo" value="${notice.noticeNo}">
                 	<input type="hidden" name="noticeFileName" value="${notice.noticeFileName}">
                 	<input type="hidden" name="noticeFileRename" value="${notice.noticeFileRename}">
                 	<input type="hidden" name="noticeFilePath" value="${notice.noticeFilePath}">
                 	<input type="hidden" name="noticeFileLength" value="${notice.noticeFileLength}">
 	                <table>
-	                    <tr id="noticeSubject">
+	                    <tr id="title">
 	                        <th>제목</th>
 	                        <td><input type="text" name="noticeSubject" required value="${notice.noticeSubject }"></td>
 	                    </tr>
-	                    <tr id="noticeContent">
+	                    <tr id="content">
 	                        <th>내용</th>
 	                        <td><textarea name="noticeContent" required>${notice.noticeContent }</textarea></td>
 	                    </tr>
@@ -50,7 +50,7 @@
 	                </table>
 	            </div>
 	            <div>
-	                <button id="noticeBtn" type="submit">수정완료</button>
+	                <button id="formBtn" type="submit">수정완료</button>
 	            </div>
 			</form>
         </main>

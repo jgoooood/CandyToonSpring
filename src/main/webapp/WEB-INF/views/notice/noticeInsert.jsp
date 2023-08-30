@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/noticeForm.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -15,13 +15,13 @@
         <main>
             <form action="/notice/insert.kr" method="post" enctype="multipart/form-data">
 	            <h1>공지사항 등록</h1>
-	            <div id="noticeForm">
+	            <div id="form">
 	                <table>
-	                    <tr id="noticeSubject">
+	                    <tr id="title">
 	                        <th>제목</th>
 	                        <td><input type="text" name="noticeSubject" required placeholder="공지 제목을 입력해주세요."></td>
 	                    </tr>
-	                    <tr id="noticeContent">
+	                    <tr id="content">
 	                        <th>내용</th>
 	                        <td><textarea name="noticeContent" placeholder="공지 내용을 입력해주세요." required></textarea></td>
 	                    </tr>
@@ -32,8 +32,8 @@
 	                </table>
 	            </div>
 	            <div>
-	                <button id="noticeBtn" type="submit">등록하기</button>
-	                <button id="noticeBtn"><a href="/notice/list.kr">목록이동</a></button>
+	                <button id="formBtn" type="submit">등록하기</button>
+	                <button id="formBtn"><a href="/notice/list.kr">목록이동</a></button>
 	            </div>
 	        </form>
         </main>

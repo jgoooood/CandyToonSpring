@@ -7,17 +7,21 @@ a:link, a:visited {
 
 /* 헤더 */
 header {
-    width: 1200px;
+	padding-top: 20px;
+    width: 1800px;
     margin: 0 auto;
     height: 200px;
 }
 #logo {
+	float:left;
+	display:flex;
+	align-items: flex-end;
     width: 480px;
     height: 100px;
     float: left;
     font-family: 'Black Han Sans', sans-serif;
     font-family: 'Bungee', cursive;
-    font-size: 3em;
+    font-size: 3.3em;
     color: rgb(252, 117, 7);
 }
 
@@ -65,14 +69,17 @@ header {
         }
     /*네비게이션  */
     nav {
-        width: 1200px;
+        width: 1800px;
         height: 60px;
-        border-bottom: 2px solid gray;
         margin: 20px auto;
         display: inline-block;
     }
         /* 네비 리스트 */
         /* 메인메뉴 */
+        nav a:hover, nav a:focus {
+    		color: rgb(252, 117, 7);
+		}
+        
         ul {
             list-style-type: none;
             padding-top: 10px;
@@ -84,6 +91,9 @@ header {
             margin-right: 20px;
         }
 
+		#mainMenu ul {
+			padding-left: 0;
+		}
         #mainMenu ul li a {
             text-align: left;
             float: left;

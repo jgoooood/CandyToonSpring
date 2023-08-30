@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +31,15 @@ public class FnqController {
 	
 	//fnq등록페이지 이동
 	@RequestMapping(value="/fnq/insert.kr", method=RequestMethod.GET)
-	public String showFnqInsertForm() {
-		return "fnq/fnqInsert";
+	public String showFnqInsertForm(Model model, HttpSession session) {
+		String memberId = (String)session.getAttribute("memberId");
+		if(memberId == null || memberId.equals("")) {
+			model.addAttribute("alertMsg", "관리자만 접근할 수 있습니다.");
+			model.addAttribute("url", "/fnq/list.kr");
+			return "common/serviceFailed";
+		} else {
+			return "fnq/fnqInsert";
+		}
 	}
 
 	//fnq 등록

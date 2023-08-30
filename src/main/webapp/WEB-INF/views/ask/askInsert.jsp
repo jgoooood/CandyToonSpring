@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/askForm.css">
+        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -19,11 +19,11 @@
             <form action="/ask/insert.kr" method="post" enctype="multipart/form-data">
 		        <c:if test="${sessionScope.memberId ne null }">
 		            <h1>이용문의 등록</h1>
-		            <div id="askForm">
+		            <div id="form">
 		            	<input type="hidden" name="askWriter" value="${sessionScope.memberId}">
 		                <table>
 		                    <tr>
-		                        <th id="askType">문의유형</th>
+		                        <th id="category">문의유형</th>
 		                        <td>
 		                            <select id="selectType" name="askCategory" required>
 		                                <option value="결제/환불">결제/환불</option>
@@ -33,11 +33,11 @@
 		                            </select>
 		                        </td>
 		                    </tr>
-		                    <tr id="askTitle">
+		                    <tr id="title">
 		                        <th>제목</th>
 		                        <td><input type="text" name="askSubject" required placeholder="제목을 입력해주세요."></td>
 		                    </tr>
-		                    <tr id="askContent">
+		                    <tr id="content">
 		                        <th>내용</th>
 		                        <td><textarea name="askContent" placeholder="문의하실 내용을 입력해주세요." required></textarea></td>
 		                    </tr>
@@ -48,8 +48,8 @@
 		                </table>
 		            </div>
 		            <div>
-		                <button id="askBtn" type="submit">등록하기</button>
-		                <button id="askBtn"><a href="/ask/list.kr">목록이동</a></button>
+		                <button id="formBtn" type="submit">등록하기</button>
+		                <button id="formBtn"><a href="/ask/list.kr">목록이동</a></button>
 		            </div>
 		        </c:if>
 	        </form>

@@ -4,14 +4,13 @@ a:link, a:visited {
     text-decoration: none;
 }
 
-
 main {
     width: 900px;
     height: 600px;
     margin: 0 auto;
     margin-top: 50px;
 }
-/* 고객센터 메뉴 */
+
 #center {
     width: 900px;
     height: 100px;
@@ -23,22 +22,16 @@ main {
         float: left;
     }
 
-    #centerMenu li:nth-child(2) {
-        background-color: rgb(252, 117, 7);
-    }
-
-    #centerMenu li:nth-child(2) a {
-        color: white;
-    }
-
     #centerMenu li {
         padding: 10px;
         font-size: medium;
         font-weight: bold;
         border: none;
         border-radius: 5px;
-        background-color: #ccc;
+        background-color: #ecebeb;
     }
+
+    
 
     #centerSearch {
         padding-top: 10px;
@@ -47,6 +40,7 @@ main {
         float: right;
         position: relative;
     }
+    
     	#searchCondition {
     		padding-top: 10px;
     		width: 70px;
@@ -59,7 +53,6 @@ main {
     		height: 40px;
     		float: right;
     	}
-    	
         #centerSearch input {
             float: right;
             padding: 5px 5px 5px 35px;
@@ -74,8 +67,8 @@ main {
             top: 25px;
             right : 225px;
         }
-/* 게시판 */
-#FAQ {
+        
+#board {
     width: 900px;
     height: 300px;
 }
@@ -90,8 +83,8 @@ main {
         border-top: 1px solid gray;
         border-bottom: 1px solid gray;
     }
-
-	#tableHead {
+    
+    #tableHead {
 		width: 100%;
 		height: 35px;
 	}
@@ -99,27 +92,27 @@ main {
     th {
         font-size: 1.2em;
     }
-
-	#file {
+    #file {
 		width:20px;
 		height: 20px;
 	}
-	
-#fnqBtn {
+    
+#boardBtn {
     float: right;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #ccc;
+    background-color: rgb(252, 117, 7);
     font-weight: 600;
     font-size: medium;
-}
-
-#fnqBtn:hover  {
-	background-color: rgb(252, 117, 7);
 	color: white;
 }
 
+#boardBtn:hover  {
+	background-color: rgb(231, 51, 6);
+	color: white;
+}
+    
 #pages {
     width: 900px;
     height: 100px;
@@ -137,7 +130,7 @@ main {
         height: 50px;
         }
         
-	#pages ul li {
+   	#pages ul li {
        display: flex;
        flex-direction: row;
 	}
@@ -159,3 +152,5 @@ main {
         background-color: rgb(252, 117, 7);
         color: white;
     }
+
+

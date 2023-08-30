@@ -7,15 +7,17 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	<typeAliases>
-		<typeAlias type="kr.co.candytoon.member.domain.Member" alias="Member"/>
-		<typeAlias type="kr.co.candytoon.ask.domain.Ask" 	   alias="Ask"/>
-		<typeAlias type="kr.co.candytoon.notice.domain.Notice" alias="Notice"/>
-		<typeAlias type="kr.co.candytoon.fnq.domain.Fnq" 	   alias="Fnq"/>
+		<typeAlias type="kr.co.candytoon.member.domain.Member" 	 alias="Member"/>
+		<typeAlias type="kr.co.candytoon.ask.domain.Ask" 	  	 alias="Ask"/>
+		<typeAlias type="kr.co.candytoon.notice.domain.Notice"   alias="Notice"/>
+		<typeAlias type="kr.co.candytoon.fnq.domain.Fnq" 	   	 alias="Fnq"/>
+		<typeAlias type="kr.co.candytoon.webtoon.domain.Webtoon" alias="Webtoon"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/ask-mapper.xml"/>
 		<mapper resource="mappers/notice-mapper.xml"/>
 		<mapper resource="mappers/fnq-mapper.xml"/>
+		<mapper resource="mappers/webtoon-mapper.xml"/>
 	</mappers>
 </configuration>
