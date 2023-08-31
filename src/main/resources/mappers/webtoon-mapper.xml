@@ -9,9 +9,9 @@
 		<result property="webtoonWriter"  column="WEBTOON_WRITER"/>
 		<result property="webtoonPainter" column="WEBTOON_PAINTER"/>
 		<result property="webtoonGenre"   column="WEBTOON_GENRE"/>
-		<result property="wCoverName"   column="WEBTOON_COVER"/>
-		<result property="wCoverRename"   column="WEBTOON_COVER"/>
-		<result property="wCoverPath"   column="WEBTOON_COVER"/>
+		<result property="wCoverName"     column="W_COVER_NAME"/>
+		<result property="wCoverRename"   column="W_COVER_RENAME"/>
+		<result property="wCoverPath"     column="W_COVER_PATH"/>
 		<result property="wLentPrice" 	  column="W_LENT_PRICE"/>
 		<result property="wBuyPrice" 	  column="W_BUY_PRICE"/>
 		<result property="wOpenDate" 	  column="W_OPEN_DATE"/>
@@ -21,15 +21,27 @@
 	</resultMap>
 
 	<insert id="insertWebtoon">
-		INSERT INTO FROM WEBTOON_TBL (SEQ_WEBTOON_NO.NEXT, #{webtoonTitle}, #{webtoonWriter}, #{webtoonPainter}, #{webtoonGenre}, #{wCoverName}, #{wCoverRename}, #{wCoverPath}, #{wLentPrice}, #{wBuyPrice}, #{wOpenDate}, DEFAULT, DEFAULT, '9999')
+		INSERT INTO WEBTOON_TBL VALUES (SEQ_WEBTOON_NO.NEXTVAL, #{webtoonTitle}, #{webtoonWriter}, #{webtoonPainter}, #{webtoonGenre}, #{wCoverName}, #{wCoverRename}, #{wCoverPath}, #{wLentPrice}, #{wBuyPrice}, #{wOpenDate}, DEFAULT, DEFAULT, #{wViewCount})
 	</insert>
 	
 	<select id="selectListByViewCount" resultMap="webtoonResultMap">
 		SELECT * FROM WEBTOON_TBL ORDER BY W_VIEW_COUNT DESC
 	</select>
 	
+	<select id="selectListByNewOpen" resultMap="webtoonResultMap">
+		SELECT * FROM WEBTOON_TBL WHERE W_OPEN_DATE >= '23/09/01' ORDER BY W_VIEW_COUNT DESC
+	</select>
+	
+	<select id="selectListByEnd" resultMap="webtoonResultMap">
+		SELECT * FROM WEBTOON_TBL WHERE W_END_YN = 'Y' ORDER BY W_VIEW_COUNT DESC
+	</select>
+	
 	<select id="selectAllList" resultMap="webtoonResultMap">
-		SELECT * FROM WEBTOON_TBL
+		SELECT * FROM WEBTOON_TBL ORDER BY WEBTOON_NO DESC
+	</select>
+	
+	<select id="selectOneByNo" resultMap="webtoonResultMap">
+		SELECT * FROM WEBTOON_TBL WHERE WEBTOON_NO = #{webtoonNo}
 	</select>
 	
 	<select id="selectListCount" resultType="_int">

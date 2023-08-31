@@ -14,9 +14,27 @@ import kr.co.candytoon.webtoon.store.WebtoonStore;
 public class WebtoonStoreLogic implements WebtoonStore{
 
 	@Override
+	public int insertWebtoon(SqlSession session, Webtoon webtoon) {
+		int result = session.insert("WebtoonMapper.insertWebtoon", webtoon);
+		return result;
+	}
+
+	@Override
 	public List<Webtoon> selectListByViewCount(SqlSession session) {
-		List<Webtoon> wList = session.selectList("WebtoonMapper.selectListByViewCount");
-		return wList;
+		List<Webtoon> topViewList = session.selectList("WebtoonMapper.selectListByViewCount");
+		return topViewList;
+	}
+
+	@Override
+	public List<Webtoon> selectListByNewOpen(SqlSession session) {
+		List<Webtoon> topNewList = session.selectList("WebtoonMapper.selectListByNewOpen");
+		return topNewList;
+	}
+
+	@Override
+	public List<Webtoon> selectListByEnd(SqlSession session) {
+		List<Webtoon> topEndList = session.selectList("WebtoonMapper.selectListByEnd");
+		return topEndList;
 	}
 
 	@Override
@@ -29,15 +47,15 @@ public class WebtoonStoreLogic implements WebtoonStore{
 	}
 
 	@Override
-	public int selectListCount(SqlSession session) {
-		int listCount = session.selectOne("WebtoonMapper.selectListCount");
-		return listCount;
+	public Webtoon selectOneByNo(SqlSession session, int webtoonNo) {
+		Webtoon webtoon = session.selectOne("WebtoonMapper.selectOneByNo", webtoonNo);
+		return webtoon;
 	}
 
 	@Override
-	public int insertWebtoon(SqlSession session, Webtoon webtoon) {
-		int result = session.insert("WebtoonMapper.insertWebtoon", webtoon);
-		return result;
+	public int selectListCount(SqlSession session) {
+		int listCount = session.selectOne("WebtoonMapper.selectListCount");
+		return listCount;
 	}
 
 }

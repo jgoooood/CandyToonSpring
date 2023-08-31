@@ -50,19 +50,18 @@ main a:hover{
     /* 메인레이어2 */
     .top5-layer2 {
         width: 1400px;
-        justify-content: space-between;
         display: flex; /* Flex 컨테이너로 설정 */
     	justify-content: space-between; /* 자식 요소 간의 간격을 동일하게 배치 */
-    	align-items: center;
+/*     	align-items: center; */
     }
     .top5-toon {
         --box-sizing: border-box;
+        flex: 0 1 calc(20% - 10px);
         margin-top: 20px;
-        width: 250px;
+        width: 230px;
         float: left;
         height: 320px;
         text-align: center;
-        flex:1;
         margin-right:30px;
     }
     .top5-layer2 .top5-toon:last-child {
@@ -70,7 +69,7 @@ main a:hover{
     }
     
             .top5-Cover {
-				width: 250px;
+				width: 230px;
                 height: 270px;
             }
             .top5-Cover img {
@@ -80,7 +79,7 @@ main a:hover{
                 border-radius: 5px;
             }
             .top5-info {
-				width: 280px;
+				width: 260px;
                 height: 50px;
             }
                 .top5-info-rank{

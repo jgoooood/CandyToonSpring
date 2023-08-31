@@ -13,7 +13,7 @@
 		
         <!-- 메인 -->
         <main>
-            <form action="/notice/insert.kr" method="post" enctype="multipart/form-data">
+            <form action="/webtoon/insert.kr" method="post" enctype="multipart/form-data">
 	            <h1>웹툰 정보 등록</h1>
 	            <div id="form">
 	                <ul>
@@ -39,6 +39,7 @@
                                 <option value="판타지">판타지</option>
                                 <option value="로맨스">로맨스</option>
                                 <option value="액션">액션</option>
+                                <option value="무협">무협</option>
                                 <option value="개그">개그</option>
                                 <option value="기타">기타</option>
                             </select>
@@ -49,11 +50,15 @@
 	                    </li><br>
 	                    <li>
 	                        <label>소장가격</label>
-	                        <input type="text" name="wLentPrice" required placeholder="숫자만 입력 ex)500">
+	                        <input type="text" name="wBuyPrice" required placeholder="숫자만 입력 ex)500">
 	                    </li><br>
 	                    <li>
 	                        <label>오픈날짜</label>
-	                        <input type="date" name="wLentPrice" required>
+	                        <input type="date" name="wOpenDate" required>
+	                    </li><br>
+	                    <li>
+	                        <label>설정조회수</label>
+	                        <input type="text" name="wViewCount" required>
 	                    </li><br>
 	                </ul>
 	            </div>

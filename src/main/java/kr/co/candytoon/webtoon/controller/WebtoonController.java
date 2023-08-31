@@ -44,7 +44,7 @@ public class WebtoonController {
 		}
 		return mv;
 	}
-	
+	//웹툰등록
 	@RequestMapping(value="/insert.kr", method=RequestMethod.POST)
 	public ModelAndView insertWebtoon(
 			Webtoon webtoon
@@ -86,30 +86,6 @@ public class WebtoonController {
 			
 	}
 	
-	//파일저장 메소드 출력
-	private Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
-		Map<String, Object> infoMap = new HashMap<String, Object>();
-		String fileName = uploadFile.getOriginalFilename();
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String saveFolder = root + "\\uploadFiles";
-		File folder = new File(saveFolder);
-		if(!folder.exists()) {
-			folder.mkdir();
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String strResult = sdf.format(new Date(System.currentTimeMillis()));
-		String ext = fileName.substring(fileName.lastIndexOf(".")+1);
-		String fileRename = "C" + fileName + strResult + "." + ext;
-		String savePath = saveFolder + "\\" + fileRename;
-		File file = new File(savePath);
-		uploadFile.transferTo(file);
-		
-		infoMap.put("fileName", fileName);
-		infoMap.put("fileRename", fileRename);
-		infoMap.put("filePath", savePath);
-		return infoMap;
-	}
-
 	//웹툰 전체 리스트 출력
 	@RequestMapping(value="/list.kr", method=RequestMethod.GET)
 	public ModelAndView showWebtoonList(
@@ -122,15 +98,9 @@ public class WebtoonController {
 				int totalCount = wService.getListCount();
 				WebtoonPageInfo pInfo = getPageInfo(currentPage, totalCount);
 				List<Webtoon> allList = wService.selectAllList(pInfo);
-				if(allList.size() > 0) {
-					mv.addObject("pInfo", pInfo);
-					mv.addObject("allList", allList);
-					mv.setViewName("webtoon/webtoonList");
-				} else {
-					mv.addObject("alertMsg", "웹툰 목록을 불러올 수 없습니다.");
-					mv.addObject("url", "/member/myPage.kr");
-					mv.setViewName("common/errorPage");
-				}
+				mv.addObject("pInfo", pInfo);
+				mv.addObject("allList", allList);
+				mv.setViewName("webtoon/webtoonList");
 			} else {
 				mv.addObject("alertMsg", "관리자만 접근할 수 있습니다.");
 				mv.addObject("url", "/index.jsp");
@@ -144,7 +114,59 @@ public class WebtoonController {
 		}
 		return mv;
 	}
+	
+	//웹툰 상세정보조회
+	@RequestMapping(value="/info.kr", method=RequestMethod.GET) 
+	public ModelAndView showWebtoonInfo(
+			ModelAndView mv
+			, @RequestParam("webtoonNo") int webtoonNo
+			, HttpSession session){
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			if(memberId != null && memberId.equals("admin")) {
+				Webtoon webtoon = wService.selectOneByNo(webtoonNo);
+				mv.addObject("webtoon", webtoon);
+				mv.setViewName("webtoon/webtoonInfo");
+				
+			} else {
+				mv.addObject("alertMsg", "관리자만 접근할 수 있습니다.");
+				mv.addObject("url", "/index.jsp");
+				mv.setViewName("common/serviceFailed");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			mv.addObject("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	//파일저장 메소드 출력
+	private Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
+		Map<String, Object> infoMap = new HashMap<String, Object>();
+		String fileName = uploadFile.getOriginalFilename();
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String saveFolder = root + "\\uploadFiles";
+		File folder = new File(saveFolder);
+		if(!folder.exists()) {
+			folder.mkdir();
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String strResult = sdf.format(new Date(System.currentTimeMillis()));
+		String fileRename = "c" + strResult +fileName;
+		String savePath = saveFolder + "\\" + fileRename;
+		File file = new File(savePath);
+		uploadFile.transferTo(file);
+		
+		infoMap.put("fileName", fileName);
+		infoMap.put("fileRename", fileRename);
+		infoMap.put("filePath", savePath);
+		return infoMap;
+	}
 
+	//페이징
 	private WebtoonPageInfo getPageInfo(Integer currentPage, int totalCount) {
 		int recordCountPerPage = 10;
 		int naviCountPerPage = 10;

@@ -23,12 +23,20 @@ h1{
     width: 900px;
     height: 600px;
     margin-bottom: 20px;
+    font-size: 13px;
 }
 
-input, select {
-	width : 300px;
-	height : 30px;
-	padding-left: 10px;
+#formLeft {
+	width:500px;
+}
+
+#formRight {
+	width:400px;
+} 
+
+#formLeft, #formRight {
+	height:100%;
+	float:left;
 }
 
 ul {
@@ -36,21 +44,22 @@ ul {
 	margin-left : 0	
 }
 
-li {
+#form li {
+	width: 480px;
 	margin : 10px;
-}
-
-ul label {
-	width : 150px;
-	text-align: left;
 	float:left;
 }
 
-#uploadFile input {
-	width: 150px;
-	float: left;
+ul label {
+	width : 200px;
+	text-align: left;
+	float:left;
+	
 }
 
+#formRight img {
+	width: 300px;
+}
 
 #formBtn {
     padding: 10px;

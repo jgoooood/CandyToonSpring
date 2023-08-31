@@ -69,7 +69,7 @@
 	                	<c:forEach items="${allList}" var="webtoon">
 		                    <tr>
 		                        <td>${webtoon.webtoonNo }</td>
-		                        <td><a href="/webtoon/detail.kr?webtoonNo=${webtoon.webtoonNo }">${webtoon.webtoonTitle }</a></td>
+		                        <td><a href="/webtoon/info.kr?webtoonNo=${webtoon.webtoonNo }">${webtoon.webtoonTitle }</a></td>
 		                        <td>${webtoon.webtoonWriter}</td>
 		                        <td>${webtoon.webtoonWriter}</td>
 		                        <td><fmt:formatDate pattern="yyyy-MM-dd" value="${webtoon.wOpenDate }"/></td>
