@@ -41,7 +41,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		List<Webtoon> wList = wService.selectTopList();
+		List<Webtoon> wList = wService.selectListByViewCount();
 		model.addAttribute("wList", wList);
 		return "home";
 	}

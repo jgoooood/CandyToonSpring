@@ -7,16 +7,18 @@ public class Webtoon {
 	private String webtoonTitle;
 	private String webtoonWriter;
 	private String webtoonPainter;
-	private String webtoonCover;
 	private String webtoonGenre;
+	private String wCoverName;
+	private String wCoverRename;
+	private String wCoverPath;
 	private int wLentPrice;
 	private int wBuyPrice;
 	private Date wOpenDate;
 	private Date wUpdateDate;
 	private char wEndYn;
 	private int wViewCount;
-	
-	
+
+
 	public int getWebtoonNo() {
 		return webtoonNo;
 	}
@@ -41,17 +43,31 @@ public class Webtoon {
 	public void setWebtoonPainter(String webtoonPainter) {
 		this.webtoonPainter = webtoonPainter;
 	}
-	public String getWebtoonCover() {
-		return webtoonCover;
-	}
-	public void setWebtoonCover(String webtoonCover) {
-		this.webtoonCover = webtoonCover;
-	}
+	
 	public String getWebtoonGenre() {
 		return webtoonGenre;
 	}
 	public void setWebtoonGenre(String webtoonGenre) {
 		this.webtoonGenre = webtoonGenre;
+	}
+	
+	public String getwCoverName() {
+		return wCoverName;
+	}
+	public void setwCoverName(String wCoverName) {
+		this.wCoverName = wCoverName;
+	}
+	public String getwCoverRename() {
+		return wCoverRename;
+	}
+	public void setwCoverRename(String wCoverRename) {
+		this.wCoverRename = wCoverRename;
+	}
+	public String getwCoverPath() {
+		return wCoverPath;
+	}
+	public void setwCoverPath(String wCoverPath) {
+		this.wCoverPath = wCoverPath;
 	}
 	public int getwLentPrice() {
 		return wLentPrice;
@@ -89,12 +105,14 @@ public class Webtoon {
 	public void setwViewCount(int wViewCount) {
 		this.wViewCount = wViewCount;
 	}
+
 	@Override
 	public String toString() {
 		return "웹툰정보 [번호=" + webtoonNo + ", 제목=" + webtoonTitle + ", 글작가=" + webtoonWriter
-				+ ", 그림작가=" + webtoonPainter + ", 표지경로=" + webtoonCover + ", 장르="
-				+ webtoonGenre + ", 대여가격=" + wLentPrice + ", 구매가격=" + wBuyPrice + ", 오픈날짜=" + wOpenDate
-				+ ", 업데이트날짜=" + wUpdateDate + ", 완결여부=" + wEndYn + ", 조회수=" + wViewCount + "]";
+				+ ", 그림작가=" + webtoonPainter + ", 장르=" + webtoonGenre + ", 표지명=" + wCoverName
+				+ ", 표지명리네임=" + wCoverRename + ", 표지경로=" + wCoverPath + ", 대여가격=" + wLentPrice
+				+ ", 구매가격=" + wBuyPrice + ", 오픈날짜=" + wOpenDate + ", 업데이트날짜=" + wUpdateDate + ", 완결여부="
+				+ wEndYn + ", 조회수=" + wViewCount + "]";
 	}
 
 	

@@ -8,8 +8,10 @@
 		<result property="webtoonTitle"   column="WEBTOON_TITLE"/>
 		<result property="webtoonWriter"  column="WEBTOON_WRITER"/>
 		<result property="webtoonPainter" column="WEBTOON_PAINTER"/>
-		<result property="webtoonCover"   column="WEBTOON_COVER"/>
 		<result property="webtoonGenre"   column="WEBTOON_GENRE"/>
+		<result property="wCoverName"   column="WEBTOON_COVER"/>
+		<result property="wCoverRename"   column="WEBTOON_COVER"/>
+		<result property="wCoverPath"   column="WEBTOON_COVER"/>
 		<result property="wLentPrice" 	  column="W_LENT_PRICE"/>
 		<result property="wBuyPrice" 	  column="W_BUY_PRICE"/>
 		<result property="wOpenDate" 	  column="W_OPEN_DATE"/>
@@ -18,7 +20,19 @@
 		<result property="wViewCount" 	  column="W_VIEW_COUNT"/>
 	</resultMap>
 
-	<select id="selectTopList" resultMap="webtoonResultMap">
+	<insert id="insertWebtoon">
+		INSERT INTO FROM WEBTOON_TBL (SEQ_WEBTOON_NO.NEXT, #{webtoonTitle}, #{webtoonWriter}, #{webtoonPainter}, #{webtoonGenre}, #{wCoverName}, #{wCoverRename}, #{wCoverPath}, #{wLentPrice}, #{wBuyPrice}, #{wOpenDate}, DEFAULT, DEFAULT, '9999')
+	</insert>
+	
+	<select id="selectListByViewCount" resultMap="webtoonResultMap">
+		SELECT * FROM WEBTOON_TBL ORDER BY W_VIEW_COUNT DESC
+	</select>
+	
+	<select id="selectAllList" resultMap="webtoonResultMap">
 		SELECT * FROM WEBTOON_TBL
+	</select>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM WEBTOON_TBL
 	</select>
 </mapper>

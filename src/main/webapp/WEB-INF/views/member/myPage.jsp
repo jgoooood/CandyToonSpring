@@ -14,7 +14,8 @@
 		
         <!-- 메인 -->
         <main>
-        	<!-- 마이페이지 메뉴 -->
+        	<c:if test="${memberId ne 'admin'}"> 
+        	<!-- 일반회원 메뉴 -->
 			<jsp:include page="/WEB-INF/views/include/myPageMenu.jsp"></jsp:include>
             <section id="rightSection">
                 <div id="topArea">
@@ -41,6 +42,14 @@
                         </ul>
                 </div>
             </section>
+        	</c:if>
+        	<c:if test="${memberId eq 'admin' }">
+       			<!-- 관리자 메뉴 -->
+       			<jsp:include page="/WEB-INF/views/include/adminMenu.jsp"></jsp:include>
+        		<section id="rightSection">
+        			<h1>관리자 페이지입니다.</h1>
+        		</section>
+        	</c:if>
         </main>
         <!-- 푸터 -->
         <jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>

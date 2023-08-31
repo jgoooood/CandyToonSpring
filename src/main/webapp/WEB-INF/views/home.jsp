@@ -56,59 +56,24 @@
                         <div class="top5-right"><a href="./ranking/total.jsp">더보기</a></div>
                     </div>
                     <div class="top5-layer2">
-                        <div id="total-top1" class="top5-toon">
-                        	<c:forEach items="${wList }" var="webtoon">
+                     	<c:forEach items="${wList }" var="webtoon" begin="0" end="4" varStatus="i">
+                       		<div class="top5-toon">
 	                            <div class="top5-Cover">
 	                                <a href="/webtoon.jsp">
-	                                <img src="${webtoon.webtoonCover }" alt="${webtoon.webtoonTitle }"></a>
+	                                <img src="${webtoon.wCoverPath }" alt="${webtoon.webtoonTitle }"></a>
 	                            </div>
 	                            <div class="top5-info">
-	                                <div class="top5-info-rank"><p>1</p></div>
-	                                <div class="top5-info-title"><a href="/webtoon.jsp">${webtoon.webtoonTitle }</a></div>
-	                                <div class="top5-info-writer"><a href="#">${webtoon.webtoonWriter }</a> / <a href="#">${webtoon.webtoonPainter }</a></div>
+	                                <div class="top5-info-rank"><p>${i.count }</p></div>
+		                            <div class="top5-info-title"><a href="/webtoon.jsp">${webtoon.webtoonTitle }</a></div>
+	                                <c:if test="${webtoon.webtoonWriter ne webtoon.webtoonPainter }">
+		                                <div class="top5-info-writer"><a href="#">${webtoon.webtoonWriter }</a> / <a href="#">${webtoon.webtoonPainter }</a></div>
+	                                </c:if>
+	                                <c:if test="${webtoon.webtoonWriter eq webtoon.webtoonPainter }">
+		                                <div class="top5-info-writer"><a href="#">${webtoon.webtoonWriter }</a></div>
+	                                </c:if>
 	                            </div>
-                        	</c:forEach>
-                        </div>
-                        <div id="total-top2" class="top5-toon">
-                            <div class="top5-Cover">
-                                <img src="/resources/images/cover/total-top5/totalTop2.png" alt="호랑이형님">
-                            </div>
-                            <div class="top5-info">
-                                <div class="top5-info-rank"><p>2</p></div>
-                                <div class="top5-info-title"><a href="#">호랑이형님</a></div>
-                                <div class="top5-info-writer"><a href="#">이상규</a></div>
-                            </div>
-                        </div>
-                        <div id="total-top3" class="top5-toon">
-                            <div class="top5-Cover">
-                                <img src="/resources/images/cover/total-top5/totalTop3.png" alt="김부장">
-                            </div>
-                            <div class="top5-info">
-                                <div class="top5-info-rank"><p>3</p></div>
-                                <div class="top5-info-title"><a href="#">김부장</a></div>
-                                <div class="top5-info-writer"><a href="#">토이 / 정종택</a></div>
-                            </div>
-                        </div>
-                        <div id="total-top4" class="top5-toon">
-                            <div class="top5-Cover">
-                                <img src="/resources/images/cover/total-top5/totalTop4.png" alt="마루는강쥐">
-                            </div>
-                            <div class="top5-info">
-                                <div class="top5-info-rank"><p>4</p></div>
-                                <div class="top5-info-title"><a href="#">마루는 강쥐</a></div>
-                                <div class="top5-info-writer"><a href="#">모죠</a></div>
-                            </div>
-                        </div>
-                        <div id="total-top5" class="top5-toon">
-                            <div class="top5-Cover">
-                                <img src="/resources/images/cover/total-top5/totalTop5.png" alt="나노마신">
-                            </div>
-                            <div class="top5-info">
-                                <div class="top5-info-rank"><p>5</p></div>
-                                <div class="top5-info-title"><a href="#">나노마신</a></div>
-                                <div class="top5-info-writer"><a href="#">한중월야</a></div>
-                            </div>
-                        </div>
+                       		</div>
+                      	</c:forEach>	
                     </div>
                 </section>
 

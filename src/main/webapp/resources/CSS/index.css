@@ -58,7 +58,7 @@ main a:hover{
     .top5-toon {
         --box-sizing: border-box;
         margin-top: 20px;
-        width: 280px;
+        width: 250px;
         float: left;
         height: 320px;
         text-align: center;
@@ -80,7 +80,7 @@ main a:hover{
                 border-radius: 5px;
             }
             .top5-info {
-				width: 100%;
+				width: 280px;
                 height: 50px;
             }
                 .top5-info-rank{
