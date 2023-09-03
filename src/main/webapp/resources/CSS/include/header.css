@@ -12,7 +12,7 @@ header {
     margin: 0 auto;
     height: 200px;
 }
-#logo {
+header #logo {
 	float:left;
 	display:flex;
 	align-items: flex-end;
@@ -25,11 +25,11 @@ header {
     color: rgb(252, 117, 7);
 }
 
-    #logo a:link, #logo a:visited {
+    header #logo a:link, header #logo a:visited {
         color:  rgb(252, 117, 7);
     }
     
-    #searchArea {
+    header #searchArea {
         width: 300px;
         height: 100px;
         display: flex;
@@ -37,13 +37,13 @@ header {
         justify-content: end;
     }
     
-    .search {
+    header .search {
         position: relative;
         width: 300px;
         display: flex;
     }
 
-        .search input {
+        header .search input {
             width: 100%;
             height: 40px;
             padding: 10px;
@@ -58,7 +58,7 @@ header {
 
         }
 
-        #searchArea img {
+        header #searchArea img {
             position: absolute;
             width: 25px;
             height: 25px;

@@ -5,7 +5,7 @@
 <html lang="ko">
     <!-- head -->
 	<jsp:include page="/WEB-INF/views/include/head.jsp"></jsp:include>
-        <link rel="stylesheet" href="../resources/CSS/customerCenter/form.css">
+        <link rel="stylesheet" href="../resources/CSS/webtoon/form.css">
         <title>CANDYTOON</title>
     <body>
         <!-- 헤더, 네비 -->
@@ -13,46 +13,70 @@
 		
         <!-- 메인 -->
         <main>
-        	<form action="/notice/modify.kr" method="post" enctype="multipart/form-data">
-	            <h1>공지사항 수정</h1>
+			<form action="/webtoon/modify.kr" method="post" enctype="multipart/form-data">
+	            <h1>웹툰 정보 수정</h1>
 	            <div id="form">
-                	<input type="hidden" name="noticeNo" value="${notice.noticeNo}">
-                	<input type="hidden" name="noticeFileName" value="${notice.noticeFileName}">
-                	<input type="hidden" name="noticeFileRename" value="${notice.noticeFileRename}">
-                	<input type="hidden" name="noticeFilePath" value="${notice.noticeFilePath}">
-                	<input type="hidden" name="noticeFileLength" value="${notice.noticeFileLength}">
-	                <table>
-	                    <tr id="title">
-	                        <th>제목</th>
-	                        <td><input type="text" name="noticeSubject" required value="${notice.noticeSubject }"></td>
-	                    </tr>
-	                    <tr id="content">
-	                        <th>내용</th>
-	                        <td><textarea name="noticeContent" required>${notice.noticeContent }</textarea></td>
-	                    </tr>
-	                    <tr id="uploadFile">
-	                        <th>첨부파일</th>
-	                        <td>
-		                        <c:if test="${notice.noticeFileRename ne null}">
-	                        		<div style="float: left; padding: 10px;">
-	                        			<img src="../resources/images/icons/file.png" id="file">
-				                    	<a href="../resources/uploadFiles/${notice.noticeFileRename }" download style="text-decoration: underline;">${notice.noticeFileName }</a>
-	                        		</div>
-									<input type="file" name="uploadFile">
-			                    </c:if>
-			                    <c:if test="${notice.noticeFileRename eq null}">
-			                    	<input type="text" name="uploadFile" value="첨부파일없음" readonly>
-									<input type="file" name="uploadFile">
-			                    </c:if>
-	                        	
-	                        </td>
-	                    </tr>
-	                </table>
-	            </div>
+                    <input type="hidden" name="webtoonNo" required value="${webtoon.webtoonNo}">
+                    <input type="hidden" name="wCoverName" value="${webtoon.wCoverName}">
+                	<input type="hidden" name="wCoverRename" value="${webtoon.wCoverRename}">
+                	<input type="hidden" name="wCoverPath" value="${webtoon.wCoverPath}">
+	                <ul>
+	                    <li>
+	                        <label>웹툰 제목</label>
+	                        <input type="text" name="webtoonTitle" required value="${webtoon.webtoonTitle}">
+	                    </li><br>
+	                    <li>
+	                        <label>글작가</label>
+	                        <input type="text" name="webtoonWriter" required value="${webtoon.webtoonWriter}">
+	                    </li><br>
+	                    <li>
+	                        <label>그림작가</label>
+	                        <input type="text" name="webtoonPainter" required value="${webtoon.webtoonPainter}">
+	                    </li><br>
+	                    <li>
+	                        <label>현재표지</label>
+	                        <a href="../resources/uploadFiles/${webtoon.wCoverRename }" download style="text-decoration: underline;">${webtoon.wCoverName }</a>
+	                    </li><br>
+	                    <li>
+	                        <label>표지변경</label>
+	                        <input type="file" id="uploadFile" name="uploadFile"><br>
+	                    </li><br>
+	                    <li>
+	                        <label>웹툰장르</label>
+	                         <select name="webtoonGenre" required>
+                                <option value="판타지">판타지</option>
+                                <option value="로맨스">로맨스</option>
+                                <option value="액션">액션</option>
+                                <option value="무협">무협</option>
+                                <option value="개그">개그</option>
+                                <option value="기타">기타</option>
+                            </select>
+	                    </li><br>
+	                    <li>
+	                        <label>대여가격</label>
+	                        <input type="text" name="wLentPrice" required value="${webtoon.wLentPrice}">
+	                    </li><br>
+	                    <li>
+	                        <label>소장가격</label>
+	                        <input type="text" name="wBuyPrice" required value="${webtoon.wBuyPrice}">
+	                    </li><br>
+	                    <li>
+	                        <label>오픈날짜</label>
+	                        <input type="date" name="wOpenDate" required value="${webtoon.wOpenDate}">
+	                    </li><br>
+	                    <li>
+		                    <label>완결여부</label>
+		                    <input type="radio" name="wEndYn" value="N" class="radio" <c:if test="${webtoon.wEndYn eq 'N'}">checked</c:if>> 연재중 
+		                    <input type="radio" name="wEndYn" value="Y" class="radio" <c:if test="${webtoon.wEndYn eq 'Y'}">checked</c:if>> 완결
+		                    <br>
+	                    </li>
+	                </ul>
+                </div>
 	            <div>
-	                <button id="formBtn" type="submit">수정완료</button>
+	                <button id="formBtn" type="submit">수정하기</button>
+	                <button id="formBtn"><a href="/webtoon/list.kr">목록이동</a></button>
 	            </div>
-			</form>
+	        </form>
         </main>
         <!-- 푸터 -->
         <jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>

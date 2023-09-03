@@ -67,6 +67,7 @@
             </div>
             <div>
                 <button id="formBtn"><a href="/webtoon/modify.kr?webtoonNo=${webtoon.webtoonNo }">수정하기</a></button>
+                <button id="formBtn"><a href="/webtoon/delete.kr?webtoonNo=${webtoon.webtoonNo }">삭제하기</a></button>
                 <button id="formBtn"><a href="/webtoon/list.kr">목록이동</a></button>
             </div>
         </main>

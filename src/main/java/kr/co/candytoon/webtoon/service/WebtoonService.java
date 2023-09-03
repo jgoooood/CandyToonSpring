@@ -15,6 +15,13 @@ public interface WebtoonService {
 	int insertWebtoon(Webtoon webtoon);
 
 	/**
+	 * 웹툰 정보 수정 Service
+	 * @param webtoon
+	 * @return
+	 */
+	int updateWebtoon(Webtoon webtoon);
+
+	/**
 	 * 웹툰리스트 전체인기작 : home사용 Service
 	 * @return
 	 */

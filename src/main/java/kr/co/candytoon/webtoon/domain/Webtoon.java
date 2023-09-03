@@ -15,7 +15,7 @@ public class Webtoon {
 	private int wBuyPrice;
 	private Date wOpenDate;
 	private Date wUpdateDate;
-	private char wEndYn;
+	private String wEndYn;
 	private int wViewCount;
 
 
@@ -93,10 +93,10 @@ public class Webtoon {
 	public void setwUpdateDate(Date wUpdateDate) {
 		this.wUpdateDate = wUpdateDate;
 	}
-	public char getwEndYn() {
+	public String getwEndYn() {
 		return wEndYn;
 	}
-	public void setwEndYn(char wEndYn) {
+	public void setwEndYn(String wEndYn) {
 		this.wEndYn = wEndYn;
 	}
 	public int getwViewCount() {

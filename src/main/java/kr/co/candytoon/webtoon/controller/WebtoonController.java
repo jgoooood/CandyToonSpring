@@ -1,7 +1,6 @@
 package kr.co.candytoon.webtoon.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -143,6 +141,82 @@ public class WebtoonController {
 		return mv;
 	}
 	
+	// 수정페이지 이동
+	@RequestMapping(value="/modify.kr", method=RequestMethod.GET)
+	public ModelAndView showModifyForm(
+			ModelAndView mv
+			, @RequestParam(value = "webtoonNo") Integer webtoonNo
+			, HttpSession session) {
+		String memberId = (String)session.getAttribute("memberId");
+		if(memberId != null && memberId.equals("admin")) {
+			Webtoon webtoon = wService.selectOneByNo(webtoonNo);
+			mv.addObject("webtoon", webtoon);
+			mv.setViewName("webtoon/webtoonModify");
+		} else {
+			mv.addObject("alertMsg", "관리자만 접근할 수 있습니다.");
+			mv.addObject("url", "/index.jsp");
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	@RequestMapping(value="/modify.kr", method=RequestMethod.POST)
+	public ModelAndView modifyWebtoon(
+			ModelAndView mv
+			, Webtoon webtoon
+			, @RequestParam(value="uploadFile", required=false) MultipartFile uploadFile
+			, HttpSession session
+			, HttpServletRequest request) {
+		try {
+			String memberId = (String)session.getAttribute("memberId");
+			String url = "/webtoon/info.kr?webtoonNo="+webtoon.getWebtoonNo();
+			if(memberId != null && memberId.equals("admin")) {
+				if(uploadFile != null && !uploadFile.isEmpty()) { //업로드 파일이 있으면
+					//JSP에 히든으로 저장되어있는 기존 파일정보를 가져와서 삭제
+					String delFileName = webtoon.getwCoverRename();
+					if(delFileName != null) {
+						this.deleteFile(request,delFileName);
+					}
+					Map<String, Object> wMap = this.saveFile(uploadFile, request);
+					webtoon.setwCoverName((String)wMap.get("fileName"));
+					webtoon.setwCoverRename((String)wMap.get("fileRename"));
+					webtoon.setwCoverPath((String)wMap.get("filePath"));
+				}	
+				int result = wService.updateWebtoon(webtoon);
+				if(result > 0) {
+					mv.addObject("msg", "웹툰 수정이 완료되었습니다.");
+					mv.addObject("url", url);
+					mv.setViewName("common/serviceSuccess");
+				} else {
+					mv.addObject("alertMsg", "[서비스실패] 웹툰수정이 완료되지 않았습니다.");
+					mv.addObject("url", url);
+					mv.setViewName("common/serviceFailed");
+				}
+			} else {
+				mv.addObject("alertMsg", "관리자만 접근할 수 있습니다.");
+				mv.addObject("url", "/index.jsp");
+				mv.setViewName("common/serviceFailed");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			mv.addObject("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/serviceFailed");
+		} 
+		return mv;
+	}
+	
+
+	private void deleteFile(HttpServletRequest request, String delFileName) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String delFilePath = root+"\\uploadFiles\\"+delFileName;
+		File file = new File(delFilePath);
+		if(file.exists()) {
+			file.delete();
+		}
+		
+	}
 	//파일저장 메소드 출력
 	private Map<String, Object> saveFile(MultipartFile uploadFile, HttpServletRequest request) throws Exception {
 		Map<String, Object> infoMap = new HashMap<String, Object>();

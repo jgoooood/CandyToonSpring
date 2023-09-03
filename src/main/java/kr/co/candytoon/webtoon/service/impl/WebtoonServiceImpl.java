@@ -26,6 +26,12 @@ public class WebtoonServiceImpl implements WebtoonService {
 	}
 
 	@Override
+	public int updateWebtoon(Webtoon webtoon) {
+		int result = wStore.updateWebtoon(session, webtoon);
+		return result;
+	}
+
+	@Override
 	public List<Webtoon> selectListByViewCount() {
 		List<Webtoon> topViewList = wStore.selectListByViewCount(session);
 		return topViewList;

@@ -24,6 +24,10 @@
 		INSERT INTO WEBTOON_TBL VALUES (SEQ_WEBTOON_NO.NEXTVAL, #{webtoonTitle}, #{webtoonWriter}, #{webtoonPainter}, #{webtoonGenre}, #{wCoverName}, #{wCoverRename}, #{wCoverPath}, #{wLentPrice}, #{wBuyPrice}, #{wOpenDate}, DEFAULT, DEFAULT, #{wViewCount})
 	</insert>
 	
+	<update id="updateWebtoon">
+		UPDATE WEBTOON_TBL SET WEBTOON_TITLE = #{webtoonTitle}, WEBTOON_WRITER = #{webtoonWriter}, WEBTOON_PAINTER = #{webtoonPainter}, WEBTOON_GENRE = #{webtoonGenre}, W_COVER_NAME = #{wCoverName}, W_COVER_RENAME = #{wCoverRename}, W_COVER_PATH = #{wCoverPath}, W_LENT_PRICE = #{wLentPrice}, W_BUY_PRICE = #{wBuyPrice}, W_OPEN_DATE = #{wOpenDate}, W_END_YN = #{wEndYn} WHERE WEBTOON_NO = #{webtoonNo}
+	</update>
+	
 	<select id="selectListByViewCount" resultMap="webtoonResultMap">
 		SELECT * FROM WEBTOON_TBL ORDER BY W_VIEW_COUNT DESC
 	</select>

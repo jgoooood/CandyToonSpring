@@ -18,6 +18,14 @@ public interface WebtoonStore {
 	int insertWebtoon(SqlSession session, Webtoon webtoon);
 
 	/**
+	 * 웹툰 정보 수정 Store
+	 * @param session
+	 * @param webtoon
+	 * @return
+	 */
+	int updateWebtoon(SqlSession session, Webtoon webtoon);
+
+	/**
 	 * 웹툰리스트 전체인기작 : home사용 Service
 	 * @param session
 	 * @return
