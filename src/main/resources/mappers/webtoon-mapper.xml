@@ -18,10 +18,11 @@
 		<result property="wUpdateDate"    column="W_UPDATE_DATE"/>
 		<result property="wEndYn" 		  column="W_END_YN"/>
 		<result property="wViewCount" 	  column="W_VIEW_COUNT"/>
+		<result property="wStatus" 	  	  column="W_STATUS"/>
 	</resultMap>
 
 	<insert id="insertWebtoon">
-		INSERT INTO WEBTOON_TBL VALUES (SEQ_WEBTOON_NO.NEXTVAL, #{webtoonTitle}, #{webtoonWriter}, #{webtoonPainter}, #{webtoonGenre}, #{wCoverName}, #{wCoverRename}, #{wCoverPath}, #{wLentPrice}, #{wBuyPrice}, #{wOpenDate}, DEFAULT, DEFAULT, #{wViewCount})
+		INSERT INTO WEBTOON_TBL VALUES (SEQ_WEBTOON_NO.NEXTVAL, #{webtoonTitle}, #{webtoonWriter}, #{webtoonPainter}, #{webtoonGenre}, #{wCoverName}, #{wCoverRename}, #{wCoverPath}, #{wLentPrice}, #{wBuyPrice}, #{wOpenDate}, DEFAULT, DEFAULT, #{wViewCount}, DEFAULT)
 	</insert>
 	
 	<update id="updateWebtoon">

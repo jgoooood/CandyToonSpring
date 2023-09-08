@@ -26,6 +26,12 @@ public class WebtoonStoreLogic implements WebtoonStore{
 	}
 
 	@Override
+	public int deleteWebtoon(SqlSession session, Integer webtoonNo) {
+		int result = session.update("WebtoonMapper.deleteWebtoon", webtoonNo);
+		return result;
+	}
+
+	@Override
 	public List<Webtoon> selectListByViewCount(SqlSession session) {
 		List<Webtoon> topViewList = session.selectList("WebtoonMapper.selectListByViewCount");
 		return topViewList;

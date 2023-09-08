@@ -22,6 +22,13 @@ public interface WebtoonService {
 	int updateWebtoon(Webtoon webtoon);
 
 	/**
+	 * 웹툰 정보 삭제 Service
+	 * @param webtoonNo
+	 * @return
+	 */
+	int deleteWebtoon(Integer webtoonNo);
+
+	/**
 	 * 웹툰리스트 전체인기작 : home사용 Service
 	 * @return
 	 */

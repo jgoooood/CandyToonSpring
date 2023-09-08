@@ -32,6 +32,12 @@ public class WebtoonServiceImpl implements WebtoonService {
 	}
 
 	@Override
+	public int deleteWebtoon(Integer webtoonNo) {
+		int result = wStore.deleteWebtoon(session, webtoonNo);
+		return result;
+	}
+
+	@Override
 	public List<Webtoon> selectListByViewCount() {
 		List<Webtoon> topViewList = wStore.selectListByViewCount(session);
 		return topViewList;

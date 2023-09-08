@@ -160,6 +160,7 @@ public class WebtoonController {
 		return mv;
 	}
 	
+	//수정완료
 	@RequestMapping(value="/modify.kr", method=RequestMethod.POST)
 	public ModelAndView modifyWebtoon(
 			ModelAndView mv
@@ -207,7 +208,36 @@ public class WebtoonController {
 		return mv;
 	}
 	
-
+	//웹툰 정보 삭제
+	@RequestMapping(value="/webtoon/delete.kr", method=RequestMethod.GET)
+	public ModelAndView deleteWebtoon(
+			ModelAndView mv
+			, @RequestParam(value="webtoonNp") Integer webtoonNo
+			, HttpSession session) {
+		String memberId = (String)session.getAttribute("memberId");
+		try {
+			if(memberId != null && memberId.equals("admin")) {
+				int result = wService.deleteWebtoon(webtoonNo);
+				if(result > 0) {
+					mv.addObject("msg", "웹툰삭제가 완료되었습니다.");
+					mv.addObject("url", "/webtoon/list.kr");
+					mv.setViewName("common/serviceSuccess");
+				} else {
+					mv.addObject("alertMsg", "웹툰삭제가 완료되지 않았습니다.");
+					mv.addObject("url", "/webtoon/detail.kr?webtoonNo="+webtoonNo);
+					mv.setViewName("common/serviceFailed");
+				} 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			mv.addObject("alertMsg", "[서비스실패] 관리자에 문의바랍니다.");
+			mv.addObject("msg", e.getMessage());
+			mv.setViewName("common/serviceFailed");
+		}
+		return mv;
+	}
+	
+	//파일삭제메소드
 	private void deleteFile(HttpServletRequest request, String delFileName) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String delFilePath = root+"\\uploadFiles\\"+delFileName;

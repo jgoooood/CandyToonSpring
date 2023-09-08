@@ -26,21 +26,29 @@ public interface WebtoonStore {
 	int updateWebtoon(SqlSession session, Webtoon webtoon);
 
 	/**
-	 * 웹툰리스트 전체인기작 : home사용 Service
+	 * 웹툰 정보 삭제 Store
+	 * @param session
+	 * @param webtoonNo
+	 * @return
+	 */
+	int deleteWebtoon(SqlSession session, Integer webtoonNo);
+
+	/**
+	 * 웹툰리스트 전체인기작 : home사용 Store
 	 * @param session
 	 * @return
 	 */
 	List<Webtoon> selectListByViewCount(SqlSession session);
 
 	/**
-	 * 웹툰리스트 최신인기작 : home사용 Service
+	 * 웹툰리스트 최신인기작 : home사용 Store
 	 * @param session
 	 * @return
 	 */
 	List<Webtoon> selectListByNewOpen(SqlSession session);
 
 	/**
-	 * 웹툰리스트 완결인기작 : home사용 Service
+	 * 웹툰리스트 완결인기작 : home사용 Store
 	 * @param session
 	 * @return
 	 */
